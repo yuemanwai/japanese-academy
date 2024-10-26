@@ -6,294 +6,598 @@
 {{super()}}
 <meta charset="UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
-    :root {
-        --primary: #ff6b6b;
-        --secondary: #4ecdc4;
-        --dark: #2c3e50;
-        --light: #f7f9fc;
-    }
+  /* Base styles */
+  :root {
+    --primary: #ff6b6b;
+    --secondary: #4ecdc4;
+    --dark: #2c3e50;
+    --light: #f7f9fc;
+  }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Noto Sans JP', sans-serif;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
 
-    body {
-        background: var(--light);
-        color: var(--dark);
-    }
+  body {
+    background: var(--light);
+    color: var(--dark);
+  }
 
-    /* Navigation Bar Styles */
-    .nav-container {
-        background: var(--dark);
-        padding: 1rem 2rem;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+  /* Common styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
 
-    .nav-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+  /* Navigation styles */
+  .nav-container {
+    background: var(--dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        color: white;
-        text-decoration: none;
-    }
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
 
-    .logo svg {
-        width: 32px;
-        height: 32px;
-    }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
 
+  .logo:hover {
+    color: var(--primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: var(--primary);
+  }
+
+  .subnav {
+    position: relative;
+  }
+
+  .subnav-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    padding: 1rem 0;
+  }
+
+  .subnav:hover .subnav-content {
+    display: block;
+  }
+
+  .subnav-content a {
+    color: var(--dark);
+    padding: 0.5rem 1rem;
+    display: block;
+  }
+
+  .subnav-content a:hover {
+    background: var(--light);
+    color: var(--primary);
+  }
+
+  /* Main content styles */
+  .lesson-container {
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .lesson-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light);
+  }
+
+  .lesson-content {
+    padding: 2rem;
+  }
+
+  .practice-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--light);
+    border-radius: 8px;
+  }
+
+  /* Button styles */
+  .btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
     .nav-links {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
+      display: none;
     }
 
-    .nav-link {
-        color: white;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        transition: background 0.3s ease;
+    .mobile-menu {
+      display: block;
     }
+  }
 
-    .nav-link:hover {
-        background: rgb(95, 243, 231);
-    }
+  /* Language Selector Styles */
+.language-selector {
+  position: relative;
+  margin-left: 1rem;
+}
 
-    .login-btn {
-        background: var(--primary);
-        color: white;
-        padding: 0.5rem 1.5rem;
-        border-radius: 25px;
-        border: none;
-        cursor: pointer;
-        transition: transform 0.3s ease, background 0.3s ease;
-    }
+.language-btn {
+  background: transparent;
+  border: 1px solid var(--secondary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
 
-    .login-btn:hover {
-        background: var(--secondary);
-        transform: translateY(-2px);
-    }
+.language-btn:hover {
+  background: var(--secondary);
+}
 
-    /* Login Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 2000;
-        align-items: center;
-        justify-content: center;
-    }
+.language-btn i {
+  font-size: 1.2rem;
+}
 
-    .modal-content {
-        background: white;
-        padding: 2rem;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 400px;
-        position: relative;
-    }
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  min-width: 150px;
+  margin-top: 0.5rem;
+  display: none;
+  z-index: 1000;
+}
 
-    .close-modal {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--dark);
-    }
+.language-dropdown.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
 
-    .login-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
+.language-option {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.language-option:hover {
+  background: var(--light);
+  color: var(--primary);
+}
 
-    .form-group input {
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-    }
+.language-option img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
 
-    .submit-btn {
-        background: var(--primary);
-        color: white;
-        padding: 0.8rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.3s ease;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .submit-btn:hover {
-        background: var(--secondary);
-    }
-
-    /* Adjust container padding for fixed navbar */
-    .container {
-        max-width: 1200px;
-        margin: 80px auto 0;
-        /* Added top margin to account for fixed navbar */
-        padding: 2rem;
-    }
-
-    /* Rest of your existing styles... */
 </style>
-  {# <header>
-    <h1>AI-Powered Japanese Learning Platform</h1>
-    <p>はじめましょう！ (Let's begin!)</p>
-  </header> #}
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+
 {% endblock %}
 
 {% block navbar %}
 <!-- Navigation Bar -->
-  <nav class="nav-container">
-    <div class="nav-content">
-      <a href="/" class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
-        <span>AI-powered Interactive Japanese Academy</span>
-      </a>
-      <div class="nav-links">
-        <a href="/lessons" class="nav-link">Lessons</a>
-        <a href="/practice" class="nav-link">Practice</a>
-        <a href="/community" class="nav-link">Community</a>
-        <button class="login-btn" onclick="openLoginModal()">Login</button>
-      </div>
-    </div>
-  </nav>
+<nav class="nav-container">
+  <div class="nav-content">
+    <a href="/" class="logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+      </svg>
+      日本語学習
+    </a>
 
-  <!-- Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeLoginModal()">×</button>
-      <h2>Login to Your Account</h2>
-      <form class="login-form" onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <div class="subnav">
+        <a href="/lessons">Lessons</a>
+        <div class="subnav-content">
+          <a href="/lessons/hiragana-katakana">Lesson 1: Hiragana & Katakana</a>
+          <a href="/lessons/handwriting">Lesson 2: Handwriting Practice</a>
+          <a href="/lessons/grammar">Lesson 3: Grammar Essentials</a>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" required>
-        </div>
-        <button type="submit" class="submit-btn">Login</button>
-        <p style="text-align: center; margin-top: 1rem;">
-          Don't have an account? <a href="/signup" style="color: var(--primary);">Sign up</a>
-        </p>
-      </form>
+      </div>
+      <a href="/practice">Practice</a>
+      <a href="/dictionary">Dictionary</a>
+      <a href="/community">Community</a>
+      <a href="/login" class="btn" onclick="openLoginModal()">Login</a>
+      <!-- Language Selector -->
+<div class="language-selector">
+  <button class="language-btn" onclick="toggleLanguageDropdown()">
+    <i class="fas fa-globe"></i>
+    <span id="current-language">English</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="language-dropdown" id="language-dropdown">
+    <div class="language-option" onclick="changeLanguage('en')">
+      <img src="https://flagcdn.com/w20/us.png" alt="English">
+      English
+    </div>
+    <div class="language-option" onclick="changeLanguage('ja')">
+      <img src="https://flagcdn.com/w20/jp.png" alt="Japanese">
+      日本語
+    </div>
+    <div class="language-option" onclick="changeLanguage('ko')">
+      <img src="https://flagcdn.com/w20/kr.png" alt="Korean">
+      한국어
+    </div>
+    <div class="language-option" onclick="changeLanguage('zh')">
+      <img src="https://flagcdn.com/w20/cn.png" alt="Chinese">
+      中文
     </div>
   </div>
+</div>
+    </div>
+  </div>
+</nav>
 
-  <!-- Rest of your existing content... -->
+<!-- Individual Lesson Pages (You would typically split these into separate files) -->
+
+<!-- Lesson 1 Page -->
+<div id="lesson1" class="lesson-container" style="display: none;">
+  <div class="lesson-header">
+    <h1>Lesson 1: Mastering Hiragana and Katakana</h1>
+    <p>Master the foundational Japanese writing systems</p>
+  </div>
+
+  <div class="lesson-content">
+    <section class="practice-section">
+      <h2>Hiragana Chart</h2>
+      <div id="hiraganaGrid" class="kana-grid"></div>
+      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
+    </section>
+
+    <section class="practice-section">
+      <h2>Katakana Chart</h2>
+      <div id="katakanaGrid" class="kana-grid"></div>
+      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
+    </section>
+  </div>
+</div>
+
+<!-- Lesson 2 Page -->
+<div id="lesson2" class="lesson-container" style="display: none;">
+  <div class="lesson-header">
+    <h1>Lesson 2: Handwriting Practice</h1>
+    <p>Perfect your Japanese character writing skills</p>
+  </div>
+
+  <div class="lesson-content">
+    <section class="practice-section">
+      <h2>Writing Practice Area</h2>
+      <canvas id="handwritingPad" width="400" height="400"></canvas>
+      <div class="button-group">
+        <button class="btn" onclick="clearCanvas()">Clear</button>
+        <button class="btn" onclick="checkWriting()">Check Writing</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Lesson 3 Page -->
+<div id="lesson3" class="lesson-container" style="display: none;">
+  <div class="lesson-header">
+    <h1>Lesson 3: Grammar Essentials</h1>
+    <p>Learn the building blocks of Japanese sentences</p>
+  </div>
+
+  <div class="lesson-content">
+    <section class="practice-section">
+      <h2>Basic Sentence Structure</h2>
+      <div class="grammar-example">
+        <p>Topic は Subject が Verb です</p>
+        <button class="btn" onclick="showExamples()">Show Examples</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <button class="close-modal" onclick="closeLoginModal()">×</button>
+    <h2>Login to Your Account</h2>
+    <form class="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit" class="submit-btn">Login</button>
+      <p style="text-align: center; margin-top: 1rem;">
+        Don't have an account? <a href="/signup" style="color: var(--primary);">Sign up</a>
+      </p>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
+
 {% block content %}
 <div class="container">
-    {% block page_content %} 內容未有 {% endblock %}
+  {% block app_content %} 內容未有 {% endblock %}
 </div>
 {% endblock %}
 {% block scripts %}
 {{super()}}
-
-  <script>
-    // Login Modal Functions
-    function openLoginModal() {
-      const modal = document.getElementById('loginModal');
-      modal.style.display = 'flex';
-      gsap.from('.modal-content', {
-        y: -50,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      });
-    }
-
-    function closeLoginModal() {
-      const modal = document.getElementById('loginModal');
-      gsap.to('.modal-content', {
-        y: -50,
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-        onComplete: () => {
-          modal.style.display = 'none';
-          gsap.set('.modal-content', { y: 0, opacity: 1 });
-        }
-      });
-    }
-
-    function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      // Here you would typically make an API call to your backend
-      console.log('Login attempted with:', { email, password });
-
-      // Mock successful login
-      alert('Login successful!');
-      closeLoginModal();
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function (event) {
-      const modal = document.getElementById('loginModal');
-      if (event.target === modal) {
-        closeLoginModal();
-      }
-    }
-
-    // Add scroll animation for navbar
-    let lastScroll = 0;
-    window.addEventListener('scroll', () => {
-      const navbar = document.querySelector('.nav-container');
-      const currentScroll = window.pageYOffset;
-
-      if (currentScroll <= 0) {
-        navbar.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-      } else if (currentScroll > lastScroll) {
-        navbar.style.transform = 'translateY(-100%)';
-      } else {
-        navbar.style.transform = 'translateY(0)';
-        navbar.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-      }
-      lastScroll = currentScroll;
+<script>
+  // Navigation handling
+  function showLesson(lessonId) {
+    // Hide all lessons
+    document.querySelectorAll('.lesson-container').forEach(container => {
+      container.style.display = 'none';
     });
 
-    // Your existing JavaScript code...
+    // Show selected lesson
+    document.getElementById(lessonId).style.display = 'block';
+  }
 
-  </script>
+  // URL routing
+  function handleRoute() {
+    const path = window.location.pathname;
+    switch (path) {
+      case '/lessons/hiragana-katakana':
+        showLesson('lesson1');
+        break;
+      case '/lessons/handwriting':
+        showLesson('lesson2');
+        break;
+      case '/lessons/grammar':
+        showLesson('lesson3');
+        break;
+      default:
+        // Show home page or redirect
+        break;
+    }
+  }
+
+  // Canvas setup for handwriting
+  const canvas = document.getElementById('handwritingPad');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    ctx.strokeStyle = '#000';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 8;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    function startDrawing(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Text-to-speech functionality
+  function playSound(text = 'こんにちは') {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    speechSynthesis.speak(utterance);
+  }
+
+  // Animations
+  gsap.from('.nav-container', {
+    y: -50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out'
+  });
+
+  gsap.from('.lesson-container', {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power2.out'
+  });
+
+  // Initialize
+  window.addEventListener('load', () => {
+    handleRoute();
+  });
+
+  window.addEventListener('popstate', handleRoute);
+
+  // Language Selector Functions
+function toggleLanguageDropdown() {
+  const dropdown = document.getElementById('language-dropdown');
+  dropdown.classList.toggle('show');
+}
+
+function changeLanguage(lang) {
+  const currentLang = document.getElementById('current-language');
+  const dropdown = document.getElementById('language-dropdown');
+  
+  // Update displayed language
+  switch(lang) {
+    case 'en':
+      currentLang.textContent = 'English';
+      break;
+    case 'ja':
+      currentLang.textContent = '日本語';
+      break;
+    case 'ko':
+      currentLang.textContent = '한국어';
+      break;
+    case 'zh':
+      currentLang.textContent = '中文';
+      break;
+  }
+  
+  // Close dropdown
+  dropdown.classList.remove('show');
+  
+  // Store language preference
+  localStorage.setItem('preferredLanguage', lang);
+  
+  // Trigger translation (implement your translation logic here)
+  translatePage(lang);
+}
+
+function translatePage(lang) {
+  // Example translation implementation
+  const translations = {
+    'en': {
+      'home': 'Home',
+      'lessons': 'Lessons',
+      'practice': 'Practice',
+      'dictionary': 'Dictionary',
+      'community': 'Community',
+      'login': 'Login'
+    },
+    'ja': {
+      'home': 'ホーム',
+      'lessons': 'レッスン',
+      'practice': '練習',
+      'dictionary': '辞書',
+      'community': 'コミュニティ',
+      'Login': 'ログイン'
+    },
+    'ko': {
+      'home': '홈',
+      'lessons': '레슨',
+      'practice': '연습',
+      'dictionary': '사전',
+      'community': '커뮤니티',
+      'Login': '로그인'
+    },
+    'zh': {
+      'home': '首页',
+      'lessons': '课程',
+      'practice': '练习',
+      'dictionary': '词典',
+      'community': '社区',
+      'Login': '登入'
+    }
+  };
+
+  // Update navigation text
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach(link => {
+    const key = link.textContent.toLowerCase();
+    if (translations[lang][key]) {
+      link.textContent = translations[lang][key];
+    }
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+  const dropdown = document.getElementById('language-dropdown');
+  const languageBtn = document.querySelector('.language-btn');
+  
+  if (!dropdown.contains(event.target) && !languageBtn.contains(event.target)) {
+    dropdown.classList.remove('show');
+  }
+});
+
+// Load preferred language on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
+  changeLanguage(preferredLanguage);
+});
+
+</script>
 {% endblock %}

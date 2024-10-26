@@ -12,3 +12,7 @@ def getstarted():
 @app.route('/get-started')
 def howitworks():
     return render_template('how-it-works.html.j2')
+
+@app.route('/login')
+def login():
+    return "未做好"

@@ -1,10 +1,6 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %} 500 - Server Error | AI-Powered Japanese Learning Platform {% endblock %}
-
-{% block head %}
-{{super()}}
+<html><head><base href="https://ai-japanese-learning.example.com/">
 <meta charset="UTF-8">
+<title>500 - Server Error | AI-Powered Japanese Learning Platform</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <style>
 :root {
@@ -116,9 +112,8 @@ body {
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+</head>
+<body>
 
 <div class="error-container">
   <div class="error-code">500</div>
@@ -154,10 +149,7 @@ body {
 </div>
 
 <canvas class="binary-bg"></canvas>
-{% endblock %}
 
-{% block scripts %}
-{{super()}}
 <script>
 // Binary background animation
 const canvas = document.querySelector('.binary-bg');
@@ -274,4 +266,6 @@ function createSpark() {
 setInterval(createSpark, 1000);
 
 </script>
-{% endblock %}
+
+</body>
+</html>
