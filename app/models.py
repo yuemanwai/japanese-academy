@@ -1,6 +1,7 @@
 from app import app
 from flask_sqlalchemy import SQLAlchemy
 
+# 未決定用乜嘢db (mongodb? dynamodb? postgresql?)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 

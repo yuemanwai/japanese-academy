@@ -264,19 +264,19 @@
     </a>
 
     <div class="nav-links">
-      <a href="/">Home</a>
+      <a href="{{ url_for('index') }}">Home</a>
       <div class="subnav">
-        <a href="/lessons">Lessons</a>
+        <a href="{{ url_for('lessonslist') }}">Lessons</a>
         <div class="subnav-content">
-          <a href="/lessons/hiragana-katakana">Lesson 1: Hiragana & Katakana</a>
-          <a href="/lessons/handwriting">Lesson 2: Handwriting Practice</a>
-          <a href="/lessons/grammar">Lesson 3: Grammar Essentials</a>
+        {% for i in range(1, lesson_count) %}
+            <a href="{{ url_for('lesson', lesson_id=i) }}">Lesson {{ i }}</a>
+        {% endfor %}
         </div>
       </div>
       <a href="/practice">Practice</a>
       <a href="/dictionary">Dictionary</a>
       <a href="/community">Community</a>
-      <a href="/login" class="btn" onclick="openLoginModal()">Login</a>
+      <a href="/login" class="btn" onclick="openLoginModal()">login</a>
       <!-- Language Selector -->
 <div class="language-selector">
   <button class="language-btn" onclick="toggleLanguageDropdown()">
@@ -293,10 +293,6 @@
       <img src="https://flagcdn.com/w20/jp.png" alt="Japanese">
       日本語
     </div>
-    <div class="language-option" onclick="changeLanguage('ko')">
-      <img src="https://flagcdn.com/w20/kr.png" alt="Korean">
-      한국어
-    </div>
     <div class="language-option" onclick="changeLanguage('zh')">
       <img src="https://flagcdn.com/w20/cn.png" alt="Chinese">
       中文
@@ -306,89 +302,6 @@
     </div>
   </div>
 </nav>
-
-<!-- Individual Lesson Pages (You would typically split these into separate files) -->
-
-<!-- Lesson 1 Page -->
-<div id="lesson1" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 1: Mastering Hiragana and Katakana</h1>
-    <p>Master the foundational Japanese writing systems</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Hiragana Chart</h2>
-      <div id="hiraganaGrid" class="kana-grid"></div>
-      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
-    </section>
-
-    <section class="practice-section">
-      <h2>Katakana Chart</h2>
-      <div id="katakanaGrid" class="kana-grid"></div>
-      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
-    </section>
-  </div>
-</div>
-
-<!-- Lesson 2 Page -->
-<div id="lesson2" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 2: Handwriting Practice</h1>
-    <p>Perfect your Japanese character writing skills</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Writing Practice Area</h2>
-      <canvas id="handwritingPad" width="400" height="400"></canvas>
-      <div class="button-group">
-        <button class="btn" onclick="clearCanvas()">Clear</button>
-        <button class="btn" onclick="checkWriting()">Check Writing</button>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- Lesson 3 Page -->
-<div id="lesson3" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 3: Grammar Essentials</h1>
-    <p>Learn the building blocks of Japanese sentences</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Basic Sentence Structure</h2>
-      <div class="grammar-example">
-        <p>Topic は Subject が Verb です</p>
-        <button class="btn" onclick="showExamples()">Show Examples</button>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- Login Modal -->
-<div class="modal" id="loginModal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="closeLoginModal()">×</button>
-    <h2>Login to Your Account</h2>
-    <form class="login-form" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" required>
-      </div>
-      <button type="submit" class="submit-btn">Login</button>
-      <p style="text-align: center; margin-top: 1rem;">
-        Don't have an account? <a href="/signup" style="color: var(--primary);">Sign up</a>
-      </p>
-    </form>
-  </div>
-</div>
 
 {% endblock %}
 
@@ -518,9 +431,6 @@ function changeLanguage(lang) {
     case 'ja':
       currentLang.textContent = '日本語';
       break;
-    case 'ko':
-      currentLang.textContent = '한국어';
-      break;
     case 'zh':
       currentLang.textContent = '中文';
       break;
@@ -534,6 +444,7 @@ function changeLanguage(lang) {
   
   // Trigger translation (implement your translation logic here)
   translatePage(lang);
+  
 }
 
 function translatePage(lang) {
@@ -553,15 +464,7 @@ function translatePage(lang) {
       'practice': '練習',
       'dictionary': '辞書',
       'community': 'コミュニティ',
-      'Login': 'ログイン'
-    },
-    'ko': {
-      'home': '홈',
-      'lessons': '레슨',
-      'practice': '연습',
-      'dictionary': '사전',
-      'community': '커뮤니티',
-      'Login': '로그인'
+      'login': 'ログイン'
     },
     'zh': {
       'home': '首页',
@@ -569,7 +472,7 @@ function translatePage(lang) {
       'practice': '练习',
       'dictionary': '词典',
       'community': '社区',
-      'Login': '登入'
+      'login': '登入'
     }
   };
 
