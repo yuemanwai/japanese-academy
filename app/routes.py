@@ -45,9 +45,9 @@ def logout():
     return render_template('logout.html.j2')
 
 
-# @app.route('/lessonslist')
-# def lessonslist():
-#     return render_template('lessonslist.html.j2')
+@app.route('/lessonslist')
+def lessonslist():
+    return render_template('lessonslist.html.j2')
 
 @app.route('/lesson/<int:lesson_id>')
 def lesson(lesson_id):

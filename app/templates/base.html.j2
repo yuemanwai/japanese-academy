@@ -264,9 +264,9 @@
     </a>
 
     <div class="nav-links">
-      <a href="/">Home</a>
+      <a href="{{ url_for('index') }}">Home</a>
       <div class="subnav">
-        <a href="/lessons">Lessons</a>
+        <a href="{{ url_for('lessonslist') }}">Lessons</a>
         <div class="subnav-content">
         {% for i in range(1, lesson_count) %}
             <a href="{{ url_for('lesson', lesson_id=i) }}">Lesson {{ i }}</a>
@@ -276,7 +276,7 @@
       <a href="/practice">Practice</a>
       <a href="/dictionary">Dictionary</a>
       <a href="/community">Community</a>
-      <a href="/login" class="btn" onclick="openLoginModal()">Login</a>
+      <a href="/login" class="btn" onclick="openLoginModal()">login</a>
       <!-- Language Selector -->
 <div class="language-selector">
   <button class="language-btn" onclick="toggleLanguageDropdown()">
@@ -302,67 +302,6 @@
     </div>
   </div>
 </nav>
-
-<!-- Individual Lesson Pages (You would typically split these into separate files) -->
-
-<!-- Lesson 1 Page -->
-<div id="lesson1" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 1: Mastering Hiragana and Katakana</h1>
-    <p>Master the foundational Japanese writing systems</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Hiragana Chart</h2>
-      <div id="hiraganaGrid" class="kana-grid"></div>
-      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
-    </section>
-
-    <section class="practice-section">
-      <h2>Katakana Chart</h2>
-      <div id="katakanaGrid" class="kana-grid"></div>
-      <button class="btn" onclick="playSound()">Listen to Pronunciation</button>
-    </section>
-  </div>
-</div>
-
-<!-- Lesson 2 Page -->
-<div id="lesson2" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 2: Handwriting Practice</h1>
-    <p>Perfect your Japanese character writing skills</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Writing Practice Area</h2>
-      <canvas id="handwritingPad" width="400" height="400"></canvas>
-      <div class="button-group">
-        <button class="btn" onclick="clearCanvas()">Clear</button>
-        <button class="btn" onclick="checkWriting()">Check Writing</button>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- Lesson 3 Page -->
-<div id="lesson3" class="lesson-container" style="display: none;">
-  <div class="lesson-header">
-    <h1>Lesson 3: Grammar Essentials</h1>
-    <p>Learn the building blocks of Japanese sentences</p>
-  </div>
-
-  <div class="lesson-content">
-    <section class="practice-section">
-      <h2>Basic Sentence Structure</h2>
-      <div class="grammar-example">
-        <p>Topic は Subject が Verb です</p>
-        <button class="btn" onclick="showExamples()">Show Examples</button>
-      </div>
-    </section>
-  </div>
-</div>
 
 {% endblock %}
 
@@ -525,7 +464,7 @@ function translatePage(lang) {
       'practice': '練習',
       'dictionary': '辞書',
       'community': 'コミュニティ',
-      'Login': 'ログイン'
+      'login': 'ログイン'
     },
     'zh': {
       'home': '首页',
@@ -533,7 +472,7 @@ function translatePage(lang) {
       'practice': '练习',
       'dictionary': '词典',
       'community': '社区',
-      'Login': '登入'
+      'login': '登入'
     }
   };
 
