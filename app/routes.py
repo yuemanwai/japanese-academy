@@ -1,17 +1,13 @@
 from app import app
-from flask import render_template, abort, flash, redirect, url_for, request, g, make_response, session
+from flask import jsonify, render_template, abort, flash, redirect, url_for, request, g, make_response, session
 from flask_login import login_user, logout_user, current_user, login_required
+from .mock_data import users, lessons
 
-# Mock lessons data
-lessons = [
-    {'id': 1, 'title': 'Mastering Hiragana and Katakana'},
-    {'id': 2, 'title': 'Handwriting Practice'},
-    {'id': 3, 'title': 'Grammar Essentials'},
-]
 
 @app.context_processor
 def inject_lessons_count():
     return {'lesson_count': len(lessons)+1}
+
 
 @app.route('/')
 @app.route('/index')
@@ -46,11 +42,12 @@ def logout():
 
 
 @app.route('/lessonslist')
-def lessonslist():
-    return render_template('lessonslist.html.j2')
+def get_lessonslist():
+    return render_template('lessonslist.html.j2', lessons=lessons)
+
 
 @app.route('/lesson/<int:lesson_id>')
-def lesson(lesson_id):
+def get_lesson(lesson_id):
     # Find the lesson by lesson_id
     lesson = next(
         (lesson for lesson in lessons if lesson['id'] == lesson_id), None)
