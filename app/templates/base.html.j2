@@ -266,10 +266,10 @@
     <div class="nav-links">
       <a href="{{ url_for('index') }}">Home</a>
       <div class="subnav">
-        <a href="{{ url_for('lessonslist') }}">Lessons</a>
+        <a href="{{ url_for('get_lessonslist') }}">Lessons</a>
         <div class="subnav-content">
         {% for i in range(1, lesson_count) %}
-            <a href="{{ url_for('lesson', lesson_id=i) }}">Lesson {{ i }}</a>
+            <a href="{{ url_for('get_lesson', lesson_id=i) }}">Lesson {{ i }}</a>
         {% endfor %}
         </div>
       </div>

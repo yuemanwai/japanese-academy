@@ -4,5 +4,10 @@
 {% block app_content %}
 
 <h1>Lesson List</h1>
+<ul>
+    {% for lesson in lessons %}
+        <li>lesson {{ lesson.id }}: {{ lesson.title }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}
