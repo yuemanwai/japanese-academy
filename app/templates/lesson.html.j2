@@ -3,13 +3,14 @@
 
 {% block app_content %}
 
+<div class="container">
+  {% if lesson_id == 1 %}
+  
 <header>
   <h1>AI-Powered Japanese Learning Platform</h1>
   <p>はじめましょう！ (Let's begin!)</p>
 </header>
 
-<div class="container">
-  {% if lesson_id == 1 %}
   <div class="lesson-card">
     <h2 class="lesson-title">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

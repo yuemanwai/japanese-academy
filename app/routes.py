@@ -49,3 +49,23 @@ def get_lesson(lesson_id):
     if lesson is None:
         abort(404)
     return render_template('lesson.html.j2', lesson_id=lesson_id, lesson_title=lesson['title'])
+
+@app.route('/practice')
+def practice():
+    return render_template('practice.html.j2')
+
+@app.route('/dictionary')
+def dictionary():
+    return render_template('dictionary.html.j2')
+
+@app.route('/community')
+def community():
+    return render_template('community.html.j2')
+
+@app.route('/post')
+def post():
+    return render_template('post.html.j2')
+
+@app.route('/create_post')
+def create_post():
+    return render_template('create_post.html.j2')
