@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% extends "base.html.j2" %}
+
+{% block title %}日語學習網站運作方式{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77aaff 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        .content {
+            padding: 20px;
+            background: #fff;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            margin: 10px 0;
+        }
+        ul {
+            margin: 10px 0;
+            padding: 0;
+            list-style: none;
+        }
+        ul li {
+            background: #eee;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: #77aaff 5px solid;
+        }
+        a {
+            color: #77aaff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>日語學習網站運作方式</h1>
+            <p>這個網站使用 AI 幫助用戶從零開始學習日語，並記錄用戶的學習進度。以下是網站的主要功能：</p>
+            
+            <h2>用戶註冊和登入</h2>
+            <p>用戶需要創建一個帳戶並登入。這樣可以記錄用戶的學習進度和個人資料。</p>
+            
+            <h2>AI 驅動的學習計劃</h2>
+            <p>網站使用 AI 來評估用戶的日語水平，並根據評估結果生成個性化的學習計劃。這些計劃包括語法、詞彙、聽力和口語練習。</p>
+            
+            <h2>互動式學習模塊</h2>
+            <p>網站提供各種互動式學習模塊，如視頻課程、練習題和即時反饋。用戶可以根據自己的進度和需求選擇不同的模塊。</p>
+            
+            <h2>進度跟蹤</h2>
+            <p>用戶的學習進度會自動記錄，並顯示在個人儀表板上。這樣用戶可以隨時查看自己的學習進展和需要加強的部分。</p>
+            
+            <h2>AI 反饋和建議</h2>
+            <p>AI 會根據用戶的學習表現提供即時反饋和建議，幫助用戶改進學習方法和提高日語水平。</p>
+            
+            <h2>社區支持</h2>
+            <p>網站還提供一個學習社區，讓用戶可以與其他學習者交流，分享學習經驗和資源。</p>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
