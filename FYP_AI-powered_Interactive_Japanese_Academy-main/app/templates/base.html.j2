@@ -1,0 +1,506 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %} AI-Powered Japanese Learning Platform {% endblock %}
+
+{% block head %}
+{{super()}}
+<meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+  /* Base styles */
+  :root {
+    --primary: #ff6b6b;
+    --secondary: #4ecdc4;
+    --dark: #2c3e50;
+    --light: #f7f9fc;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  body {
+    background: var(--light);
+    color: var(--dark);
+  }
+
+  /* Common styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Navigation styles */
+  .nav-container {
+    background: var(--dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+
+  .logo:hover {
+    color: var(--primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: var(--primary);
+  }
+
+  .subnav {
+    position: relative;
+  }
+
+  .subnav-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    padding: 1rem 0;
+  }
+
+  .subnav:hover .subnav-content {
+    display: block;
+  }
+
+  .subnav-content a {
+    color: var(--dark);
+    padding: 0.5rem 1rem;
+    display: block;
+  }
+
+  .subnav-content a:hover {
+    background: var(--light);
+    color: var(--primary);
+  }
+
+  /* Main content styles */
+  .lesson-container {
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 1000px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .lesson-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light);
+  }
+
+  .lesson-content {
+    padding: 2rem;
+  }
+
+  .practice-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--light);
+    border-radius: 8px;
+  }
+
+  /* Button styles */
+  .btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: block;
+    }
+  }
+
+  /* Language Selector Styles */
+.language-selector {
+  position: relative;
+  margin-left: 1rem;
+}
+
+.language-btn {
+  background: transparent;
+  border: 1px solid var(--secondary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+  background: var(--secondary);
+}
+
+.language-btn i {
+  font-size: 1.2rem;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  min-width: 150px;
+  margin-top: 0.5rem;
+  display: none;
+  z-index: 1000;
+}
+
+.language-dropdown.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.language-option {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-option:hover {
+  background: var(--light);
+  color: var(--primary);
+}
+
+.language-option img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+
+{% endblock %}
+
+{% block navbar %}
+<!-- Navigation Bar -->
+<nav class="nav-container">
+  <div class="nav-content">
+    <a href="/" class="logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+      </svg>
+      日本語学習
+    </a>
+
+    <div class="nav-links">
+      <a href="{{ url_for('index') }}">Home</a>
+      <div class="subnav">
+        <a href="{{ url_for('get_lessonslist') }}">Lessons</a>
+        <div class="subnav-content">
+        {% for i in range(1, lesson_count) %}
+            <a href="{{ url_for('get_lesson', lesson_id=i) }}">Lesson {{ i }}</a>
+        {% endfor %}
+        </div>
+      </div>
+      <a href="/practice">Practice</a>
+      <a href="/dictionary">Dictionary</a>
+      <a href="/community">Community</a>
+      <a href="/login" class="btn" onclick="openLoginModal()">login</a>
+      <!-- Language Selector -->
+<div class="language-selector">
+  <button class="language-btn" onclick="toggleLanguageDropdown()">
+    <i class="fas fa-globe"></i>
+    <span id="current-language">English</span>
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <div class="language-dropdown" id="language-dropdown">
+    <div class="language-option" onclick="changeLanguage('en')">
+      <img src="https://flagcdn.com/w20/us.png" alt="English">
+      English
+    </div>
+    <div class="language-option" onclick="changeLanguage('ja')">
+      <img src="https://flagcdn.com/w20/jp.png" alt="Japanese">
+      日本語
+    </div>
+    <div class="language-option" onclick="changeLanguage('zh')">
+      <img src="https://flagcdn.com/w20/cn.png" alt="Chinese">
+      中文
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</nav>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% block app_content %} 內容未有 {% endblock %}
+</div>
+{% endblock %}
+{% block scripts %}
+{{super()}}
+<script>
+  // Navigation handling
+  function showLesson(lessonId) {
+    // Hide all lessons
+    document.querySelectorAll('.lesson-container').forEach(container => {
+      container.style.display = 'none';
+    });
+
+    // Show selected lesson
+    document.getElementById(lessonId).style.display = 'block';
+  }
+
+  // URL routing
+  function handleRoute() {
+    const path = window.location.pathname;
+    switch (path) {
+      case '/lessons/hiragana-katakana':
+        showLesson('lesson1');
+        break;
+      case '/lessons/handwriting':
+        showLesson('lesson2');
+        break;
+      case '/lessons/grammar':
+        showLesson('lesson3');
+        break;
+      default:
+        // Show home page or redirect
+        break;
+    }
+  }
+
+  // Canvas setup for handwriting
+  const canvas = document.getElementById('handwritingPad');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    ctx.strokeStyle = '#000';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 8;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    function startDrawing(e) {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Text-to-speech functionality
+  function playSound(text = 'こんにちは') {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ja-JP';
+    speechSynthesis.speak(utterance);
+  }
+
+  // Animations
+  gsap.from('.nav-container', {
+    y: -50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out'
+  });
+
+  gsap.from('.lesson-container', {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: 'power2.out'
+  });
+
+  // Initialize
+  window.addEventListener('load', () => {
+    handleRoute();
+  });
+
+  window.addEventListener('popstate', handleRoute);
+
+  // Language Selector Functions
+function toggleLanguageDropdown() {
+  const dropdown = document.getElementById('language-dropdown');
+  dropdown.classList.toggle('show');
+}
+
+function changeLanguage(lang) {
+  const currentLang = document.getElementById('current-language');
+  const dropdown = document.getElementById('language-dropdown');
+  
+  // Update displayed language
+  switch(lang) {
+    case 'en':
+      currentLang.textContent = 'English';
+      break;
+    case 'ja':
+      currentLang.textContent = '日本語';
+      break;
+    case 'zh':
+      currentLang.textContent = '中文';
+      break;
+  }
+  
+  // Close dropdown
+  dropdown.classList.remove('show');
+  
+  // Store language preference
+  localStorage.setItem('preferredLanguage', lang);
+  
+  // Trigger translation (implement your translation logic here)
+  translatePage(lang);
+  
+}
+
+function translatePage(lang) {
+  // Example translation implementation
+  const translations = {
+    'en': {
+      'home': 'Home',
+      'lessons': 'Lessons',
+      'practice': 'Practice',
+      'dictionary': 'Dictionary',
+      'community': 'Community',
+      'login': 'Login'
+    },
+    'ja': {
+      'home': 'ホーム',
+      'lessons': 'レッスン',
+      'practice': '練習',
+      'dictionary': '辞書',
+      'community': 'コミュニティ',
+      'login': 'ログイン'
+    },
+    'zh': {
+      'home': '首页',
+      'lessons': '课程',
+      'practice': '练习',
+      'dictionary': '词典',
+      'community': '社区',
+      'login': '登入'
+    }
+  };
+
+  // Update navigation text
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach(link => {
+    const key = link.textContent.toLowerCase();
+    if (translations[lang][key]) {
+      link.textContent = translations[lang][key];
+    }
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+  const dropdown = document.getElementById('language-dropdown');
+  const languageBtn = document.querySelector('.language-btn');
+  
+  if (!dropdown.contains(event.target) && !languageBtn.contains(event.target)) {
+    dropdown.classList.remove('show');
+  }
+});
+
+// Load preferred language on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
+  changeLanguage(preferredLanguage);
+});
+
+</script>
+{% endblock %}
