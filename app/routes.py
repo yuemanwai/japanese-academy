@@ -8,7 +8,7 @@ from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
 from app.models import User, Post, Image, Donor, Payment, IP, Leave_message
 from app.email import send_password_reset_email
-from random import randint
+from random import randint, choice
 from werkzeug.utils import secure_filename
 import os
 import time
@@ -211,15 +211,13 @@ def watchlist(username):
 
 @app.route('/random_post')
 def get_random_post():
-    count = Post.query.count()
-    if count:
-        random_id = randint(1, count)
-        random_post = Post.query.get(random_id)
-        if random_post:
-            title = random_post.title
-            return redirect(url_for('random', title=title))
-    flash('Post not found')
-    return redirect(url_for('index'))
+    posts = Post.query.all()
+    if not posts:
+        return render_template('random_post.html.j2', title=None)
+    
+    post = choice(posts)
+    user = post.user if post.user_id else None
+    return render_template('random_post.html.j2', title=post.title, posts=[post], user=user)
 
 
 @app.route('/random/<title>')

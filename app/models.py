@@ -86,12 +86,15 @@ class Post(db.Model):
     edit_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     edit_count = db.Column(db.Integer, default=0)
     protected = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     users = db.relationship('User', secondary=watchlist,
                         backref=db.backref('posts', lazy='dynamic'),
                         primaryjoin=(watchlist.c.post_id == id),
                         secondaryjoin=(watchlist.c.user_id == User.id),
                         lazy='dynamic')
+
+    user = db.relationship('User', backref='user_posts', lazy=True)
 
     def __repr__(self) -> str:
         return f'<Post title : {self.title}>'
@@ -127,7 +130,7 @@ class Author(db.Model):
     nationality = db.Column(db.String(50))
     books = db.relationship('Editor', backref='author', lazy=True)
  
-def _repr_(self):
+    def _repr_(self):
         return f"Author(id={self.id}, name='{self.name}')"
     
 class Editor(db.Model):
@@ -140,7 +143,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-def _repr_(self):
+    def _repr_(self):
         return f"Category(id={self.id}, name='{self.name}')"
     
 
