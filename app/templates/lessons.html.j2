@@ -3,33 +3,18 @@
 
 {% block app_content %}
 <h1>{{ _('Lessons') }}</h1>
-<p>{{ _('This is the Lessons page.') }}</p>
-<ul>
-    {% for lesson in lessons %}
-    <li>{{ lesson }}</li>
-    {% endfor %}
-lessons = [
-    '平假名、片假名的學習和練習',
-    '發音練習：母音、清音、濁音、拗音、促音、長音',
-    '基本句型結構 (SOV)',
-    '基本詞彙 (挨拶、物品名稱、數字等)',
-    '助詞的使用 (が、を、は、に、へ、で、の)',
-    '基本問候語',
-    '自我介紹',
-    '日常對話練習 (購物、餐飲、問路)',
-    '五段動詞、一段動詞、不規則動詞',
-    '動詞變化 (ます形、て形、ない形等)',
-    '時態 (過去形、否定形等)',
-    '基礎漢字的介紹與練習',
-    '常用漢字的寫法與讀法',
-    '漢字的組詞與運用',
-    '簡單的短文和對話',
-    '理解與翻譯練習',
-    '簡單對話與段落的聆聽',
-    '答題與摘要',
-    '自我表達練習',
-    '模擬場景對話練習',
-    '節日與習俗',
-    '飲食文化'
-]
+{% set sorted_lessons = lessons|sort(attribute='level.id') %}
+{% set levels_order = ['Beginner', 'Intermediate', 'Advanced'] %}
+{% for level in levels_order %}
+    {% set level_lessons = sorted_lessons|selectattr('level.name', 'equalto', level)|list %}
+    {% if level_lessons %}
+        <h3>{{ level }}</h2>
+        <ul>
+            {% for lesson in level_lessons %}
+                <li>Name: {{ lesson.name }}</li>
+                <p>Description: {{ lesson.description }}</p>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endfor %}
 {% endblock %}

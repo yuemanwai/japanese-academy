@@ -6,7 +6,7 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
-from app.models import User, Post, Image, Donor, Payment, IP, Leave_message
+from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level
 from app.email import send_password_reset_email
 from random import randint
 from werkzeug.utils import secure_filename
@@ -321,7 +321,8 @@ def leave_message():
 
 @app.route('/lessons')
 def lessons():
-    return render_template('lessons.html.j2')
+    lessons = Lesson.query.all()
+    return render_template('lessons.html.j2', lessons=lessons)
 
 @app.route('/practice')
 def practice():
