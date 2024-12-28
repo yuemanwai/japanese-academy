@@ -1,10 +1,22 @@
 {% extends "base.html.j2" %}
 {% block app_content %}
 <hr>
-<p>{{_('You are now logged out. This device may be used to browse and edit Wikipedia without a username, or for another
-    user
-    to log in. Note that some pages may continue to be displayed as if you were still logged in; this can be fixed by
-    ')}} <a href="https://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache">{{_('clearing your browser cache.')}}</a></p>
-<p>{{_('Return to ')}}<a href="{{ url_for('index') }}">{{_('Main Page.')}}</a></p>
+<p>{{_('Return to ')}}<a href="{{ url_for('index') }}">{{_('Home Page.')}}</a></p>
+<p style="color: blue;">{{_('You will be redirected in ')}}<span id="countdown" style="font-weight: bold;">5</span>{{_(' seconds.')}}</p>
+{% endblock %}
 
+{% block scripts %}
+{{ super() }}
+<script>
+let countdown = 5;
+const countdownEl = document.getElementById('countdown');
+const countdownInterval = setInterval(() => {
+  countdown--;
+  countdownEl.textContent = countdown;
+  if (countdown === 0) {
+    clearInterval(countdownInterval);
+    window.location.href = "{{ url_for('index') }}";
+  }
+}, 1000);
+</script>
 {% endblock %}

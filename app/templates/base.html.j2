@@ -255,9 +255,11 @@
           <hr>
           <li><a href="{{ url_for('shared') }}">{{ _('Upcoming Features') }}</a></li>
           <br>
-          <li><b>{{_('Admin Tools')}}</b></li>
-          <hr>
-          <li><a href="/404">{{ _('404 Quick button') }}</a></li>
+          {% if current_user.is_authenticated and current_user.is_admin %}
+                <li><b>{{_('Admin Tools')}}</b></li>
+                <hr>
+                <li><a href="/404">{{ _('404 Quick button') }}</a></li>
+          {% endif %}
         </ul>
         </ul>
       </div>

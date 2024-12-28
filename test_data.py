@@ -1,5 +1,5 @@
 from app import db, app
-from app.models import User, Post
+from app.models import User, Post, Level
 
 app_context = app.app_context()
 app_context.push()
@@ -8,7 +8,7 @@ db.create_all()
 
 # Mock Admin account
 admin = User(username='admin', email='admin@example.com', is_admin=True)
-admin.set_password("112233")
+admin.set_password("a")
 db.session.add(admin)
 
 # Mock users Account
@@ -33,6 +33,14 @@ u8.set_password("8")
 u9.set_password("9")
 u10.set_password("10")
 db.session.add_all([u1, u2, u3, u4, u5, u6, u7, u8, u9, u10])
+db.session.commit()
+
+# Mock levels
+l1 = Level(name='Beginner')
+l2 = Level(name='Intermediate')
+l3 = Level(name='Advanced')
+db.session.add_all([l1, l2, l3])
+db.session.commit()
 
 # Mock posts
 p1 = Post(title='My first post', body='This is the body of my first post', user_id=u1.id)
