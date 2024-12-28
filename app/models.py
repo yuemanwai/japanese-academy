@@ -214,3 +214,35 @@ class Leave_message(db.Model):
 
     def __repr__(self):
         return f"<Leave_message(id={self.id}, name='{self.name}, message='{self.message}')>"
+
+
+
+
+# 呢度新係加
+
+class Instructor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f"<Instructor(id={self.id}, name='{self.name}')>"
+
+class Level(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Level(id={self.id}, name='{self.name}')>"
+
+class Lesson(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(1000))
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=True)
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), nullable=False)
+
+    instructor = db.relationship('Instructor', backref='lessons')
+    level = db.relationship('Level', backref='lessons')
+
+    def __repr__(self):
+        return f"<Lesson(id={self.id}, name='{self.name}')>"
