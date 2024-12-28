@@ -1,7 +1,6 @@
 from app import app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
-# 正式放上cloud前要閂 debug mode
     

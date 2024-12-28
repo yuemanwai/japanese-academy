@@ -1,506 +1,348 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %} AI-Powered Japanese Learning Platform {% endblock %}
+{% extends 'bootstrap/base.html' %}
 
 {% block head %}
 {{super()}}
-<meta charset="UTF-8">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&display=swap" rel="stylesheet">
 <style>
-  /* Base styles */
-  :root {
-    --primary: #ff6b6b;
-    --secondary: #4ecdc4;
-    --dark: #2c3e50;
-    --light: #f7f9fc;
-  }
-
   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Comic Neue', cursive;
   }
 
-  body {
-    background: var(--light);
-    color: var(--dark);
+  .icon-link::before {
+    font-size: 18px;
   }
 
-  /* Common styles */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+  .no-bullets {
+    list-style-type: none;
   }
 
-  /* Navigation styles */
-  .nav-container {
-    background: var(--dark);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .sidebar {
+    padding-top: 50px;
   }
 
-  .nav-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
+  .sidebar>div {
+    text-align: left;
   }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
+  .sidebar hr {
+    margin-left: auto;
+    margin-right: auto;
+    margin: 10px 0;
   }
 
-  .logo:hover {
-    color: var(--primary);
+  .content {
+    padding-bottom: 50px;
   }
 
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a.active {
-    background: var(--primary);
-  }
-
-  .subnav {
-    position: relative;
-  }
-
-  .subnav-content {
-    display: none;
-    position: absolute;
-    top: 100%;
+  .footer {
+    position: fixed;
     left: 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
-    padding: 1rem 0;
-  }
-
-  .subnav:hover .subnav-content {
-    display: block;
-  }
-
-  .subnav-content a {
-    color: var(--dark);
-    padding: 0.5rem 1rem;
-    display: block;
-  }
-
-  .subnav-content a:hover {
-    background: var(--light);
-    color: var(--primary);
-  }
-
-  /* Main content styles */
-  .lesson-container {
-    padding: 2rem;
-    background: white;
-    border-radius: 15px;
-    margin: 2rem auto;
-    max-width: 1000px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .lesson-header {
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
     text-align: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--light);
+    font-size: 12px;
   }
 
-  .lesson-content {
-    padding: 2rem;
-  }
-
-  .practice-section {
-    margin: 2rem 0;
-    padding: 2rem;
-    background: var(--light);
-    border-radius: 8px;
-  }
-
-  /* Button styles */
-  .btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn:hover {
-    background: var(--secondary);
-    transform: translateY(-2px);
-  }
-
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .nav-links {
+  @media (max-width: 991.98px) {
+    .hide-on-small-screen {
       display: none;
     }
-
-    .mobile-menu {
-      display: block;
-    }
+  }
+  
+{# New navbar style #}
+  .navbar {
+    background-color: #0e3146;
+    padding-left: 200px;
+    padding-right: 200px;
   }
 
-  /* Language Selector Styles */
-.language-selector {
-  position: relative;
-  margin-left: 1rem;
-}
-
-.language-btn {
-  background: transparent;
-  border: 1px solid var(--secondary);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.language-btn:hover {
-  background: var(--secondary);
-}
-
-.language-btn i {
-  font-size: 1.2rem;
-}
-
-.language-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  min-width: 150px;
-  margin-top: 0.5rem;
-  display: none;
-  z-index: 1000;
-}
-
-.language-dropdown.show {
-  display: block;
-  animation: fadeIn 0.3s ease;
-}
-
-.language-option {
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.language-option:hover {
-  background: var(--light);
-  color: var(--primary);
-}
-
-.language-option img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  .navbar-nav .nav-link {
+    color: white !important;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 10px;
+    transition: background-color 0.3s;
+    text-decoration: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
+  .navbar-nav .nav-link:hover {
+    background-color: #ff6b6b;
+    text-decoration: none;
+  }
+
+  .navbar-nav .nav-link:visited {
+    color: white !important;
+  }
+
+  .navbar-brand,
+  .navbar-toggler-icon {
+    color: white !important;
+  }
+
+  .navbar-nav .nav-item {
+    margin-top: 8px;
+    margin-right: 10px;
+  }
+
+  .navbar-nav .nav-item.login .nav-link {
+    background-color: #ff6b6b;
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+{% endblock head %}
 
-{% endblock %}
+{% block title %} {{_('AI-Powered Japanese Learning Platform') }} {% endblock title %}
 
 {% block navbar %}
-<!-- Navigation Bar -->
-<nav class="nav-container">
-  <div class="nav-content">
-    <a href="/" class="logo">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-      </svg>
-      日本語学習
-    </a>
+<div class="container-fluid">
+  <nav class="navbar navbar-dark navbar-fullwidth" style="padding: 0 30px; background-color: #2c3e50;">
+    {# Fixed Elements #}
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <i class="fa-solid fa-cube" style="font-size: 20px;"></i>
+        <span style="font-weight: bold;">{{ site_name}}</span>
+        {#
+        <img src="{{ url_for('static', filename='image/Logo.png') }}" alt="Wikipedia" height="55px"
+          style="margin-top: -20px;"> #}
 
-    <div class="nav-links">
-      <a href="{{ url_for('index') }}">Home</a>
-      <div class="subnav">
-        <a href="{{ url_for('get_lessonslist') }}">Lessons</a>
-        <div class="subnav-content">
-        {% for i in range(1, lesson_count) %}
-            <a href="{{ url_for('get_lesson', lesson_id=i) }}">Lesson {{ i }}</a>
-        {% endfor %}
+      </a>
+    </div>
+
+    {# 拆疊區域 左方 #}
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li>
+          <form class="d-flex" action="{{ url_for('search') }}" role="search"
+            style="display: inline-flex;width: 350px;padding: 8px 0px;">
+            <span class="icon">
+              {# <i class="fa-solid fa-magnifying-glass" style="font-size: 20px;margin-top:8px;color: gray;"></i> #}
+            </span>
+            <input class="form-control me-2" type="search" placeholder="{{ _('Search',) }}" aria-label="Search"
+              name="keyword">
+            {# <button class="btn btn-outline-success" type="submit">{{_('Search') }}</button> #}
+          </form>
+        </li>
+      </ul>
+
+      {# 拆疊區域 右方 #}
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_anonymous %}
+        <div style="display: flex; margin-top: 8px; align-items: center;">
+                    <li class="nav-item active">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('lessons') }}">Lessons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('practice') }}">Practice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('community') }}">Community</a>
+                    </li>
+                    <li class="nav-item login">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    <li class="nav-item login">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+
+          <div class="dropdown" style="display: inline-block;display: none;">
+            <button class="dropdown-toggle btn btn-link" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#">
+                  {{ _('Pages for logged out editors <br />(learn more)') }}</a></li>
+              <li><a class="dropdown-item" href="#">
+                  {{ _('Contributions') }}</a></li>
+              <li><a class="dropdown-item" href="#">
+                  {{ _('Talk') }}</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <a href="/practice">Practice</a>
-      <a href="/dictionary">Dictionary</a>
-      <a href="/community">Community</a>
-      <a href="/login" class="btn" onclick="openLoginModal()">login</a>
-      <!-- Language Selector -->
-<div class="language-selector">
-  <button class="language-btn" onclick="toggleLanguageDropdown()">
-    <i class="fas fa-globe"></i>
-    <span id="current-language">English</span>
-    <i class="fas fa-chevron-down"></i>
-  </button>
-  <div class="language-dropdown" id="language-dropdown">
-    <div class="language-option" onclick="changeLanguage('en')">
-      <img src="https://flagcdn.com/w20/us.png" alt="English">
-      English
-    </div>
-    <div class="language-option" onclick="changeLanguage('ja')">
-      <img src="https://flagcdn.com/w20/jp.png" alt="Japanese">
-      日本語
-    </div>
-    <div class="language-option" onclick="changeLanguage('zh')">
-      <img src="https://flagcdn.com/w20/cn.png" alt="Chinese">
-      中文
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-</nav>
 
-{% endblock %}
+
+
+        {% else %}
+
+        <li>
+          <a href="{{ url_for('user', username=current_user.username) }}">{{ _(current_user.username.capitalize())
+            }}</a>
+        </li>
+        <li>
+          <a href="{{ url_for('index') }}">
+            <i class="fa-solid fa-bell" style="font-size: 20px; "></i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('index') }}">
+            <i class="fa-solid fa-inbox" style="font-size: 20px; "></i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('watchlist', username=current_user.username) }}">
+            <i class="fa-regular fa-star" style="font-size: 20px; "></i>
+          </a>
+        </li>
+        <li>
+          <div class="dropdown" style="margin-top: 12px;">
+            <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" href="#"> <i class="fa-regular fa-comments" style="font-size: 20px; "></i>
+                  {{ _('Talk') }}</a></li>
+              <li><a class="dropdown-item" href="#"> <i class="fa-regular fa-pen-to-square"
+                    style="font-size: 20px; "></i>
+                  {{ _('Sandbox') }}</a></li>
+              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-gear" style="font-size: 20px; "></i>
+                  {{ _('Preferences') }}</a></li>
+              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-flask" style="font-size: 20px; "></i>
+                  {{ _('Beta') }}</a></li>
+              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-users-between-lines"
+                    style="font-size: 20px; "></i>
+                  {{ _('Contributions') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('logout') }}"> <i class="fa-solid fa-right-from-bracket"
+                    style="font-size: 20px; "></i>
+                  {{ _('Log out') }}</a></li>
+            </ul>
+          </div>
+        </li>
+
+
+        {% endif %}
+      </ul>
+    </div>
+</div>
+</nav>
+{% endblock navbar %}
 
 {% block content %}
-<div class="container">
-  {% block app_content %} 內容未有 {% endblock %}
+<div class="content container-fluid">
+  <div class="row">
+    <div class="sidebar col-md-2 hide-on-small-screen">
+      <div>
+        <!-- 左邊sidebar -->
+        <ul class="no-bullets">
+          <li><b>{{_('Main menu')}}</b></li>
+          <hr>
+          <li><a href="{{ url_for('index') }}">{{ _('Main page') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('Contents') }}</a></li>
+          <li><a href="{{ url_for('c_event') }}">{{ _('Current events') }}</a></li>
+          <li><a href="{{ url_for('get_random_article') }}">{{ _('Random article') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('About Wikipedia') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('Contact us') }}</a></li>
+          <li><a href="{{ url_for('donate') }}">{{ _('Donate') }}</a></li>
+          <br>
+          <li>{{_('Other')}}</li>
+          <hr>
+          <li><a href="/404">{{ _('404 Quick button') }}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="content">
+        <!-- 中間內容 -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info" role="alert">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% if title and title != "Main_Page" %}
+        <h2>{{ title }}</h2>
+        {% else %}
+        <br />
+        {% endif %}
+        {% block app_content %} {% endblock app_content %}
+      </div>
+    </div>
+
+    <div class="col-md-2 hide-on-small-screen">
+      <!-- 右邊sidebar -->
+      <div class="sidebar">
+        <ul class="no-bullets">
+          <li><b>{{_('Tools')}}</b></li>
+          <hr>
+          <li>{{_('General')}}</li>
+          <hr>
+          <li><a href="{{ url_for('index') }}">{{ _('What links here') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Related changes') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Special pages') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Permanent link') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Page information') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Get shortened URL') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Download QR code') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Wikidata item') }}</a></li>
+          <br>
+          <li>{{_('Print/export')}}</li>
+          <hr>
+          <li><a href="#" onclick="generatePDF(); return false;">{{ _('Download as PDF') }}</a></li>
+          <li><a href="#" onclick="window.print(); return false;">{{ _('Printable version') }}</a></li>
+          <br>
+          <li>{{_('In other projects')}}</li>
+          <hr>
+          <li><a href="{{ url_for('shared') }}">{{ _('Wikimedia Commons') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Wikimedia Foundation') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('MediaWiki') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Meta-Wiki') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Wikimedia Outreach') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Multilingual Wikisource') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Wikispecies') }}</a></li>
+        </ul>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock %}
+{% block footer %}
+<footer class="text-center mt-4">
+  <p>&copy; 2024/26 Final Year Project</p>
+</footer>
+{% endblock footer %}
+{% endblock content %}
+
+
 {% block scripts %}
-{{super()}}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang(g.locale) }}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
+{# for download as pdf #}
+{# 內容係code =.=" 再諗諗先 #}
+{#
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 <script>
-  // Navigation handling
-  function showLesson(lessonId) {
-    // Hide all lessons
-    document.querySelectorAll('.lesson-container').forEach(container => {
-      container.style.display = 'none';
-    });
-
-    // Show selected lesson
-    document.getElementById(lessonId).style.display = 'block';
+  function generatePDF() {
+    const doc = new jsPDF();
+    doc.text(10, 10, document.documentElement.innerHTML);
+    doc.save('document.pdf');
   }
+</script> #}
 
-  // URL routing
-  function handleRoute() {
-    const path = window.location.pathname;
-    switch (path) {
-      case '/lessons/hiragana-katakana':
-        showLesson('lesson1');
-        break;
-      case '/lessons/handwriting':
-        showLesson('lesson2');
-        break;
-      case '/lessons/grammar':
-        showLesson('lesson3');
-        break;
-      default:
-        // Show home page or redirect
-        break;
-    }
-  }
-
-  // Canvas setup for handwriting
-  const canvas = document.getElementById('handwritingPad');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let isDrawing = false;
-    let lastX = 0;
-    let lastY = 0;
-
-    ctx.strokeStyle = '#000';
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
-    ctx.lineWidth = 8;
-
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-
-    function startDrawing(e) {
-      isDrawing = true;
-      [lastX, lastY] = [e.offsetX, e.offsetY];
-    }
-
-    function draw(e) {
-      if (!isDrawing) return;
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(e.offsetX, e.offsetY);
-      ctx.stroke();
-      [lastX, lastY] = [e.offsetX, e.offsetY];
-    }
-
-    function stopDrawing() {
-      isDrawing = false;
-    }
-
-    function clearCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }
-
-  // Text-to-speech functionality
-  function playSound(text = 'こんにちは') {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ja-JP';
-    speechSynthesis.speak(utterance);
-  }
-
-  // Animations
-  gsap.from('.nav-container', {
-    y: -50,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out'
-  });
-
-  gsap.from('.lesson-container', {
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    ease: 'power2.out'
-  });
-
-  // Initialize
-  window.addEventListener('load', () => {
-    handleRoute();
-  });
-
-  window.addEventListener('popstate', handleRoute);
-
-  // Language Selector Functions
-function toggleLanguageDropdown() {
-  const dropdown = document.getElementById('language-dropdown');
-  dropdown.classList.toggle('show');
-}
-
-function changeLanguage(lang) {
-  const currentLang = document.getElementById('current-language');
-  const dropdown = document.getElementById('language-dropdown');
-  
-  // Update displayed language
-  switch(lang) {
-    case 'en':
-      currentLang.textContent = 'English';
-      break;
-    case 'ja':
-      currentLang.textContent = '日本語';
-      break;
-    case 'zh':
-      currentLang.textContent = '中文';
-      break;
-  }
-  
-  // Close dropdown
-  dropdown.classList.remove('show');
-  
-  // Store language preference
-  localStorage.setItem('preferredLanguage', lang);
-  
-  // Trigger translation (implement your translation logic here)
-  translatePage(lang);
-  
-}
-
-function translatePage(lang) {
-  // Example translation implementation
-  const translations = {
-    'en': {
-      'home': 'Home',
-      'lessons': 'Lessons',
-      'practice': 'Practice',
-      'dictionary': 'Dictionary',
-      'community': 'Community',
-      'login': 'Login'
-    },
-    'ja': {
-      'home': 'ホーム',
-      'lessons': 'レッスン',
-      'practice': '練習',
-      'dictionary': '辞書',
-      'community': 'コミュニティ',
-      'login': 'ログイン'
-    },
-    'zh': {
-      'home': '首页',
-      'lessons': '课程',
-      'practice': '练习',
-      'dictionary': '词典',
-      'community': '社区',
-      'login': '登入'
-    }
-  };
-
-  // Update navigation text
-  const navLinks = document.querySelectorAll('.nav-links a');
-  navLinks.forEach(link => {
-    const key = link.textContent.toLowerCase();
-    if (translations[lang][key]) {
-      link.textContent = translations[lang][key];
-    }
-  });
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-  const dropdown = document.getElementById('language-dropdown');
-  const languageBtn = document.querySelector('.language-btn');
-  
-  if (!dropdown.contains(event.target) && !languageBtn.contains(event.target)) {
-    dropdown.classList.remove('show');
-  }
-});
-
-// Load preferred language on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
-  changeLanguage(preferredLanguage);
-});
-
-</script>
 {% endblock %}
