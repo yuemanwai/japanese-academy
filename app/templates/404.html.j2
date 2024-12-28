@@ -88,6 +88,12 @@ body {
   opacity: 0.1;
 }
 
+.countdown {
+  font-size: 18px;
+  margin-top: 1rem;
+  color: var(--dark);
+}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 {% endblock %}
@@ -95,6 +101,8 @@ body {
 {% block content %}
 
 <div class="error-container">
+  <div class="countdown">Redirecting in <span id="countdown">5</span> seconds...</div>
+  <br/>
   <div class="error-code">404</div>
   <div class="japanese-error">ページが見つかりません</div>
   <div class="error-message">Oops! Looks like this page got lost in translation!</div>
@@ -119,10 +127,6 @@ body {
     Return Home
   </a>
 </div>
-
-<p>
-    <a href="{{ url_for('index') }}">{{ _('Back to Home') }}</a>
-</p>
 
 {% endblock %}
 
@@ -204,6 +208,18 @@ gsap.to('#sadFace', {
   yoyo: true,
   ease: 'power1.inOut'
 });
+
+// Redirect to index after 5 seconds and update countdown
+let countdown = 5;
+const countdownEl = document.getElementById('countdown');
+const countdownInterval = setInterval(() => {
+  countdown--;
+  countdownEl.textContent = countdown;
+  if (countdown === 0) {
+    clearInterval(countdownInterval);
+    window.location.href = "{{ url_for('index') }}";
+  }
+}, 1000);
 
 </script>
 {% endblock %}

@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, CeventForm
-from app.models import User, Post, Image, Donor, Payment, IP, Current_event
+    ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
+from app.models import User, Post, Image, Donor, Payment, IP, Leave_message
 from app.email import send_password_reset_email
 from random import randint
 from werkzeug.utils import secure_filename
@@ -264,7 +264,7 @@ def donate():
         elif form.paypal.data:
             pay_method = 'paypal'
         else:
-            pay_method = 'GPay'
+            pay_method = 'Payme'
         return redirect(url_for('payment', pay_method=pay_method, amount=count_total,option=str(option), donate_form=form))
     return render_template('donate.html.j2', form=form)
 
@@ -302,23 +302,23 @@ def payment_loading(firstname,lastname,donate_on,pay_acc,pay_method,amount):
     return redirect(url_for('index'))
 
 
-@app.route('/c_event', methods=['GET', 'POST'])
-def c_event():
-    Cform=CeventForm()
-    if Cform.validate_on_submit():
-        name =Cform.name.data
-        message =Cform.message.data
-        current_event = Current_event(name=name, message=message)
-        db.session.add(current_event)
+@app.route('/leave_message', methods=['GET', 'POST'])
+def leave_message():
+    LMform=LeaveMessageForm()
+    if LMform.validate_on_submit():
+        name =LMform.name.data
+        message =LMform.message.data
+        leave_msg = Leave_message(name=name, message=message)
+        db.session.add(leave_msg)
         db.session.commit()
-        flash('WikiLove Sent Successfully!')
-        return redirect(url_for('c_event'))
+        flash('Message Sent Successfully!')
+        return redirect(url_for('leave_message'))
     page_num = request.args.get('page', 1, type=int)
-    events = Current_event.query.paginate(
+    events = Leave_message.query.paginate(
         page=page_num, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
-    next_url = url_for('c_event', page=page_num + 1) if events.has_next else None
-    prev_url = url_for('c_event', page=page_num - 1) if events.has_prev else None
-    return render_template('c_event.html.j2',title=_('WikiLove Sent'), form=Cform, events=events.items, next_url=next_url, prev_url=prev_url)
+    next_url = url_for('leave_message', page=page_num + 1) if events.has_next else None
+    prev_url = url_for('leave_message', page=page_num - 1) if events.has_prev else None
+    return render_template('leave_message.html.j2',title=_('Leave a Message...'), form=LMform, events=events.items, next_url=next_url, prev_url=prev_url)
 
 
 @app.route('/lessons')

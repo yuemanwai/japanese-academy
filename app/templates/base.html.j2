@@ -98,7 +98,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 {% endblock head %}
 
-{% block title %} {{_('AI-Powered Japanese Learning Platform') }} {% endblock title %}
+{% block title %} {{ site_name }} {% endblock title %}
 
 {% block navbar %}
 <div class="container-fluid">
@@ -248,13 +248,12 @@
         <ul class="no-bullets">
           <li><b>{{_('Main menu')}}</b></li>
           <hr>
-          <li><a href="{{ url_for('index') }}">{{ _('Main page') }}</a></li>
-          <li><a href="{{ url_for('index') }}">{{ _('Contents') }}</a></li>
-          <li><a href="{{ url_for('c_event') }}">{{ _('Current events') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('Home page') }}</a></li>
           <li><a href="{{ url_for('get_random_post') }}">{{ _('Random post') }}</a></li>
-          <li><a href="{{ url_for('index') }}">{{ _('About Wikipedia') }}</a></li>
-          <li><a href="{{ url_for('index') }}">{{ _('Contact us') }}</a></li>
           <li><a href="{{ url_for('donate') }}">{{ _('Donate') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('Contact us') }}</a></li>
+          <li><a href="{{ url_for('leave_message') }}">{{ _('Leave message') }}</a></li>
+          <li><a href="{{ url_for('index') }}">{{ _('About JP Academy') }}</a></li>
           <br>
           <li>{{_('Other')}}</li>
           <hr>
@@ -308,7 +307,7 @@
 </div>
 {% block footer %}
 <footer class="text-center mt-4">
-  <p>&copy; 2024/26 Final Year Project</p>
+  <p>&copy; 2024/26 E02 Final Year Project</p>
 </footer>
 {% endblock footer %}
 {% endblock content %}

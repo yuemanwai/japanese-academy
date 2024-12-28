@@ -69,7 +69,7 @@ class DonationForm(FlaskForm):
     transaction_fee = BooleanField(_l("I'll generously add 4% to cover the transaction fees so you can keep 100% of my donation."))
     card = SubmitField(_l('Donate by credit/debit card'))
     paypal = SubmitField(_l('Paypal'))
-    gpay = SubmitField(_l('GPay'))
+    payme = SubmitField(_l('Payme'))
 
 class PaymentForm(FlaskForm):
     firstname = StringField(_l('First name'), validators=[DataRequired()])
@@ -79,7 +79,7 @@ class PaymentForm(FlaskForm):
     submit = SubmitField(label=_l('Submit'))
 
 
-class CeventForm(FlaskForm):
+class LeaveMessageForm(FlaskForm):
     name=StringField(_l('Guest name'), validators=[DataRequired()])
     message=StringField(_l('Message'), validators=[DataRequired()])
-    submit = SubmitField(_l('Send love'))
+    submit = SubmitField(_l('Send'))
