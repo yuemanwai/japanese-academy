@@ -1,4 +1,67 @@
 {% extends "base.html.j2" %}
+{% block head %}
+{{super()}}
+<style>
+    ol {
+        margin-bottom: 10px;
+    }
+    li {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
 {% block app_content %}
     <h2>Coming Soon...</h2> 
+    <ol>
+        <li>學生進度追蹤 (Student Progress Tracking) - 重要且難度較高
+            <ul>
+                <li>讓學生和教師能夠查看課程進度和成績，幫助學生了解自己的學習狀況，教師也能更好地指導學生。</li>
+            </ul>
+        </li>
+        <li>在線測驗和考試 (Online Quizzes and Exams) - 重要且難度較高
+            <ul>
+                <li>提供在線測驗和考試功能，讓學生可以隨時隨地進行測試，評估自己的學習效果。</li>
+            </ul>
+        </li>
+        <li>討論論壇 (Discussion Forums) - 重要且難度中等
+            <ul>
+                <li>為學生和教師提供一個互動平台，進行課程相關的討論和交流，促進學習社群的建立。</li>
+            </ul>
+        </li>
+        <li>課程評價和反饋 (Course Reviews and Feedback) - 重要且難度較低
+            <ul>
+                <li>讓學生能夠對課程進行評價，並提供反饋以改進課程質量，幫助教師了解學生的需求和意見。</li>
+            </ul>
+        </li>
+        <li>個人化學習計劃 (Personalized Learning Plans) - 重要且難度較高
+            <ul>
+                <li>根據學生的學習需求和目標，提供個性化的學習計劃，幫助學生更有效地達成學習目標。</li>
+            </ul>
+        </li>
+        <li>資源庫 (Resource Library) - 重要且難度較低
+            <ul>
+                <li>提供一個資源庫，包含課程相關的資料、視頻和文章，方便學生查閱和學習。</li>
+            </ul>
+        </li>
+        <li>即時聊天支持 (Live Chat Support) - 重要且難度中等
+            <ul>
+                <li>提供即時聊天功能，讓學生能夠隨時獲得幫助和支持，解決學習中的問題。</li>
+            </ul>
+        </li>
+        <li>證書發放 (Certificate Issuance) - 次重要且難度中等
+            <ul>
+                <li>完成課程後，學生可以獲得電子證書，證明他們的學習成果。</li>
+            </ul>
+        </li>
+        <li>活動日曆 (Event Calendar) - 次重要且難度較低
+            <ul>
+                <li>顯示即將舉行的課程、講座和其他活動的日曆，方便學生安排時間參加。</li>
+            </ul>
+        </li>
+        <li>移動應用 (Mobile App) - 次重要且難度較高
+            <ul>
+                <li>開發一個移動應用，讓學生可以通過手機或平板電腦訪問課程內容，提升學習的便利性。</li>
+            </ul>
+        </li>
+    </ol>
 {% endblock app_content %}

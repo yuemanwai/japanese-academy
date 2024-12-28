@@ -218,7 +218,7 @@ def get_random_post():
         if random_post:
             title = random_post.title
             return redirect(url_for('random', title=title))
-    flash('Article not found')
+    flash('Post not found')
     return redirect(url_for('index'))
 
 
