@@ -114,10 +114,7 @@
       </button>
       <a class="navbar-brand" href="{{ url_for('index') }}">
         <i class="fa-solid fa-cube" style="font-size: 20px;"></i>
-        <span style="font-weight: bold;">{{ site_name}}</span>
-        {#
-        <img src="{{ url_for('static', filename='image/Logo.png') }}" alt="Wikipedia" height="55px"
-          style="margin-top: -20px;"> #}
+        <span style="font-weight: bold;">{{ site_name }}</span>
 
       </a>
     </div>
@@ -251,15 +248,16 @@
           <li><a href="{{ url_for('index') }}">{{ _('Home page') }}</a></li>
           <li><a href="{{ url_for('get_random_post') }}">{{ _('Random post') }}</a></li>
           <li><a href="{{ url_for('donate') }}">{{ _('Donate') }}</a></li>
-          <li><a href="{{ url_for('index') }}">{{ _('Contact us') }}</a></li>
-          <li><a href="{{ url_for('leave_message') }}">{{ _('Leave message') }}</a></li>
           <li><a href="{{ url_for('index') }}">{{ _('About JP Academy') }}</a></li>
           <br>
           <li>{{_('Other')}}</li>
           <hr>
-          <li><a href="/404">{{ _('404 Quick button') }}</a></li>
-          <hr>
           <li><a href="{{ url_for('shared') }}">{{ _('Upcoming Features') }}</a></li>
+          <br>
+          <li><b>{{_('Admin Tools')}}</b></li>
+          <hr>
+          <li><a href="/404">{{ _('404 Quick button') }}</a></li>
+        </ul>
         </ul>
       </div>
     </div>
@@ -282,18 +280,17 @@
       <!-- 右邊sidebar -->
       <div class="sidebar">
         <ul class="no-bullets">
-          <li><b>{{_('Tools')}}</b></li>
+          <li><b>{{_('General')}}</b></li>
+          {#
           <hr>
-          <li>{{_('General')}}</li>
+          <li>{{_('General')}}</li> #}
           <hr>
-          <li><a href="{{ url_for('index') }}">{{ _('What links here') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Related changes') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Special pages') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Permanent link') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Page information') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Get shortened URL') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Download QR code') }}</a></li>
-          <li><a href="{{ url_for('shared') }}">{{ _('Wikidata item') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('User Guide') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Contact Support') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Privacy Policy') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('Terms of Service') }}</a></li>
+          <li><a href="{{ url_for('leave_message') }}">{{ _('Contact Support') }}</a></li>
+          <li><a href="{{ url_for('shared') }}">{{ _('FAQ') }}</a></li>
           <br>
           <li>{{_('Print/export')}}</li>
           <hr>
