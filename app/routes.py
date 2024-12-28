@@ -209,28 +209,28 @@ def watchlist(username):
     return render_template('watchlist.html.j2', title=_('Watchlist'), posts=posts, count=count)
 
 
-@app.route('/random_article')
-def get_random_article():
+@app.route('/random_post')
+def get_random_post():
     count = Post.query.count()
     if count:
         random_id = randint(1, count)
         random_post = Post.query.get(random_id)
         if random_post:
             title = random_post.title
-            return redirect(url_for('wiki', title=title))
+            return redirect(url_for('random', title=title))
     flash('Article not found')
     return redirect(url_for('index'))
 
 
-@app.route('/wiki/<title>')
-def wiki(title):
+@app.route('/random/<title>')
+def random(title):
     post = Post.query.filter_by(title=title).first()
     if post:
         if current_user.is_authenticated:
             following_post = current_user.is_following(post)
-            return render_template('random_article.html.j2', category=_('Article'), title=title, posts=[post], following_post=following_post)
-        return render_template('random_article.html.j2', category=_('Article'), title=title, posts=[post], following_post=False)
-    return render_template('random_article.html.j2', category=_('Article'), title=title, posts=[], following_post=False)
+            return render_template('random_post.html.j2', category=_('Article'), title=title, posts=[post], following_post=following_post)
+        return render_template('random_post.html.j2', category=_('Article'), title=title, posts=[post], following_post=False)
+    return render_template('random_post.html.j2', category=_('Article'), title=title, posts=[], following_post=False)
 
 
 @app.route('/search')

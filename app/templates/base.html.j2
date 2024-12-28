@@ -52,8 +52,11 @@
       display: none;
     }
   }
-  
-{# New navbar style #}
+
+    {
+    # New navbar style #
+  }
+
   .navbar {
     background-color: #0e3146;
     padding-left: 200px;
@@ -88,7 +91,7 @@
     margin-right: 10px;
   }
 
-  .navbar-nav .nav-item.login .nav-link {
+  .navbar-nav .nav-item.keybutton .nav-link {
     background-color: #ff6b6b;
   }
 </style>
@@ -139,29 +142,29 @@
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_anonymous %}
         <div style="display: flex; margin-top: 8px; align-items: center;">
-                    <li class="nav-item active">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('lessons') }}">Lessons</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('practice') }}">Practice</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('community') }}">Community</a>
-                    </li>
-                    <li class="nav-item login">
-                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-                    </li>
-                    <li class="nav-item login">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                    </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('lessons') }}">Lessons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('practice') }}">Practice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('community') }}">Community</a>
+          </li>
+          <li class="nav-item keybutton">
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+          </li>
+          <li class="nav-item keybutton">
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
 
+          {# 暫時dropdown設成display: none #}
           <div class="dropdown" style="display: inline-block;display: none;">
             <button class="dropdown-toggle btn btn-link" type="button" id="dropdownMenuButton" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
@@ -181,56 +184,57 @@
 
 
         {% else %}
-
-        <li>
-          <a href="{{ url_for('user', username=current_user.username) }}">{{ _(current_user.username.capitalize())
-            }}</a>
-        </li>
-        <li>
-          <a href="{{ url_for('index') }}">
-            <i class="fa-solid fa-bell" style="font-size: 20px; "></i>
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('index') }}">
-            <i class="fa-solid fa-inbox" style="font-size: 20px; "></i>
-          </a>
-        </li>
-        <li>
-          <a href="{{ url_for('watchlist', username=current_user.username) }}">
-            <i class="fa-regular fa-star" style="font-size: 20px; "></i>
-          </a>
-        </li>
-        <li>
-          <div class="dropdown" style="margin-top: 12px;">
-            <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="#"> <i class="fa-regular fa-comments" style="font-size: 20px; "></i>
-                  {{ _('Talk') }}</a></li>
-              <li><a class="dropdown-item" href="#"> <i class="fa-regular fa-pen-to-square"
-                    style="font-size: 20px; "></i>
-                  {{ _('Sandbox') }}</a></li>
-              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-gear" style="font-size: 20px; "></i>
-                  {{ _('Preferences') }}</a></li>
-              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-flask" style="font-size: 20px; "></i>
-                  {{ _('Beta') }}</a></li>
-              <li><a class="dropdown-item" href="#"> <i class="fa-solid fa-users-between-lines"
-                    style="font-size: 20px; "></i>
-                  {{ _('Contributions') }}</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('logout') }}"> <i class="fa-solid fa-right-from-bracket"
-                    style="font-size: 20px; "></i>
-                  {{ _('Log out') }}</a></li>
-            </ul>
-          </div>
-        </li>
-
-
-        {% endif %}
-      </ul>
+        <div style="display: flex; margin-top: 8px; align-items: center;">
+                  <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('lessons') }}">Lessons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('practice') }}">Practice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dictionary') }}">Dictionary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('community') }}">Community</a>
+          </li>
+          <li class="nav-item keybutton">
+            <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">{{
+              _(current_user.username.capitalize())}}{{
+              _('\'s profile')}}
+            </a>
+          </li>
+          {# <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">
+              <i class="fa-solid fa-bell" style="font-size: 20px; "></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">
+              <i class="fa-solid fa-inbox" style="font-size: 20px; "></i>
+            </a>
+          </li> #}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('watchlist', username=current_user.username) }}">
+              <i class="fa-regular fa-star" style="font-size: 20px; "></i>
+            </a>
+          </li>
+          <li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">
+              <i class="fa-solid fa-right-from-bracket" style="font-size: 20px; "></i>
+            </a>
+          </li>
+        </div>
     </div>
+    </li>
+
+
+    {% endif %}
+    </ul>
+</div>
 </div>
 </nav>
 {% endblock navbar %}
@@ -247,7 +251,7 @@
           <li><a href="{{ url_for('index') }}">{{ _('Main page') }}</a></li>
           <li><a href="{{ url_for('index') }}">{{ _('Contents') }}</a></li>
           <li><a href="{{ url_for('c_event') }}">{{ _('Current events') }}</a></li>
-          <li><a href="{{ url_for('get_random_article') }}">{{ _('Random article') }}</a></li>
+          <li><a href="{{ url_for('get_random_post') }}">{{ _('Random post') }}</a></li>
           <li><a href="{{ url_for('index') }}">{{ _('About Wikipedia') }}</a></li>
           <li><a href="{{ url_for('index') }}">{{ _('Contact us') }}</a></li>
           <li><a href="{{ url_for('donate') }}">{{ _('Donate') }}</a></li>
@@ -268,11 +272,7 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        {% if title and title != "Main_Page" %}
         <h2>{{ title }}</h2>
-        {% else %}
-        <br />
-        {% endif %}
         {% block app_content %} {% endblock app_content %}
       </div>
     </div>
