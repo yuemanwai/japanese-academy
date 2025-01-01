@@ -203,12 +203,7 @@ class IP(db.Model):
     def __repr__(self):
         return f"<IP(id={self.id}, post_id={self.post_id}, ip='{self.ip}')>"
     
-class Link(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.String(200), index=True, unique=True, nullable=False)
 
-    def __repr__(self):
-        return f"<Link(id={self.id}, link='{self.link}')>"
     
 class Leave_message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -249,3 +244,11 @@ class Lesson(db.Model):
 
     def __repr__(self):
         return f"<Lesson(id={self.id}, name='{self.name}')>"
+
+class Link(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    link = db.Column(db.String(200), index=True, unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Link(id={self.id}, name='{self.name}'), link='{self.link}'>"
