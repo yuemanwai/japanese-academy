@@ -1,60 +1,77 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
 
 # 初始化 WebDriver
 options = webdriver.ChromeOptions()
-options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(options=options)
+# options.add_experimental_option("detach", True)
+options.add_argument('--mute-audio')
+# 移除無界面選項以使用有界面模式
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+# options.add_argument('--remote-debugging-port=9222')  # 添加遠程調試端口
+options.add_argument('--window-size=1920,1080')
+options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
+options.add_argument('--enable-javascript')
+options.binary_location = "/usr/bin/google-chrome"  # 確保 Chrome 瀏覽器的路徑正確
+
+# 設置 ChromeDriver 的路徑
+chrome_driver_path = "./chromedriver-linux64/chromedriver"  # 根據實際情況設置路徑
+service = Service(executable_path=chrome_driver_path)
+driver = webdriver.Chrome(service=service, options=options)
+
+# 設置超時
+# driver.implicitly_wait(50)  # 隱式等待
+# driver.set_script_timeout(50)  # 設置腳本超時
+# driver.set_page_load_timeout(50)  # 設置頁面加載超時
 
 # 打开网页
+print("Opening webpage...")
 driver.get("https://copilot.microsoft.com/chats")
 
 try:
     # 等待并找到输入框
-    input_box = WebDriverWait(driver, 10).until(
+    print("Waiting for input box...")
+    input_box = WebDriverWait(driver, 10).until(  # 增加等待時間到20秒
         EC.presence_of_element_located((By.ID, "userInput"))
     )
+    print("Input box found.")
     input_box.send_keys("Hello, World!"+"(ans within 10 words)")
 
     # 使用 aria-label 定位并点击发送按钮
-    send_button = WebDriverWait(driver, 10).until(
+    print("Waiting for send button...")
+    send_button = WebDriverWait(driver, 10).until(  # 增加等待時間到20秒
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Submit message']"))
     )
-    driver.execute_script("arguments[0].click();", send_button)
-
-    # 等待5秒
-    time.sleep(5)
-
-    # 等待并找到输入框 2
-    input_box = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "userInput"))
-    )
-    input_box.send_keys("apple is red!"+"(ans within 10 words)")
-
-    # 使用 aria-label 定位并点击发送按钮 2
-    send_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Submit message']"))
-    )
+    print("Send button found.")
     driver.execute_script("arguments[0].click();", send_button)
 
     # 等待5秒
     time.sleep(5)
 
     # 等待并找到所有响应元素中的 <p> 标签
-    response_elements = WebDriverWait(driver, 10).until(
+    print("Waiting for response elements...")
+    response_elements = WebDriverWait(driver, 10).until(  # 增加等待時間到50秒
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[id$='-content-0'] p"))
     )
+    print("Response elements found.")
     if response_elements:
         last_response = response_elements[-1]
         print("Last Response Text:", last_response.text)
 
-
 except Exception as e:
     print("An error occurred:", e)
+    print("Error details:", e.__class__.__name__, e)
+    if hasattr(e, 'msg'):
+        print("Error message:", e.msg)
+
 finally:
     # 等代 user 輸入 Enter 关闭 WebDriver
-    input("Press Enter to close the browser...")
+    # input("Press Enter to close the browser...")
     driver.quit()
