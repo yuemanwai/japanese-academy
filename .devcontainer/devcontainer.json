@@ -9,8 +9,8 @@
   "waitFor": "onCreateCommand",
   "postCreateCommand": "",
   "postAttachCommand": {
-    "server": "flask --debug run --host=0.0.0.0",
-    "test_data": "python test_data.py"
+    "test_data": "python test_data.py",
+    "server": "python run.py"
   },
   "portsAttributes": {
     "5000": {
