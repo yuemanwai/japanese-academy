@@ -6,7 +6,7 @@
     "cpus": 2
   },
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "python run.py && python test_data.py",
+  "postAttachCommand": "python test_data.py && flask --debug run --host=0.0.0.0",
   "portsAttributes": {
     "5000": {
       "label": "Flask Apps",
