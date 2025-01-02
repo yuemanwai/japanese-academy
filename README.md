@@ -71,6 +71,35 @@ FYP_AI-powered_Interactive_Japanese_Academy/
 
 ## Commands That Might Help
 
+### How to Install Google Chrome on Linux
+
+Run the following commands:
+
+```bash
+# Download the Google Chrome .deb file
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# Install the .deb file
+sudo apt install ./google-chrome-stable_current_amd64.deb
+
+# If you encounter dependency issues, run the following commands to fix broken packages
+sudo apt update
+sudo apt --fix-broken install
+
+# Manually install missing dependencies if needed
+sudo apt install libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 xdg-utils
+
+# Then try installing Google Chrome again
+sudo apt install ./google-chrome-stable_current_amd64.deb
+```
+### How to Download ChromeDriver
+
+Run the following command to download ChromeDriver:
+
+```bash
+wget https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.204/linux64/chromedriver-linux64.zip
+```
+
 ### How to Create Translations
 
 Run the following commands:
@@ -93,3 +122,5 @@ Run the following command:
 cd app/
 pybabel update -i translations/messages.pot -d translations
 ```
+
+
