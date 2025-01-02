@@ -92,6 +92,7 @@ sudo apt install libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 xdg-utils
 # Then try installing Google Chrome again
 sudo apt install ./google-chrome-stable_current_amd64.deb
 ```
+
 ### How to Download ChromeDriver
 
 Run the following command to download ChromeDriver:
@@ -99,6 +100,22 @@ Run the following command to download ChromeDriver:
 ```bash
 wget https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.204/linux64/chromedriver-linux64.zip
 ```
+
+### How to Check Chrome and ChromeDriver Versions
+
+Run the following commands to check the versions:
+
+```bash
+# Check Chrome version
+google-chrome --version
+
+# Check ChromeDriver version
+./chromedriver-linux64/chromedriver --version
+```
+
+### Additional Resources
+
+- [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
 
 ### How to Create Translations
 

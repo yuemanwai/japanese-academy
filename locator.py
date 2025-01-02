@@ -8,17 +8,16 @@ import os
 
 # 初始化 WebDriver
 options = webdriver.ChromeOptions()
-# options.add_experimental_option("detach", True)
+# 使用無界面模式
 options.add_argument('--mute-audio')
-# 移除無界面選項以使用有界面模式
 options.add_argument('--headless')
 options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-# options.add_argument('--remote-debugging-port=9222')  # 添加遠程調試端口
 options.add_argument('--window-size=1920,1080')
 options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
 options.add_argument('--enable-javascript')
+# options.add_argument('--remote-debugging-port=9222')  # 添加遠程調試端口
 options.binary_location = "/usr/bin/google-chrome"  # 確保 Chrome 瀏覽器的路徑正確
 
 # 設置 ChromeDriver 的路徑
@@ -38,7 +37,7 @@ driver.get("https://copilot.microsoft.com/chats")
 try:
     # 等待并找到输入框
     print("Waiting for input box...")
-    input_box = WebDriverWait(driver, 10).until(  # 增加等待時間到20秒
+    input_box = WebDriverWait(driver, 10).until(  # 增加等待時間到10秒
         EC.presence_of_element_located((By.ID, "userInput"))
     )
     print("Input box found.")
@@ -46,7 +45,7 @@ try:
 
     # 使用 aria-label 定位并点击发送按钮
     print("Waiting for send button...")
-    send_button = WebDriverWait(driver, 10).until(  # 增加等待時間到20秒
+    send_button = WebDriverWait(driver, 10).until(  # 增加等待時間到10秒
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Submit message']"))
     )
     print("Send button found.")
@@ -57,7 +56,7 @@ try:
 
     # 等待并找到所有响应元素中的 <p> 标签
     print("Waiting for response elements...")
-    response_elements = WebDriverWait(driver, 10).until(  # 增加等待時間到50秒
+    response_elements = WebDriverWait(driver, 10).until(  # 增加等待時間到10秒
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[id$='-content-0'] p"))
     )
     print("Response elements found.")
