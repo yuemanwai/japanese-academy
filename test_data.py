@@ -10,6 +10,8 @@ db.create_all()
 admin = User(username='admin', email='admin@example.com', is_admin=True)
 admin.set_password("a")
 db.session.add(admin)
+db.session.commit()
+db.session.close()
 
 # Mock users Account
 u1 = User(username='u1', email='u1@example.com')
@@ -34,6 +36,7 @@ u9.set_password("9")
 u10.set_password("10")
 db.session.add_all([u1, u2, u3, u4, u5, u6, u7, u8, u9, u10])
 db.session.commit()
+db.session.close()
 
 # Mock levels
 l1 = Level(name='Beginner')
@@ -41,6 +44,7 @@ l2 = Level(name='Intermediate')
 l3 = Level(name='Advanced')
 db.session.add_all([l1, l2, l3])
 db.session.commit()
+db.session.close()
 
 # Mock posts
 p1 = Post(title='My first post', body='This is the body of my first post', user_id=u1.id)
@@ -69,6 +73,7 @@ p23 = Post(title='Yoga for beginners', body='Starting your yoga journey.', user_
 
 db.session.add_all([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23])
 db.session.commit()
+db.session.close()
 
 # Mock lessons
 lessons = [
@@ -99,5 +104,7 @@ lessons = [
 
 for lesson in lessons:
     db.session.add(Lesson(name=lesson["name"], level_id=lesson["level_id"], description=lesson["description"]))
-
 db.session.commit()
+db.session.close()
+
+app_context.pop()

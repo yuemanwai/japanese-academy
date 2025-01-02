@@ -2,5 +2,10 @@
     "[jinja-html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
     },
-    "djlint.showInstallError": false
+    "djlint.showInstallError": false,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

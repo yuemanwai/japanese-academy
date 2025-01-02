@@ -1,5 +1,4 @@
 {
-  "workspaceFolder": "/workspace",
   "name": "Python 3 & PostgreSQL",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app", 
@@ -7,11 +6,7 @@
     "cpus": 2
   },
   "waitFor": "onCreateCommand",
-  "postCreateCommand": "",
-  "postAttachCommand": {
-    "test_data": "python test_data.py",
-    "server": "python run.py"
-  },
+  "postAttachCommand": "python run.py && python test_data.py",
   "portsAttributes": {
     "5000": {
       "label": "Flask Apps",
