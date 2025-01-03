@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import os
+import timeit
 
 class CopilotChat:
     def __init__(self, chrome_driver_path, chrome_binary_path="/usr/bin/google-chrome", debug=False, headless=True):
@@ -51,7 +51,7 @@ class CopilotChat:
             # 使用 aria-label 定位并点击发送按钮
             if self.debug:
                 print("Waiting for send button...")
-            send_button = WebDriverWait(self.driver, 10).until(  # 增加等待時間到10秒
+            send_button = WebDriverWait(self.driver, 5).until(  # 增加等待時間到10秒
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='Submit message']"))
             )
             if self.debug:
@@ -98,6 +98,15 @@ class CopilotChat:
             # 关闭 WebDriver
             self.driver.quit()
 
+def test_runtime():
+    chrome_driver_path = "./chromedriver-linux64/chromedriver"
+    copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
+    input_text = "How to install python?"
+    word_limit = 30
+    condition = "answer using only text"
+    runtime = timeit.timeit(lambda: copilot.chat(input_text, word_limit, condition), number=1)
+    print("Runtime:", runtime)
+
 if __name__ == "__main__":
     chrome_driver_path = "./chromedriver-linux64/chromedriver"
     copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
@@ -106,3 +115,4 @@ if __name__ == "__main__":
     condition = "answer using only text"
     response_text = copilot.chat(input_text, word_limit, condition)
     print("Response Text:", response_text)
+    test_runtime()
