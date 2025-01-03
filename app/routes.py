@@ -335,3 +335,7 @@ def dictionary():
 @app.route('/community')
 def community():
     return render_template('community.html.j2')
+
+@app.route('/chat_with_copilot', methods=['GET', 'POST'])
+def chat_with_copilot():
+    return render_template('chat_with_copilot.html.j2')

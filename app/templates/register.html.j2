@@ -1,7 +1,43 @@
-{% extends "base2.html.j2" %}
+{% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <div class="row">
-        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+<div class="register-container">
+    <div class="register-box">
+        <h2><b>{{ title }}</b></h2>
+        {{ wtf.quick_form(form) }}
+        <br />
     </div>
-{% endblock %}
+</div>
+
+<style>
+    .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70vh;
+    }
+
+    .register-box {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        color: white;
+        width: 500px;
+    }
+
+    .register-box h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .register-box a {
+        color: #ff6b6b;
+    }
+
+    .register-box a:hover {
+        color: #ff6b6b;
+        text-decoration: underline;
+    }
+</style>
+{% endblock app_content %}

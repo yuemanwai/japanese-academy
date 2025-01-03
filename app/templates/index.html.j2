@@ -1,21 +1,19 @@
 {% extends "base.html.j2" %}
 {% block styles %}
-    {{ super() }}
-    <style>
-        .custom-container {
-            background-color: rgb(255, 255, 255);
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
+{{ super() }}
+<style>
+    .custom-container {
+        background-color: rgb(255, 255, 255);
+        padding: 10px;
+        text-align: center;
+    }
+</style>
 {% endblock styles %}
 {% block app_content %}
-    <div class="custom-container">
-        <h3>{{ _('Welcome to') }} {{ site_name }}
-    </div>
-        {% if post %}
-            {% for post in posts %}
-                {{ post.body }}
-            {% endfor %}
-        {% endif %}
-{% endblock app_content %}
+<h2 style="text-align: center;">{{ _('Welcome to') }} {{ site_name }}
+    {% if post %}
+    {% for post in posts %}
+    {{ post.body }}
+    {% endfor %}
+    {% endif %}
+    {% endblock app_content %}
