@@ -43,7 +43,7 @@ class CopilotChat:
             )
             if self.debug:
                 print("Input box found.")
-            message = f"{input_text} ({condition}, ans within {word_limit} words)"
+            message = f"(Please MUST answer me no more than {word_limit} words, and {condition}.) {input_text}"
             if self.debug:
                 print("Message to send:", message)
             input_box.send_keys(message)

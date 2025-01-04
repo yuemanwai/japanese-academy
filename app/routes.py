@@ -353,9 +353,9 @@ def chat_with_copilot():
         debug = request.form.get('debug', 'false').lower() == 'true'
         
         # Log values to console for debugging
-        print('Debug:', debug)
-        print('Word Limit:', word_limit)
-        print('Condition:', condition)
+        # print('Debug:', debug)
+        # print('Word Limit:', word_limit)
+        # print('Condition:', condition)
         
         # Update the single ChatSettings record
         chat_settings = ChatSettings.query.first()

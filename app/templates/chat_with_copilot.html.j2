@@ -10,7 +10,7 @@
             {% endif %}
             
             <label for="word-limit">{{ _('Word Limit') }}</label>
-            <input type="number" id="word-limit" name="word-limit" value="{{ chat_settings.word_limit if chat_settings else '50' }}">
+            <input type="number" id="word-limit" name="word-limit" value="{{ chat_settings.word_limit if chat_settings else '50' }}" min="10">
             
             <label for="condition">{{ _('Condition') }}</label>
             <textarea id="condition" name="condition" rows="6">{{ chat_settings.condition if chat_settings else '' }}</textarea>
