@@ -250,3 +250,11 @@ class Link(db.Model):
 
     def __repr__(self):
         return f"<Link(id={self.id}, name='{self.name}'), link='{self.link}'>"
+
+class ChatSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    debug = db.Column(db.Boolean, default=False)
+    headless = db.Column(db.Boolean, default=True)
+    word_limit = db.Column(db.Integer, default=50)
+    condition = db.Column(db.String(255), default="answer using only text and in simple japanese(and explain what you mean in short eng)")
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

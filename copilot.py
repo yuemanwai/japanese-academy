@@ -100,19 +100,13 @@ class CopilotChat:
 
 def test_runtime():
     chrome_driver_path = "./chromedriver-linux64/chromedriver"
-    copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
+    copilot = CopilotChat(chrome_driver_path)
     input_text = "How to install python?"
     word_limit = 30
     condition = "answer using only text"
     runtime = timeit.timeit(lambda: copilot.chat(input_text, word_limit, condition), number=1)
+    print("Response Text:", response_text)
     print("Runtime:", runtime)
 
 if __name__ == "__main__":
-    chrome_driver_path = "./chromedriver-linux64/chromedriver"
-    copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
-    input_text = "How to install python?"
-    word_limit = 30
-    condition = "answer using only text"
-    response_text = copilot.chat(input_text, word_limit, condition)
-    print("Response Text:", response_text)
     test_runtime()

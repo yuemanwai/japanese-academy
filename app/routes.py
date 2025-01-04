@@ -6,7 +6,7 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
-from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level
+from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings
 from app.email import send_password_reset_email
 from random import randint
 from werkzeug.utils import secure_filename
@@ -340,11 +340,48 @@ def community():
 @app.route('/chat_with_copilot', methods=['GET', 'POST'])
 def chat_with_copilot():
     if request.method == 'POST':
-        input_text = request.form['message']
-        word_limit = 50
-        condition = "answer using only text and in simple japanese(and explain what you mean in short eng)"
-        chrome_driver_path = "./chromedriver-linux64/chromedriver"
-        copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
-        response_text = copilot.chat(input_text, word_limit, condition)
-        return jsonify({'response': response_text})
-    return render_template('chat_with_copilot.html.j2')
+        word_limit = request.form.get('word-limit')
+        if word_limit:
+            try:
+                word_limit = int(word_limit)
+            except ValueError:
+                word_limit = 50  # 預設值
+        else:
+            word_limit = 50  # 預設值
+        
+        condition = request.form.get('condition')
+        debug = request.form.get('debug', 'false').lower() == 'true'
+        
+        # Log values to console for debugging
+        print('Debug:', debug)
+        print('Word Limit:', word_limit)
+        print('Condition:', condition)
+        
+        # Update the single ChatSettings record
+        chat_settings = ChatSettings.query.first()
+        if chat_settings is None:
+            chat_settings = ChatSettings(debug=debug, headless=True, word_limit=word_limit, condition=condition)
+            db.session.add(chat_settings)
+        else:
+            chat_settings.debug = debug
+            chat_settings.headless = True
+            chat_settings.word_limit = word_limit
+            chat_settings.condition = condition
+            chat_settings.timestamp = datetime.utcnow()
+        db.session.commit()
+        
+        if 'message' in request.form:
+            input_text = request.form.get('message')
+            chrome_driver_path = "./chromedriver-linux64/chromedriver"
+            copilot = CopilotChat(chrome_driver_path, debug=debug, headless=True)
+            response_text = copilot.chat(input_text, word_limit, condition)
+            if response_text is None:
+                response_text = _('An error occurred while processing your request. Please try again later.')
+            return jsonify({'response': response_text})
+        else:
+            flash(_('Settings updated successfully.'))
+            return redirect(url_for('chat_with_copilot'))
+    
+    # Get the latest settings
+    chat_settings = ChatSettings.query.first()
+    return render_template('chat_with_copilot.html.j2', chat_settings=chat_settings)

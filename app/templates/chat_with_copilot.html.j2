@@ -2,13 +2,31 @@
 
 {% block app_content %}
 <div id="chat-container">
-    <div id="chat-box">
-        <!-- Chat messages will be displayed here -->
+    <div id="control-panel">
+        <form id="control-form" method="post" action="{{ url_for('chat_with_copilot') }}">
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <label for="debug">{{ _('Debug') }}</label>
+            <input type="checkbox" id="debug" name="debug" {% if chat_settings and chat_settings.debug %}checked{% endif %}>
+            {% endif %}
+            
+            <label for="word-limit">{{ _('Word Limit') }}</label>
+            <input type="number" id="word-limit" name="word-limit" value="{{ chat_settings.word_limit if chat_settings else '50' }}">
+            
+            <label for="condition">{{ _('Condition') }}</label>
+            <textarea id="condition" name="condition" rows="6">{{ chat_settings.condition if chat_settings else '' }}</textarea>
+            
+            <button type="submit">{{ _('Apply') }}</button>
+        </form>
     </div>
-    <form id="chat-form">
-        <input type="text" id="user-input" placeholder="{{ _('Type your message here...') }}" required>
-        <button type="submit">{{ _('Send') }}</button>
-    </form>
+    <div id="chat-box-container">
+        <div id="chat-box">
+            <!-- Chat messages will be displayed here -->
+        </div>
+        <form id="chat-form" method="post">
+            <input type="text" id="user-input" name="message" placeholder="{{ _('Type your message here...') }}" required>
+            <button type="submit">{{ _('Send') }}</button>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -17,6 +35,17 @@
         const userInput = document.getElementById('user-input').value;
         const chatBox = document.getElementById('chat-box');
         
+        // Get control panel values
+        const debug = document.getElementById('debug') ? document.getElementById('debug').checked : false;
+        const wordLimit = document.getElementById('word-limit').value;
+        const condition = document.getElementById('condition').value;
+
+        // Log values to console for debugging
+        console.log('Debug:', debug);
+        console.log('Word Limit:', wordLimit);
+        console.log('Condition:', condition);
+        console.log('Message:', userInput);
+
         // Display user message
         const userMessage = document.createElement('div');
         userMessage.className = 'user-message';
@@ -48,7 +77,11 @@
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                'message': userInput
+                'message': userInput,
+                'debug': debug,
+                'headless': true,
+                'word_limit': wordLimit,
+                'condition': condition
             })
         })
         .then(response => response.json())
@@ -60,7 +93,11 @@
             // Display Copilot response
             const copilotMessage = document.createElement('div');
             copilotMessage.className = 'copilot-message';
-            copilotMessage.innerHTML = `<span class="message-text">${data.response}</span>`;
+            if (data.response) {
+                copilotMessage.innerHTML = `<span class="message-text">${data.response}</span>`;
+            } else {
+                copilotMessage.innerHTML = `<span class="message-text">{{ _('An error occurred while processing your request. Please try again later.') }}</span>`;
+            }
             chatBox.appendChild(copilotMessage);
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
         });
@@ -69,14 +106,45 @@
 
 <style>
     #chat-container {
+        display: flex;
         width: 100%;
         max-width: 1000px;
         max-height: 1000px;
+        height: 550px;
         margin: 0 auto;
         background-color: #333;
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    #control-panel {
+        width: 30%;
+        margin-right: 20px;
+    }
+    #control-form {
+        display: flex;
+        flex-direction: column;
+    }
+    #control-form label {
+        margin-top: 10px;
+    }
+    #control-form input, #control-form textarea, #control-form button {
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        background-color: #222;
+        color: white;
+    }
+    #control-form button {
+        background-color: #007bff;
+        cursor: pointer;
+    }
+    #control-form button:hover {
+        background-color: #0056b3;
+    }
+    #chat-box-container {
+        width: 70%;
     }
     #chat-box {
         border: 1px solid #444;

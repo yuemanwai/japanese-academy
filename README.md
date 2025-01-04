@@ -113,6 +113,27 @@ google-chrome --version
 ./chromedriver-linux64/chromedriver --version
 ```
 
+### How to Use Flask-Migrate
+
+Run the following commands to manage database migrations:
+
+```bash
+# Initialize the migration repository
+flask db init
+
+# Generate an initial migration
+flask db migrate -m "Initial migration."
+
+# Apply the migration to the database
+flask db upgrade
+
+# Generate a new migration after making changes to the models
+flask db migrate -m "Description of changes."
+
+# Apply the new migration to the database
+flask db upgrade
+```
+
 ### Additional Resources
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)

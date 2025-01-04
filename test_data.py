@@ -1,5 +1,5 @@
 from app import db, app
-from app.models import User, Post, Level, Lesson
+from app.models import User, Post, Level, Lesson, ChatSettings
 
 app_context = app.app_context()
 app_context.push()
@@ -100,6 +100,16 @@ lessons = [
 
 for lesson in lessons:
     db.session.add(Lesson(name=lesson["name"], level_id=lesson["level_id"], description=lesson["description"]))
+db.session.commit()
+
+# Mock chat settings
+chat_settings = ChatSettings(
+    debug=False,
+    headless=True,
+    word_limit=100,
+    condition="answer using only text and in simple japanese(and explain what you mean in short eng)"
+)
+db.session.add(chat_settings)
 db.session.commit()
 
 app_context.pop()
