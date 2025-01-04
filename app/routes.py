@@ -75,9 +75,9 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(_('Congratulations, you are now a registered user!'))
+        flash(_('Congratulations, you are one of us now!'))
         return redirect(url_for('index'))
-    return render_template('register.html.j2', title=_('Create account'), form=form)
+    return render_template('register.html.j2', title=_('Sign up'), form=form)
 
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
