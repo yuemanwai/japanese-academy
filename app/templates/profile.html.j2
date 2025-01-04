@@ -14,27 +14,19 @@
 <div class="container-fluid">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#profile"> {{ _('Profile') }}</a></li>
-    <li><a data-toggle="tab" href="#userpage">{{ _('User page') }}</a></li>
+    <li><a data-toggle="tab" href="#edit">{{ _('Edit') }}</a></li>
   </ul>
   <div class="tab-content">
     <div id="profile" class="tab-pane fade in active">
       <br />
       <i class="fa-solid fa-envelope" style="font-size: 20px; "></i>
-      {{_('Email: ')}} <b>{{user.email}}</b> (<a href="#">{{_('confirm')}}</a>)
+      {{_('Email: ')}} <b>{{user.email}}</b>
     </div>
     {% if image_path %}
-    <img src="{{ image_path }}" alt="" height="55px"/>
+    <img src="{{ image_path }}" alt="" height="55px" />
     {% endif %}
-    <div id="userpage" class="tab-pane fade">
-        <br />
-      <div class="custom-container">
-        {{_('<b>Wikipedia does not have a user page with this exact title.</b> In general, this page should be created
-        and edited by
-        User:')}} <b>{{user.username}}</b>{{_('.<br />
-        To start a page called User:')}} <b>{{user.username}}</b>{{_(', type in the box below. When you are done, preview the page to check for
-        errors and then publish it.')}}
-      </div><br /><br />
-        <div class="col-md-6">{{ wtf.quick_form(form) }}</div>
+    <div id="edit" class="tab-pane fade">
+      <div class="col-md-6">{{ wtf.quick_form(form) }}</div>
     </div>
   </div>
 </div>
