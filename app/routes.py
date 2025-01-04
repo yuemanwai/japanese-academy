@@ -114,7 +114,7 @@ def reset_password(token):
     return render_template('reset_password.html.j2', form=form)
 
 
-@app.route('/homepage', methods=['GET', 'POST'])
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def user():
     user = User.query.filter_by(username=current_user.username).first_or_404()
@@ -155,7 +155,7 @@ def user():
             form.title.data = post.title
             form.body.data = post.body
     image_path = os.path.join('static', 'image', user.username)+'.jpg'
-    return render_template('homepage.html.j2',  title=_(f'Hello, {current_user.username.capitalize()}!'), form=form, user=user, image_path=image_path)
+    return render_template('profile.html.j2',  title=_(f'Hello, {current_user.username.capitalize()}!'), form=form, user=user, image_path=image_path)
 
 
 @app.route('/edit', methods=['GET', 'POST'])
