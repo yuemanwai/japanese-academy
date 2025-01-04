@@ -82,7 +82,7 @@ class CopilotChat:
             if response_elements:
                 combined_response = ""
                 for response in response_elements:
-                    combined_response += response.text + " "
+                    combined_response += response.text + "<br />"
                     if self.debug:
                         print("Combined Response:", combined_response)
                 return combined_response.strip()

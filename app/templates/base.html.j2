@@ -181,7 +181,7 @@
 
   {% block content %}
   <div class="container-fluid">
-    <div class="col-md-12" style="padding: 30px;">
+    <div class="col-md-12">
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       {% for message in messages %}
@@ -191,7 +191,9 @@
       {% endwith %}
       {% block app_content %} {% endblock app_content %}
       <div style="position: fixed; bottom: 20px; right: 20px;">
-        <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;">
+        <a href="{{ url_for('chat_with_copilot') }}">
+          <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;">
+        </a>
       </div>
     </div>
   </div>

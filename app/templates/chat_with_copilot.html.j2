@@ -1,9 +1,6 @@
 {% extends 'base.html.j2' %}
 
 {% block app_content %}
-<h1>{{ _('Chat with Copilot') }}</h1>
-<p>{{ _('This is the chat page where you can interact with Copilot.') }}</p>
-
 <div id="chat-container">
     <div id="chat-box">
         <!-- Chat messages will be displayed here -->
@@ -23,42 +20,112 @@
         // Display user message
         const userMessage = document.createElement('div');
         userMessage.className = 'user-message';
-        userMessage.textContent = userInput;
+        userMessage.innerHTML = `<span class="message-text">${userInput}</span>`;
         chatBox.appendChild(userMessage);
         
         // Clear input field
         document.getElementById('user-input').value = '';
         
-        // Simulate Copilot response (replace this with actual API call)
-        setTimeout(() => {
+        // Display typing animation
+        const typingAnimation = document.createElement('div');
+        typingAnimation.className = 'typing-animation';
+        typingAnimation.innerHTML = `<span class="message-text">.</span>`;
+        chatBox.appendChild(typingAnimation);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+
+        // Animate typing animation
+        const typingText = typingAnimation.querySelector('.message-text');
+        let dots = 1;
+        const typingInterval = setInterval(() => {
+            dots = (dots % 3) + 1;
+            typingText.textContent = '.'.repeat(dots);
+        }, 500);
+
+        // Send message to server
+        fetch('{{ url_for("chat_with_copilot") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'message': userInput
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove typing animation
+            clearInterval(typingInterval);
+            chatBox.removeChild(typingAnimation);
+
+            // Display Copilot response
             const copilotMessage = document.createElement('div');
             copilotMessage.className = 'copilot-message';
-            copilotMessage.textContent = 'This is a simulated response from Copilot.';
+            copilotMessage.innerHTML = `<span class="message-text">${data.response}</span>`;
             chatBox.appendChild(copilotMessage);
-        }, 1000);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        });
     });
 </script>
 
 <style>
     #chat-container {
         width: 100%;
-        max-width: 600px;
+        max-width: 1000px;
+        max-height: 1000px;
         margin: 0 auto;
+        background-color: #333;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
     #chat-box {
-        border: 1px solid #ccc;
+        border: 1px solid #444;
         padding: 10px;
-        height: 300px;
+        height: 450px;
         overflow-y: scroll;
         margin-bottom: 10px;
+        background-color: #222;
+        border-radius: 10px;
     }
-    .user-message {
-        text-align: right;
-        margin: 5px 0;
+    #chat-box::-webkit-scrollbar {
+        width: 10px;
     }
-    .copilot-message {
-        text-align: left;
-        margin: 5px 0;
+    #chat-box::-webkit-scrollbar-track {
+        background: #333;
+        border-radius: 10px;
+    }
+    #chat-box::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 10px;
+    }
+    #chat-box::-webkit-scrollbar-thumb:hover {
+        background: #777;
+    }
+    .user-message, .copilot-message, .typing-animation {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #222;
+    }
+    .user-message .message-text {
+        background-color: #007bff;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        max-width: 80%;
+    }
+    .copilot-message, .typing-animation {
+        justify-content: flex-start;
+    }
+    .copilot-message .message-text, .typing-animation .message-text {
+        background-color: #28a745;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        max-width: 80%;
     }
     #chat-form {
         display: flex;
@@ -66,16 +133,22 @@
     #user-input {
         flex: 1;
         padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        border: 1px solid #444;
+        border-radius: 10px;
+        background-color: #222;
+        color: white;
     }
     button {
         padding: 10px;
         border: none;
         background-color: #007bff;
         color: white;
-        border-radius: 4px;
+        border-radius: 10px;
         cursor: pointer;
+        margin-left: 10px;
+    }
+    button:hover {
+        background-color: #0056b3;
     }
 </style>
 {% endblock %}

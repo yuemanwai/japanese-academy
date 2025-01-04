@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import render_template, flash, redirect, url_for, request, g, make_response, session
+from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
@@ -14,6 +14,7 @@ import os
 import time
 import random
 import subprocess
+from copilot import CopilotChat
 
 
 @app.before_request
@@ -56,13 +57,13 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('login.html.j2', title=_('Log in'), form=form)
+    return render_template('login.html.j2', title=_('Sign in'), form=form)
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return render_template('logout.html.j2', title=_('Log out'))
+    return render_template('logout.html.j2', title=_('Sign out'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -338,4 +339,12 @@ def community():
 
 @app.route('/chat_with_copilot', methods=['GET', 'POST'])
 def chat_with_copilot():
+    if request.method == 'POST':
+        input_text = request.form['message']
+        word_limit = 50
+        condition = "answer using only text and in simple japanese(and explain what you mean in short eng)"
+        chrome_driver_path = "./chromedriver-linux64/chromedriver"
+        copilot = CopilotChat(chrome_driver_path, debug=False, headless=True)
+        response_text = copilot.chat(input_text, word_limit, condition)
+        return jsonify({'response': response_text})
     return render_template('chat_with_copilot.html.j2')
