@@ -5,16 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=FZShuTi:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Microsoft+JhengHei:wght@300&display=swap" rel="stylesheet">
 <style>
   * {
-    font-family: 'FZShuTi', sans-serif;
+    font-family: "FZShuTi", "Noto Sans";
     font-size: 19px;
     color: whitesmoke;
   }
 
   body {
     background-color: black;
+  }
+
+  body:lang(en) {
+    font-family: "Noto Sans", "Noto Sans";
+  }
+
+  body:lang(zh) {
+    font-family: "微軟正黑體 Light", "Noto Sans";
+  }
+
+  body:lang(ja) {
+    font-family: "微軟正黑體 Light", "Noto Sans";
   }
 
   .navbar-brand {
