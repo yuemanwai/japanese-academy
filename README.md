@@ -140,7 +140,7 @@ flask db upgrade
 
 ### How to Create Translations
 
-Run the following commands:
+Run the following commands to set up and create translations:
 
 ```bash
 cd app/
@@ -154,11 +154,13 @@ pybabel compile -d translations
 
 ### How to Update Translations
 
-Run the following command:
+Run the following commands to update existing translations:
 
 ```bash
 cd app/
+pybabel extract -F babel.cfg -k lazy_gettext -o translations/messages.pot .
 pybabel update -i translations/messages.pot -d translations
+pybabel compile -d translations
 ```
 
 
