@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-10 06:31+0000\n"
+"POT-Creation-Date: 2025-01-10 08:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,127 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: forms.py:12 forms.py:19
+msgid "Username"
+msgstr ""
+
+#: forms.py:13 forms.py:20 forms.py:46
+msgid "Password"
+msgstr ""
+
+#: forms.py:14
+msgid "Keep me logged in (for up to one year)"
+msgstr ""
+
+#: forms.py:15
+msgid "Log in"
+msgstr ""
+
+#: forms.py:22
+msgid "Confirm password"
+msgstr ""
+
+#: forms.py:24
+msgid "Email address (recommended)"
+msgstr ""
+
+#: forms.py:27 routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr ""
+
 #: forms.py:32
 msgid "Please use a different username."
 msgstr ""
 
 #: forms.py:37
 msgid "Please use a different email address."
+msgstr ""
+
+#: forms.py:41
+msgid "Email"
+msgstr ""
+
+#: forms.py:42 forms.py:50
+msgid "Request Password Reset"
+msgstr ""
+
+#: forms.py:48
+msgid "Repeat Password"
+msgstr ""
+
+#: forms.py:55
+msgid "Publish change"
+msgstr ""
+
+#: forms.py:56
+msgid "Cancel"
+msgstr ""
+
+#: forms.py:60
+msgid "Title"
+msgstr ""
+
+#: forms.py:61
+msgid "Body"
+msgstr ""
+
+#: forms.py:62
+msgid "Photo"
+msgstr ""
+
+#: forms.py:63
+msgid "Publish page"
+msgstr ""
+
+#: forms.py:69
+#, python-format
+msgid ""
+"I'll generously add 4% to cover the transaction fees so you can keep 100%"
+" of my donation."
+msgstr ""
+
+#: forms.py:70
+msgid "Donate by credit/debit card"
+msgstr ""
+
+#: forms.py:71
+msgid "Paypal"
+msgstr ""
+
+#: forms.py:72
+msgid "Payme"
+msgstr ""
+
+#: forms.py:75
+msgid "First name"
+msgstr ""
+
+#: forms.py:76
+msgid "Last name"
+msgstr ""
+
+#: forms.py:77
+msgid "Email address"
+msgstr ""
+
+#: forms.py:78
+msgid "Account"
+msgstr ""
+
+#: forms.py:79
+msgid "Submit"
+msgstr ""
+
+#: forms.py:83
+msgid "Guest name"
+msgstr ""
+
+#: forms.py:84
+msgid "Message"
+msgstr ""
+
+#: forms.py:85 templates/chat_with_copilot.html.j2:27
+msgid "Send"
 msgstr ""
 
 #: routes.py:52
@@ -39,10 +154,6 @@ msgstr ""
 
 #: routes.py:79
 msgid "Congratulations, you are one of us now!"
-msgstr ""
-
-#: routes.py:81 templates/base.html.j2:207
-msgid "Sign up"
 msgstr ""
 
 #: routes.py:96
@@ -208,10 +319,6 @@ msgstr ""
 
 #: templates/chat_with_copilot.html.j2:26
 msgid "Type your message here..."
-msgstr ""
-
-#: templates/chat_with_copilot.html.j2:27
-msgid "Send"
 msgstr ""
 
 #: templates/community.html.j2:6

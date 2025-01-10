@@ -1,14 +1,14 @@
 # Chinese translations for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-10 06:31+0000\n"
-"PO-Revision-Date: 2024-03-11 16:29+0000\n"
+"POT-Creation-Date: 2025-01-10 08:57+0000\n"
+"PO-Revision-Date: 2025-01-10 09:36+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
 "Language-Team: zh <LL@li.org>\n"
@@ -18,6 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: forms.py:12 forms.py:19
+msgid "Username"
+msgstr "用戶名"
+
+#: forms.py:13 forms.py:20 forms.py:46
+msgid "Password"
+msgstr "密碼"
+
+#: forms.py:14
+msgid "Keep me logged in (for up to one year)"
+msgstr "保持登錄狀態（最多一年）"
+
+#: forms.py:15
+msgid "Log in"
+msgstr "登入"
+
+#: forms.py:22
+msgid "Confirm password"
+msgstr "確認密碼"
+
+#: forms.py:24
+msgid "Email address (recommended)"
+msgstr "電子郵件地址（推薦）"
+
+#: forms.py:27 routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr "註冊"
+
 #: forms.py:32
 msgid "Please use a different username."
 msgstr "請使用不同的用戶名。"
@@ -25,6 +53,93 @@ msgstr "請使用不同的用戶名。"
 #: forms.py:37
 msgid "Please use a different email address."
 msgstr "請使用不同的電子郵件地址。"
+
+#: forms.py:41
+msgid "Email"
+msgstr "電子郵件"
+
+#: forms.py:42 forms.py:50
+msgid "Request Password Reset"
+msgstr "請求重置密碼"
+
+#: forms.py:48
+msgid "Repeat Password"
+msgstr "重複密碼"
+
+#: forms.py:55
+msgid "Publish change"
+msgstr "發布更改"
+
+#: forms.py:56
+msgid "Cancel"
+msgstr "取消"
+
+#: forms.py:60
+msgid "Title"
+msgstr "標題"
+
+#: forms.py:61
+msgid "Body"
+msgstr "正文"
+
+#: forms.py:62
+msgid "Photo"
+msgstr "照片"
+
+#: forms.py:63
+msgid "Publish page"
+msgstr "發布頁面"
+
+#: forms.py:69
+#, python-format
+msgid ""
+"I'll generously add 4% to cover the transaction fees so you can keep 100%"
+" of my donation."
+msgstr "我將慷慨地增加4％以支付交易費用，這樣您可以保留100％的捐款。"
+
+#: forms.py:70
+msgid "Donate by credit/debit card"
+msgstr "通過信用卡/借記卡捐款"
+
+#: forms.py:71
+msgid "Paypal"
+msgstr "Paypal"
+
+#: forms.py:72
+msgid "Payme"
+msgstr "Payme"
+
+#: forms.py:75
+msgid "First name"
+msgstr "名字"
+
+#: forms.py:76
+msgid "Last name"
+msgstr "姓氏"
+
+#: forms.py:77
+msgid "Email address"
+msgstr "電子郵件地址"
+
+#: forms.py:78
+msgid "Account"
+msgstr "帳戶"
+
+#: forms.py:79
+msgid "Submit"
+msgstr "提交"
+
+#: forms.py:83
+msgid "Guest name"
+msgstr "客人姓名"
+
+#: forms.py:84
+msgid "Message"
+msgstr "信息"
+
+#: forms.py:85 templates/chat_with_copilot.html.j2:27
+msgid "Send"
+msgstr "發送"
 
 #: routes.py:52
 msgid "Invalid username or password"
@@ -40,11 +155,7 @@ msgstr "登出"
 
 #: routes.py:79
 msgid "Congratulations, you are one of us now!"
-msgstr "恭喜，您現在是註冊用戶了！"
-
-#: routes.py:81 templates/base.html.j2:207
-msgid "Sign up"
-msgstr "註冊"
+msgstr "恭喜，您現在是我們的一員了！"
 
 #: routes.py:96
 msgid "Check your email for the instructions to reset your password"
@@ -211,10 +322,6 @@ msgstr "應用"
 msgid "Type your message here..."
 msgstr "在此輸入您的消息..."
 
-#: templates/chat_with_copilot.html.j2:27
-msgid "Send"
-msgstr "發送"
-
 #: templates/community.html.j2:6
 msgid "This is the Community page."
 msgstr "這是社區頁面。"
@@ -258,7 +365,9 @@ msgid ""
 "      knowledge. ”\n"
 "      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
 "Wales, Founder of Wikipedia</span>"
-msgstr "“ 想像一個世界，每個人都能免費獲得所有人類知識的總和。”<br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy Wales，維基百科創始人</span>"
+msgstr ""
+"“ 想像一個世界，每個人都能免費獲得所有人類知識的總和。”<br /> <br /><span style=\"float: right"
+";font-size: 20px;\">— Jimmy Wales，維基百科創始人</span>"
 
 #: templates/donate_payment.html.j2:41
 msgid "Donation amount"
@@ -342,76 +451,4 @@ msgid ""
 "them\n"
 "are shown with solid markers."
 msgstr "頁面（及其討論頁面）。自您上次訪問以來，頁面的更改顯示為實心標記。"
-
-#~ msgid "Your post is now live!"
-#~ msgstr "您的帖子現在已上線！"
-
-#~ msgid "Explore"
-#~ msgstr "探索"
-
-#~ msgid "Register"
-#~ msgstr "註冊"
-
-#~ msgid "Edit Profile"
-#~ msgstr "編輯個人資料"
-
-#~ msgid "User %(username)s not found."
-#~ msgstr "未找到用戶 %(username)s。"
-
-#~ msgid "You cannot follow yourself!"
-#~ msgstr "您不能關注自己！"
-
-#~ msgid "You are following %(username)s!"
-#~ msgstr "您正在關注 %(username)s！"
-
-#~ msgid "You cannot unfollow yourself!"
-#~ msgstr "您不能取消關注自己！"
-
-#~ msgid "You are not following %(username)s."
-#~ msgstr "您沒有關注 %(username)s。"
-
-#~ msgid "Not Found"
-#~ msgstr "未找到"
-
-#~ msgid "%(username)s said %(when)s"
-#~ msgstr "%(username)s 說 %(when)s"
-
-#~ msgid "Login"
-#~ msgstr "登入"
-
-#~ msgid "Logout"
-#~ msgstr "登出"
-
-#~ msgid "Hi, %(username)s!"
-#~ msgstr "你好，%(username)s！"
-
-#~ msgid "Older posts"
-#~ msgstr "較舊的帖子"
-
-#~ msgid "New User?"
-#~ msgstr "新用戶？"
-
-#~ msgid "Click to Register!"
-#~ msgstr "點擊註冊！"
-
-#~ msgid "Click to Reset It"
-#~ msgstr "點擊重置"
-
-#~ msgid "Last seen on"
-#~ msgstr "最後一次在線"
-
-#~ msgid "%(count)d followers"
-#~ msgstr "%(count)d 關注者"
-
-#~ msgid "%(count)d following"
-#~ msgstr "關注了 %(count)d 人"
-
-#~ msgid "Edit your profile"
-#~ msgstr "編輯您的個人資料"
-
-#~ msgid "Follow"
-#~ msgstr "關注"
-
-#~ msgid "Unfollow"
-#~ msgstr "取消關注"
 

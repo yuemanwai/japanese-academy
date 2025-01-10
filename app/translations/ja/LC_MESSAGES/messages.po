@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-10 06:31+0000\n"
-"PO-Revision-Date: 2025-01-10 06:36+0000\n"
+"POT-Creation-Date: 2025-01-10 08:57+0000\n"
+"PO-Revision-Date: 2025-01-10 08:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
@@ -18,6 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: forms.py:12 forms.py:19
+msgid "Username"
+msgstr "ユーザー名"
+
+#: forms.py:13 forms.py:20 forms.py:46
+msgid "Password"
+msgstr "パスワード"
+
+#: forms.py:14
+msgid "Keep me logged in (for up to one year)"
+msgstr "ログイン状態を維持する（最大1年間）"
+
+#: forms.py:15
+msgid "Log in"
+msgstr "サインイン"
+
+#: forms.py:22
+msgid "Confirm password"
+msgstr "パスワードを確認"
+
+#: forms.py:24
+msgid "Email address (recommended)"
+msgstr "メールアドレス（推奨）"
+
+#: forms.py:27 routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr "サインアップ"
+
 #: forms.py:32
 msgid "Please use a different username."
 msgstr "別のユーザー名を使用してください。"
@@ -25,6 +53,93 @@ msgstr "別のユーザー名を使用してください。"
 #: forms.py:37
 msgid "Please use a different email address."
 msgstr "別のメールアドレスを使用してください。"
+
+#: forms.py:41
+msgid "Email"
+msgstr "メール"
+
+#: forms.py:42 forms.py:50
+msgid "Request Password Reset"
+msgstr "パスワードリセットをリクエスト"
+
+#: forms.py:48
+msgid "Repeat Password"
+msgstr "パスワードを再入力"
+
+#: forms.py:55
+msgid "Publish change"
+msgstr "変更を公開"
+
+#: forms.py:56
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: forms.py:60
+msgid "Title"
+msgstr "タイトル"
+
+#: forms.py:61
+msgid "Body"
+msgstr "本文"
+
+#: forms.py:62
+msgid "Photo"
+msgstr "写真"
+
+#: forms.py:63
+msgid "Publish page"
+msgstr "ページを公開"
+
+#: forms.py:69
+#, python-format
+msgid ""
+"I'll generously add 4% to cover the transaction fees so you can keep 100%"
+" of my donation."
+msgstr "取引手数料をカバーするために4％を追加して、寄付の100％を維持できるようにします。"
+
+#: forms.py:70
+msgid "Donate by credit/debit card"
+msgstr "クレジット/デビットカードで寄付"
+
+#: forms.py:71
+msgid "Paypal"
+msgstr "Paypal"
+
+#: forms.py:72
+msgid "Payme"
+msgstr "Payme"
+
+#: forms.py:75
+msgid "First name"
+msgstr "名"
+
+#: forms.py:76
+msgid "Last name"
+msgstr "姓"
+
+#: forms.py:77
+msgid "Email address"
+msgstr "メールアドレス"
+
+#: forms.py:78
+msgid "Account"
+msgstr "アカウント"
+
+#: forms.py:79
+msgid "Submit"
+msgstr "送信"
+
+#: forms.py:83
+msgid "Guest name"
+msgstr "ゲスト名"
+
+#: forms.py:84
+msgid "Message"
+msgstr "メッセージ"
+
+#: forms.py:85 templates/chat_with_copilot.html.j2:27
+msgid "Send"
+msgstr "送信"
 
 #: routes.py:52
 msgid "Invalid username or password"
@@ -41,10 +156,6 @@ msgstr "サインアウト"
 #: routes.py:79
 msgid "Congratulations, you are one of us now!"
 msgstr "おめでとうございます、あなたは今私たちの一員です！"
-
-#: routes.py:81 templates/base.html.j2:207
-msgid "Sign up"
-msgstr "サインアップ"
 
 #: routes.py:96
 msgid "Check your email for the instructions to reset your password"
@@ -211,10 +322,6 @@ msgstr "適用"
 msgid "Type your message here..."
 msgstr "ここにメッセージを入力してください..."
 
-#: templates/chat_with_copilot.html.j2:27
-msgid "Send"
-msgstr "送信"
-
 #: templates/community.html.j2:6
 msgid "This is the Community page."
 msgstr "これはコミュニティページです。"
@@ -258,7 +365,9 @@ msgid ""
 "      knowledge. ”\n"
 "      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
 "Wales, Founder of Wikipedia</span>"
-msgstr "“ 想像してみてください、地球上のすべての人がすべての人類の知識の総和に無料でアクセスできる世界を。”<br /> <br /><span style=\"float: right;font-size: 20px;\">— ジミー・ウェールズ、ウィキペディアの創設者</span>"
+msgstr ""
+"“ 想像してみてください、地球上のすべての人がすべての人類の知識の総和に無料でアクセスできる世界を。”<br /> <br /><span "
+"style=\"float: right;font-size: 20px;\">— ジミー・ウェールズ、ウィキペディアの創設者</span>"
 
 #: templates/donate_payment.html.j2:41
 msgid "Donation amount"

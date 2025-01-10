@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-10 06:31+0000\n"
+"POT-Creation-Date: 2025-01-10 08:57+0000\n"
 "PO-Revision-Date: 2024-03-11 16:29+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,6 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
+#: forms.py:12 forms.py:19
+msgid "Username"
+msgstr "Username"
+
+#: forms.py:13 forms.py:20 forms.py:46
+msgid "Password"
+msgstr "Password"
+
+#: forms.py:14
+msgid "Keep me logged in (for up to one year)"
+msgstr "Keep me logged in (for up to one year)"
+
+#: forms.py:15
+msgid "Log in"
+msgstr "Log in"
+
+#: forms.py:22
+msgid "Confirm password"
+msgstr "Confirm password"
+
+#: forms.py:24
+msgid "Email address (recommended)"
+msgstr "Email address (recommended)"
+
+#: forms.py:27 routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr "Sign up"
+
 #: forms.py:32
 msgid "Please use a different username."
 msgstr "Please use a different username."
@@ -25,6 +53,95 @@ msgstr "Please use a different username."
 #: forms.py:37
 msgid "Please use a different email address."
 msgstr "Please use a different email address."
+
+#: forms.py:41
+msgid "Email"
+msgstr "Email"
+
+#: forms.py:42 forms.py:50
+msgid "Request Password Reset"
+msgstr "Request Password Reset"
+
+#: forms.py:48
+msgid "Repeat Password"
+msgstr "Repeat Password"
+
+#: forms.py:55
+msgid "Publish change"
+msgstr "Publish change"
+
+#: forms.py:56
+msgid "Cancel"
+msgstr "Cancel"
+
+#: forms.py:60
+msgid "Title"
+msgstr "Title"
+
+#: forms.py:61
+msgid "Body"
+msgstr "Body"
+
+#: forms.py:62
+msgid "Photo"
+msgstr "Photo"
+
+#: forms.py:63
+msgid "Publish page"
+msgstr "Publish page"
+
+#: forms.py:69
+#, python-format
+msgid ""
+"I'll generously add 4% to cover the transaction fees so you can keep 100%"
+" of my donation."
+msgstr ""
+"I'll generously add 4% to cover the transaction fees so you can keep 100%"
+" of my donation."
+
+#: forms.py:70
+msgid "Donate by credit/debit card"
+msgstr "Donate by credit/debit card"
+
+#: forms.py:71
+msgid "Paypal"
+msgstr "Paypal"
+
+#: forms.py:72
+msgid "Payme"
+msgstr "Payme"
+
+#: forms.py:75
+msgid "First name"
+msgstr "First name"
+
+#: forms.py:76
+msgid "Last name"
+msgstr "Last name"
+
+#: forms.py:77
+msgid "Email address"
+msgstr "Email address"
+
+#: forms.py:78
+msgid "Account"
+msgstr "Account"
+
+#: forms.py:79
+msgid "Submit"
+msgstr "Submit"
+
+#: forms.py:83
+msgid "Guest name"
+msgstr "Guest name"
+
+#: forms.py:84
+msgid "Message"
+msgstr "Message"
+
+#: forms.py:85 templates/chat_with_copilot.html.j2:27
+msgid "Send"
+msgstr "Send"
 
 #: routes.py:52
 msgid "Invalid username or password"
@@ -41,10 +158,6 @@ msgstr "Sign out"
 #: routes.py:79
 msgid "Congratulations, you are one of us now!"
 msgstr "Congratulations, you are one of us now!"
-
-#: routes.py:81 templates/base.html.j2:207
-msgid "Sign up"
-msgstr "Sign up"
 
 #: routes.py:96
 msgid "Check your email for the instructions to reset your password"
@@ -75,7 +188,9 @@ msgstr "Changes have been canceled."
 msgid ""
 "<%(title)s> and its talk page have been added to your watchlist "
 "permanently."
-msgstr "<%(title)s> and its talk page have been added to your watchlist permanently."
+msgstr ""
+"<%(title)s> and its talk page have been added to your watchlist "
+"permanently."
 
 #: routes.py:200
 #, python-format
@@ -211,10 +326,6 @@ msgstr "Apply"
 msgid "Type your message here..."
 msgstr "Type your message here..."
 
-#: templates/chat_with_copilot.html.j2:27
-msgid "Send"
-msgstr "Send"
-
 #: templates/community.html.j2:6
 msgid "This is the Community page."
 msgstr "This is the Community page."
@@ -245,7 +356,10 @@ msgid ""
 "Japanese learning resources and tools. Every\n"
 "  contribution, no matter how small, makes a big difference in helping us"
 " achieve our mission."
-msgstr "Your generous donations help us to continue providing high-quality Japanese learning resources and tools. Every contribution, no matter how small, makes a big difference in helping us achieve our mission."
+msgstr ""
+"Your generous donations help us to continue providing high-quality "
+"Japanese learning resources and tools. Every contribution, no matter how "
+"small, makes a big difference in helping us achieve our mission."
 
 #: templates/donate_payment.html.j2:28
 msgid "Make your donation now"
@@ -258,7 +372,11 @@ msgid ""
 "      knowledge. ”\n"
 "      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
 "Wales, Founder of Wikipedia</span>"
-msgstr "“ Imagine a world in which every single person on the planet has free access to the sum of all human knowledge. ” <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy Wales, Founder of Wikipedia</span>"
+msgstr ""
+"“ Imagine a world in which every single person on the planet has free "
+"access to the sum of all human knowledge. ” <br /> <br /><span "
+"style=\"float: right;font-size: 20px;\">— Jimmy Wales, Founder of "
+"Wikipedia</span>"
 
 #: templates/donate_payment.html.j2:41
 msgid "Donation amount"
@@ -341,7 +459,9 @@ msgid ""
 " pages (and their talk pages). Changes to pages since you last visited "
 "them\n"
 "are shown with solid markers."
-msgstr " pages (and their talk pages). Changes to pages since you last visited them are shown with solid markers."
+msgstr ""
+" pages (and their talk pages). Changes to pages since you last visited "
+"them are shown with solid markers."
 
 #~ msgid "Your post is now live!"
 #~ msgstr "Your post is now live!"
