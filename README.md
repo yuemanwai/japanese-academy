@@ -163,4 +163,12 @@ pybabel update -i translations/messages.pot -d translations
 pybabel compile -d translations
 ```
 
+#### Important Note
+
+After creating or updating translations, remember to re-run the Flask application to apply the changes:
+
+```bash
+flask --debug run --host=0.0.0.0
+```
+
 
