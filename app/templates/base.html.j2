@@ -20,15 +20,15 @@
   }
 
   body:lang(en) {
-    font-family: "Noto Sans", "Noto Sans";
+    font-family: "FZShuTi", "Noto Sans";
   }
 
   body:lang(zh) {
-    font-family: "微軟正黑體 Light", "Noto Sans";
+    font-family: "FZShuTi", "微軟正黑體 Light", "Noto Sans";
   }
 
   body:lang(ja) {
-    font-family: "微軟正黑體 Light", "Noto Sans";
+    font-family: "FZShuTi", "微軟正黑體 Light", "Noto Sans";
   }
 
   .navbar-brand {
@@ -96,7 +96,11 @@
 
   .alert {
     background-color: black;
-    border: 1px solid whitesmoke;
+    border: 1px solid lightgoldenrodyellow;
+    color: goldenrod;
+    opacity: 1;
+    transition: opacity 5s ease-out;
+    text-align: center;
   }
 
   a {
@@ -241,5 +245,13 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
   <script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
-
+  <script>
+    // Hide flash messages after 5 seconds
+    setTimeout(() => {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => {
+        alert.style.opacity = '0';
+      });
+    }, 5000);
+  </script>
   {% endblock scripts %}

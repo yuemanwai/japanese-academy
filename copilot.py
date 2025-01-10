@@ -67,7 +67,7 @@ class CopilotChat:
             # 等待並找到回應元素
             attempts = 0
             response_elements = []
-            while attempts < 3 and not response_elements:
+            while attempts < 5 and not response_elements:
                 try:
                     response_elements = WebDriverWait(self.driver, 10).until(
                         EC.presence_of_all_elements_located((By.TAG_NAME, "p"))

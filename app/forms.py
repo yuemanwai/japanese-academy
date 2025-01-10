@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm):
     email = StringField(_l('Email address (recommended)'), validators=[DataRequired(), Email()])
     # 要有domain name先用到
     # recaptcha=RecaptchaField(_l('CAPTCHA Security check'))
-    submit = SubmitField(_l('Create your account'))
+    submit = SubmitField(_l('Sign up'))
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
