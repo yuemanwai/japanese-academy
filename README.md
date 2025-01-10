@@ -147,7 +147,7 @@ cd app/
 mkdir translations
 pybabel extract -F babel.cfg -k lazy_gettext -o translations/messages.pot .
 pybabel init -i translations/messages.pot -d translations -l en
-pybabel init -i translations/messages.pot -d translations -l es
+pybabel init -i translations/messages.pot -d translations -l ja
 pybabel init -i translations/messages.pot -d translations -l zh
 pybabel compile -d translations
 ```

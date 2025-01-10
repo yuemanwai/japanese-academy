@@ -1,18 +1,18 @@
-# English translations for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Japanese translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 06:31+0000\n"
-"PO-Revision-Date: 2024-03-11 16:29+0000\n"
+"PO-Revision-Date: 2025-01-10 06:36+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: en\n"
-"Language-Team: en <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ja\n"
+"Language-Team: ja <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,224 +20,224 @@ msgstr ""
 
 #: forms.py:32
 msgid "Please use a different username."
-msgstr "Please use a different username."
+msgstr "別のユーザー名を使用してください。"
 
 #: forms.py:37
 msgid "Please use a different email address."
-msgstr "Please use a different email address."
+msgstr "別のメールアドレスを使用してください。"
 
 #: routes.py:52
 msgid "Invalid username or password"
-msgstr "Invalid username or password"
+msgstr "無効なユーザー名またはパスワード"
 
 #: routes.py:60 templates/base.html.j2:210
 msgid "Sign in"
-msgstr "Sign in"
+msgstr "サインイン"
 
 #: routes.py:66 templates/base.html.j2:226
 msgid "Sign out"
-msgstr "Sign out"
+msgstr "サインアウト"
 
 #: routes.py:79
 msgid "Congratulations, you are one of us now!"
-msgstr "Congratulations, you are one of us now!"
+msgstr "おめでとうございます、あなたは今私たちの一員です！"
 
 #: routes.py:81 templates/base.html.j2:207
 msgid "Sign up"
-msgstr "Sign up"
+msgstr "サインアップ"
 
 #: routes.py:96
 msgid "Check your email for the instructions to reset your password"
-msgstr "Check your email for the instructions to reset your password"
+msgstr "パスワードをリセットするための指示が記載されたメールを確認してください"
 
 #: routes.py:99 templates/reset_password_request.html.j2:4
 msgid "Reset Password"
-msgstr "Reset Password"
+msgstr "パスワードをリセット"
 
 #: routes.py:113
 msgid "Your password has been reset."
-msgstr "Your password has been reset."
+msgstr "パスワードがリセットされました。"
 
 #: routes.py:150
 msgid "Your user page has been saved."
-msgstr "Your user page has been saved."
+msgstr "ユーザーページが保存されました。"
 
 #: routes.py:173
 msgid "Changes have been saved."
-msgstr "Changes have been saved."
+msgstr "変更が保存されました。"
 
 #: routes.py:175
 msgid "Changes have been canceled."
-msgstr "Changes have been canceled."
+msgstr "変更がキャンセルされました。"
 
 #: routes.py:189
 #, python-format
 msgid ""
 "<%(title)s> and its talk page have been added to your watchlist "
 "permanently."
-msgstr "<%(title)s> and its talk page have been added to your watchlist permanently."
+msgstr "<%(title)s>とそのトークページがウォッチリストに永久に追加されました。"
 
 #: routes.py:200
 #, python-format
 msgid "<%(title)s> and its talk page have been removed from your watchlist."
-msgstr "<%(title)s> and its talk page have been removed from your watchlist."
+msgstr "<%(title)s>とそのトークページがウォッチリストから削除されました。"
 
 #: routes.py:210
 msgid "Watchlist"
-msgstr "Watchlist"
+msgstr "ウォッチリスト"
 
 #: routes.py:230 routes.py:231 routes.py:232
 msgid "Article"
-msgstr "Article"
+msgstr "記事"
 
 #: routes.py:247
 msgid "Search results"
-msgstr "Search results"
+msgstr "検索結果"
 
 #: routes.py:320
 msgid "Leave a Message..."
-msgstr "Leave a Message..."
+msgstr "メッセージを残す..."
 
 #: routes.py:379 templates/chat_with_copilot.html.j2:99
 msgid "An error occurred while processing your request. Please try again later."
-msgstr "An error occurred while processing your request. Please try again later."
+msgstr "リクエストの処理中にエラーが発生しました。後でもう一度お試しください。"
 
 #: routes.py:382
 msgid "Settings updated successfully."
-msgstr "Settings updated successfully."
+msgstr "設定が正常に更新されました。"
 
 #: templates/500.html.j2:3
 msgid "An unexpected error has occurred"
-msgstr "An unexpected error has occurred"
+msgstr "予期しないエラーが発生しました"
 
 #: templates/500.html.j2:4
 msgid "The administrator has been notified. Sorry for the inconvenience!"
-msgstr "The administrator has been notified. Sorry for the inconvenience!"
+msgstr "管理者に通知されました。ご不便をおかけして申し訳ありません！"
 
 #: templates/500.html.j2:6
 msgid "Back"
-msgstr "Back"
+msgstr "戻る"
 
 #: templates/base.html.j2:182
 msgid "Search..."
-msgstr "Search..."
+msgstr "検索..."
 
 #: templates/base.html.j2:191
 msgid "Home"
-msgstr "Home"
+msgstr "ホーム"
 
 #: templates/base.html.j2:194 templates/lessons.html.j2:5
 msgid "Lessons"
-msgstr "Lessons"
+msgstr "レッスン"
 
 #: templates/base.html.j2:197 templates/practice.html.j2:5
 msgid "Practice"
-msgstr "Practice"
+msgstr "練習"
 
 #: templates/base.html.j2:200 templates/dictionary.html.j2:5
 msgid "Dictionary"
-msgstr "Dictionary"
+msgstr "辞書"
 
 #: templates/base.html.j2:203 templates/community.html.j2:5
 #: templates/community.html.j2:15
 msgid "Community"
-msgstr "Community"
+msgstr "コミュニティ"
 
 #: templates/base.html.j2:216 templates/profile.html.j2:16
 msgid "Profile"
-msgstr "Profile"
+msgstr "プロフィール"
 
 #: templates/base.html.j2:234
 msgid "Language"
-msgstr "Language"
+msgstr "言語"
 
 #: templates/base.html.j2:278
 msgid "Contact Support"
-msgstr "Contact Support"
+msgstr "サポートに連絡"
 
 #: templates/base.html.j2:279
 msgid "Random post"
-msgstr "Random post"
+msgstr "ランダム投稿"
 
 #: templates/base.html.j2:280 templates/donate.html.j2:8
 msgid "Donate"
-msgstr "Donate"
+msgstr "寄付"
 
 #: templates/base.html.j2:281 templates/chat_with_copilot.html.j2:225
 msgid "Chat with Copilot"
-msgstr "Chat with Copilot"
+msgstr "Copilotとチャット"
 
 #: templates/base.html.j2:283
 msgid "404 Quick button"
-msgstr "404 Quick button"
+msgstr "404クイックボタン"
 
 #: templates/base2.html.j2:18
 msgid "Talk"
-msgstr "Talk"
+msgstr "トーク"
 
 #: templates/base2.html.j2:28
 msgid "Read"
-msgstr "Read"
+msgstr "読む"
 
 #: templates/base2.html.j2:30 templates/profile.html.j2:17
 msgid "Edit"
-msgstr "Edit"
+msgstr "編集"
 
 #: templates/base2.html.j2:32
 msgid "View source"
-msgstr "View source"
+msgstr "ソースを表示"
 
 #: templates/base2.html.j2:34
 msgid "View history"
-msgstr "View history"
+msgstr "履歴を表示"
 
 #: templates/chat_with_copilot.html.j2:8
 msgid "Debug"
-msgstr "Debug"
+msgstr "デバッグ"
 
 #: templates/chat_with_copilot.html.j2:12
 msgid "Word Limit"
-msgstr "Word Limit"
+msgstr "単語制限"
 
 #: templates/chat_with_copilot.html.j2:15
 msgid "Condition"
-msgstr "Condition"
+msgstr "条件"
 
 #: templates/chat_with_copilot.html.j2:18
 msgid "Apply"
-msgstr "Apply"
+msgstr "適用"
 
 #: templates/chat_with_copilot.html.j2:26
 msgid "Type your message here..."
-msgstr "Type your message here..."
+msgstr "ここにメッセージを入力してください..."
 
 #: templates/chat_with_copilot.html.j2:27
 msgid "Send"
-msgstr "Send"
+msgstr "送信"
 
 #: templates/community.html.j2:6
 msgid "This is the Community page."
-msgstr "This is the Community page."
+msgstr "これはコミュニティページです。"
 
 #: templates/community.html.j2:8
 msgid "討論區 (Discussion Forums)"
-msgstr "Discussion Forums"
+msgstr "討論区"
 
 #: templates/community.html.j2:9
 msgid "活動日曆 (Event Calendar)"
-msgstr "Event Calendar"
+msgstr "イベントカレンダー"
 
 #: templates/community.html.j2:10
 msgid "用戶故事 (User Stories)"
-msgstr "User Stories"
+msgstr "ユーザーストーリー"
 
 #: templates/dictionary.html.j2:6
 msgid "This is the Dictionary page."
-msgstr "This is the Dictionary page."
+msgstr "これは辞書ページです。"
 
 #: templates/donate.html.j2:11
 msgid "Support"
-msgstr "Support"
+msgstr "サポート"
 
 #: templates/donate.html.j2:13
 msgid ""
@@ -245,11 +245,11 @@ msgid ""
 "Japanese learning resources and tools. Every\n"
 "  contribution, no matter how small, makes a big difference in helping us"
 " achieve our mission."
-msgstr "Your generous donations help us to continue providing high-quality Japanese learning resources and tools. Every contribution, no matter how small, makes a big difference in helping us achieve our mission."
+msgstr "あなたの寛大な寄付は、私たちが高品質の日本語学習リソースとツールを提供し続けるのを助けます。どんなに小さな貢献でも、私たちの使命を達成するのに大きな違いをもたらします。"
 
 #: templates/donate_payment.html.j2:28
 msgid "Make your donation now"
-msgstr "Make your donation now"
+msgstr "今すぐ寄付する"
 
 #: templates/donate_payment.html.j2:35
 msgid ""
@@ -258,181 +258,88 @@ msgid ""
 "      knowledge. ”\n"
 "      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
 "Wales, Founder of Wikipedia</span>"
-msgstr "“ Imagine a world in which every single person on the planet has free access to the sum of all human knowledge. ” <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy Wales, Founder of Wikipedia</span>"
+msgstr "“ 想像してみてください、地球上のすべての人がすべての人類の知識の総和に無料でアクセスできる世界を。”<br /> <br /><span style=\"float: right;font-size: 20px;\">— ジミー・ウェールズ、ウィキペディアの創設者</span>"
 
 #: templates/donate_payment.html.j2:41
 msgid "Donation amount"
-msgstr "Donation amount"
+msgstr "寄付金額"
 
 #: templates/donate_payment.html.j2:44
 msgid "Billing information"
-msgstr "Billing information"
+msgstr "請求情報"
 
 #: templates/index.html.j2:13
 msgid "Welcome to"
-msgstr "Welcome to"
+msgstr "ようこそ"
 
 #: templates/login.html.j2:10
 msgid "Forgot your password?"
-msgstr "Forgot your password?"
+msgstr "パスワードを忘れましたか？"
 
 #: templates/logout.html.j2:4
 msgid "Return to "
-msgstr "Return to "
+msgstr "戻る"
 
 #: templates/logout.html.j2:4
 msgid "Home Page."
-msgstr "Home Page."
+msgstr "ホームページ。"
 
 #: templates/logout.html.j2:5
 msgid "You will be redirected in "
-msgstr "You will be redirected in "
+msgstr "秒後にリダイレクトされます"
 
 #: templates/logout.html.j2:5
 msgid " seconds."
-msgstr " seconds."
+msgstr "秒後にリダイレクトされます。"
 
 #: templates/practice.html.j2:6
 msgid "This is the Practice page."
-msgstr "This is the Practice page."
+msgstr "これは練習ページです。"
 
 #: templates/profile.html.j2:23
 msgid "Email: "
-msgstr "Email: "
+msgstr "メール："
 
 #: templates/random_post.html.j2:8
 msgid "Posted by"
-msgstr "Posted by"
+msgstr "投稿者"
 
 #: templates/random_post.html.j2:11
 msgid "The post that you're looking for doesn't exist."
-msgstr "The post that you're looking for doesn't exist."
+msgstr "お探しの投稿は存在しません。"
 
 #: templates/reset_password.html.j2:4
 msgid "Reset Your Password"
-msgstr "Reset Your Password"
+msgstr "パスワードをリセット"
 
 #: templates/search.html.j2:7
 msgid "Search"
-msgstr "Search"
+msgstr "検索"
 
 #: templates/search.html.j2:12
 msgid "There is a page named \""
-msgstr "There is a page named \""
+msgstr "「」という名前のページがあります"
 
 #: templates/search.html.j2:12
 msgid "\" on Wikipedia"
-msgstr "\" on Wikipedia"
+msgstr "ウィキペディアに"
 
 #: templates/search.html.j2:28
 msgid "previous posts"
-msgstr "previous posts"
+msgstr "前の投稿"
 
 #: templates/search.html.j2:33
 msgid "Next posts"
-msgstr "Next posts"
+msgstr "次の投稿"
 
 #: templates/watchlist.html.j2:3
 msgid "Your watchlist has "
-msgstr "Your watchlist has "
+msgstr "あなたのウォッチリストには"
 
 #: templates/watchlist.html.j2:3
 msgid ""
 " pages (and their talk pages). Changes to pages since you last visited "
 "them\n"
 "are shown with solid markers."
-msgstr " pages (and their talk pages). Changes to pages since you last visited them are shown with solid markers."
-
-#~ msgid "Your post is now live!"
-#~ msgstr "Your post is now live!"
-
-#~ msgid "Explore"
-#~ msgstr "Explore"
-
-#~ msgid "Sign In"
-#~ msgstr ""
-
-#~ msgid "Congratulations, you are now a registered user!"
-#~ msgstr ""
-
-#~ msgid "Register"
-#~ msgstr "Register"
-
-#~ msgid "Your changes have been saved."
-#~ msgstr ""
-
-#~ msgid "Edit Profile"
-#~ msgstr "Edit Profile"
-
-#~ msgid "User %(username)s not found."
-#~ msgstr "User %(username)s not found."
-
-#~ msgid "You cannot follow yourself!"
-#~ msgstr "You cannot follow yourself!"
-
-#~ msgid "You are following %(username)s!"
-#~ msgstr "You are following %(username)s!"
-
-#~ msgid "You cannot unfollow yourself!"
-#~ msgstr "You cannot unfollow yourself!"
-
-#~ msgid "You are not following %(username)s."
-#~ msgstr "You are not following %(username)s."
-
-#~ msgid "Not Found"
-#~ msgstr "Not Found"
-
-#~ msgid "%(username)s said %(when)s"
-#~ msgstr "%(username)s said %(when)s"
-
-#~ msgid "Welcome to Microblog"
-#~ msgstr ""
-
-#~ msgid "Login"
-#~ msgstr "Login"
-
-#~ msgid "Logout"
-#~ msgstr "Logout"
-
-#~ msgid "Hi, %(username)s!"
-#~ msgstr "Hi, %(username)s!"
-
-#~ msgid "Newer posts"
-#~ msgstr ""
-
-#~ msgid "Older posts"
-#~ msgstr "Older posts"
-
-#~ msgid "New User?"
-#~ msgstr "New User?"
-
-#~ msgid "Click to Register!"
-#~ msgstr "Click to Register!"
-
-#~ msgid "Forgot Your Password?"
-#~ msgstr "Forgot Your Password?"
-
-#~ msgid "Click to Reset It"
-#~ msgstr "Click to Reset It"
-
-#~ msgid "User"
-#~ msgstr ""
-
-#~ msgid "Last seen on"
-#~ msgstr "Last seen on"
-
-#~ msgid "%(count)d followers"
-#~ msgstr "%(count)d followers"
-
-#~ msgid "%(count)d following"
-#~ msgstr "%(count)d following"
-
-#~ msgid "Edit your profile"
-#~ msgstr "Edit your profile"
-
-#~ msgid "Follow"
-#~ msgstr "Follow"
-
-#~ msgid "Unfollow"
-#~ msgstr "Unfollow"
+msgstr "ページ（およびそのトークページ）があります。最後に訪問してからのページの変更は、実線のマーカーで表示されます。"
 

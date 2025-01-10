@@ -73,6 +73,44 @@
     margin-right: 10px;
   }
 
+  .nav-item.dropdown .dropdown-menu {
+    background-color: black;
+    border: 1px solid whitesmoke;
+    margin-top: 20px; /* Add space between the box and the language text */
+  }
+
+  .nav-item.dropdown .dropdown-item {
+    color: whitesmoke;
+    display: block;
+    width: 100%;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+  }
+
+  .nav-item.dropdown .dropdown-item:hover {
+    background-color: black;
+    text-decoration: underline;
+  }
+
+  .nav-item.dropdown .dropdown-item:active {
+    background-color: black;
+    color: whitesmoke;
+  }
+
+  .nav-item.dropdown .dropdown-toggle {
+    background-color: black;
+    border: 1px solid black;
+  }
+
+  .nav-item.dropdown .dropdown-toggle:focus {
+    background-color: black;
+    border: 1px solid black;
+    color: whitesmoke;
+  }
+
   #submit {
     font-size: 18px;
     font-weight: bold;
@@ -171,9 +209,8 @@
           <li class="nav-item {% if request.endpoint == 'login' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
           </li>
-
           {% else %}
-
+          
           <li class="nav-item {% if request.endpoint == 'user' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">
               {{_('Profile')}}
@@ -190,8 +227,27 @@
             </a>
           </li>
         </div>
-
+        
         {% endif %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-earth-americas"></i> {{ _('Language') }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="languageDropdown">
+            <form id="language-form-en" method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="en">
+              <button type="submit" class="dropdown-item">English</button>
+            </form>
+            <form id="language-form-zh" method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="zh">
+              <button type="submit" class="dropdown-item">中文</button>
+            </form>
+            <form id="language-form-ja" method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="ja">
+              <button type="submit" class="dropdown-item">日本語</button>
+            </form>
+          </div>
+        </li>
 
       </ul>
   </nav>

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
-from flask_babel import _, get_locale
+from flask_babel import _, get_locale, refresh
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
@@ -385,3 +385,11 @@ def chat_with_copilot():
     # Get the latest settings
     chat_settings = ChatSettings.query.first()
     return render_template('chat_with_copilot.html.j2', chat_settings=chat_settings)
+
+@app.route('/set_language', methods=['POST'])
+def set_language():
+    lang = request.form.get('language')
+    if lang:
+        session['lang'] = lang
+        refresh()
+    return redirect(request.referrer)

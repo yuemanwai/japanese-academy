@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-11 16:29+0000\n"
+"POT-Creation-Date: 2025-01-10 06:31+0000\n"
 "PO-Revision-Date: 2024-03-11 16:29+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,184 +16,402 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: forms.py:29 forms.py:64
+#: forms.py:32
 msgid "Please use a different username."
-msgstr ""
+msgstr "請使用不同的用戶名。"
 
-#: forms.py:34
+#: forms.py:37
 msgid "Please use a different email address."
-msgstr ""
+msgstr "請使用不同的電子郵件地址。"
 
-#: routes.py:30
-msgid "Your post is now live!"
-msgstr ""
-
-#: routes.py:39 templates/base.html.j2:28
-msgid "Home"
-msgstr "首頁"
-
-#: routes.py:54 templates/base.html.j2:31
-msgid "Explore"
-msgstr "探索"
-
-#: routes.py:67
+#: routes.py:52
 msgid "Invalid username or password"
-msgstr ""
+msgstr "無效的用戶名或密碼"
 
-#: routes.py:74 templates/login.html.j2:4
-msgid "Sign In"
-msgstr ""
+#: routes.py:60 templates/base.html.j2:210
+msgid "Sign in"
+msgstr "登入"
 
-#: routes.py:93
-msgid "Congratulations, you are now a registered user!"
-msgstr ""
+#: routes.py:66 templates/base.html.j2:226
+msgid "Sign out"
+msgstr "登出"
 
-#: routes.py:95 templates/register.html.j2:4
-msgid "Register"
-msgstr ""
+#: routes.py:79
+msgid "Congratulations, you are one of us now!"
+msgstr "恭喜，您現在是註冊用戶了！"
 
-#: routes.py:108
+#: routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr "註冊"
+
+#: routes.py:96
 msgid "Check your email for the instructions to reset your password"
-msgstr ""
+msgstr "檢查您的電子郵件以獲取重置密碼的說明"
 
-#: routes.py:111 templates/reset_password_request.html.j2:4
+#: routes.py:99 templates/reset_password_request.html.j2:4
 msgid "Reset Password"
-msgstr ""
+msgstr "重置密碼"
 
-#: routes.py:125
+#: routes.py:113
 msgid "Your password has been reset."
-msgstr ""
+msgstr "您的密碼已重置。"
 
-#: routes.py:153
-msgid "Your changes have been saved."
-msgstr ""
+#: routes.py:150
+msgid "Your user page has been saved."
+msgstr "您的用戶頁面已保存。"
 
-#: routes.py:158 templates/edit_profile.html.j2:4
-msgid "Edit Profile"
-msgstr ""
+#: routes.py:173
+msgid "Changes have been saved."
+msgstr "更改已保存。"
 
-#: routes.py:167 routes.py:183
+#: routes.py:175
+msgid "Changes have been canceled."
+msgstr "更改已取消。"
+
+#: routes.py:189
 #, python-format
-msgid "User %(username)s not found."
-msgstr ""
+msgid ""
+"<%(title)s> and its talk page have been added to your watchlist "
+"permanently."
+msgstr "<%(title)s>及其討論頁面已永久添加到您的監視列表中。"
 
-#: routes.py:170
-msgid "You cannot follow yourself!"
-msgstr ""
-
-#: routes.py:174
+#: routes.py:200
 #, python-format
-msgid "You are following %(username)s!"
-msgstr ""
+msgid "<%(title)s> and its talk page have been removed from your watchlist."
+msgstr "<%(title)s>及其討論頁面已從您的監視列表中移除。"
 
-#: routes.py:186
-msgid "You cannot unfollow yourself!"
-msgstr ""
+#: routes.py:210
+msgid "Watchlist"
+msgstr "監視列表"
 
-#: routes.py:190
-#, python-format
-msgid "You are not following %(username)s."
-msgstr ""
+#: routes.py:230 routes.py:231 routes.py:232
+msgid "Article"
+msgstr "文章"
 
-#: templates/404.html.j2:3
-msgid "Not Found"
-msgstr ""
+#: routes.py:247
+msgid "Search results"
+msgstr "搜索結果"
 
-#: templates/404.html.j2:5 templates/500.html.j2:6
-msgid "Back"
-msgstr ""
+#: routes.py:320
+msgid "Leave a Message..."
+msgstr "留言..."
+
+#: routes.py:379 templates/chat_with_copilot.html.j2:99
+msgid "An error occurred while processing your request. Please try again later."
+msgstr "處理您的請求時發生錯誤。請稍後再試。"
+
+#: routes.py:382
+msgid "Settings updated successfully."
+msgstr "設置更新成功。"
 
 #: templates/500.html.j2:3
 msgid "An unexpected error has occurred"
-msgstr ""
+msgstr "發生了意外錯誤"
 
 #: templates/500.html.j2:4
 msgid "The administrator has been notified. Sorry for the inconvenience!"
-msgstr ""
+msgstr "管理員已收到通知。對給您帶來的不便表示抱歉！"
 
-#: templates/_post.html.j2:12
-#, python-format
-msgid "%(username)s said %(when)s"
-msgstr ""
+#: templates/500.html.j2:6
+msgid "Back"
+msgstr "返回"
 
-#: templates/base.html.j2:6
-msgid "Welcome to Microblog"
-msgstr ""
+#: templates/base.html.j2:182
+msgid "Search..."
+msgstr "搜索..."
 
-#: templates/base.html.j2:37
-msgid "Login"
-msgstr ""
+#: templates/base.html.j2:191
+msgid "Home"
+msgstr "首頁"
 
-#: templates/base.html.j2:41
+#: templates/base.html.j2:194 templates/lessons.html.j2:5
+msgid "Lessons"
+msgstr "課程"
+
+#: templates/base.html.j2:197 templates/practice.html.j2:5
+msgid "Practice"
+msgstr "練習"
+
+#: templates/base.html.j2:200 templates/dictionary.html.j2:5
+msgid "Dictionary"
+msgstr "詞典"
+
+#: templates/base.html.j2:203 templates/community.html.j2:5
+#: templates/community.html.j2:15
+msgid "Community"
+msgstr "社區"
+
+#: templates/base.html.j2:216 templates/profile.html.j2:16
 msgid "Profile"
-msgstr ""
+msgstr "個人資料"
 
-#: templates/base.html.j2:44
-msgid "Logout"
-msgstr ""
+#: templates/base.html.j2:234
+msgid "Language"
+msgstr "語言"
 
-#: templates/index.html.j2:4
-#, python-format
-msgid "Hi, %(username)s!"
-msgstr ""
+#: templates/base.html.j2:278
+msgid "Contact Support"
+msgstr "聯繫支持"
 
-#: templates/index.html.j2:16 templates/user.html.j2:38
-msgid "Newer posts"
-msgstr ""
+#: templates/base.html.j2:279
+msgid "Random post"
+msgstr "隨機帖子"
 
-#: templates/index.html.j2:21 templates/user.html.j2:43
-msgid "Older posts"
-msgstr ""
+#: templates/base.html.j2:280 templates/donate.html.j2:8
+msgid "Donate"
+msgstr "捐贈"
+
+#: templates/base.html.j2:281 templates/chat_with_copilot.html.j2:225
+msgid "Chat with Copilot"
+msgstr "與Copilot聊天"
+
+#: templates/base.html.j2:283
+msgid "404 Quick button"
+msgstr "404快速按鈕"
+
+#: templates/base2.html.j2:18
+msgid "Talk"
+msgstr "討論"
+
+#: templates/base2.html.j2:28
+msgid "Read"
+msgstr "閱讀"
+
+#: templates/base2.html.j2:30 templates/profile.html.j2:17
+msgid "Edit"
+msgstr "編輯"
+
+#: templates/base2.html.j2:32
+msgid "View source"
+msgstr "查看源代碼"
+
+#: templates/base2.html.j2:34
+msgid "View history"
+msgstr "查看歷史"
+
+#: templates/chat_with_copilot.html.j2:8
+msgid "Debug"
+msgstr "調試"
+
+#: templates/chat_with_copilot.html.j2:12
+msgid "Word Limit"
+msgstr "字數限制"
+
+#: templates/chat_with_copilot.html.j2:15
+msgid "Condition"
+msgstr "條件"
+
+#: templates/chat_with_copilot.html.j2:18
+msgid "Apply"
+msgstr "應用"
+
+#: templates/chat_with_copilot.html.j2:26
+msgid "Type your message here..."
+msgstr "在此輸入您的消息..."
+
+#: templates/chat_with_copilot.html.j2:27
+msgid "Send"
+msgstr "發送"
+
+#: templates/community.html.j2:6
+msgid "This is the Community page."
+msgstr "這是社區頁面。"
+
+#: templates/community.html.j2:8
+msgid "討論區 (Discussion Forums)"
+msgstr "討論區"
+
+#: templates/community.html.j2:9
+msgid "活動日曆 (Event Calendar)"
+msgstr "活動日曆"
+
+#: templates/community.html.j2:10
+msgid "用戶故事 (User Stories)"
+msgstr "用戶故事"
+
+#: templates/dictionary.html.j2:6
+msgid "This is the Dictionary page."
+msgstr "這是詞典頁面。"
+
+#: templates/donate.html.j2:11
+msgid "Support"
+msgstr "支持"
+
+#: templates/donate.html.j2:13
+msgid ""
+"Your generous donations help us to continue providing high-quality "
+"Japanese learning resources and tools. Every\n"
+"  contribution, no matter how small, makes a big difference in helping us"
+" achieve our mission."
+msgstr "您的慷慨捐贈幫助我們繼續提供高質量的日語學習資源和工具。每一份捐贈，無論多麼微小，都對幫助我們實現使命有著巨大的影響。"
+
+#: templates/donate_payment.html.j2:28
+msgid "Make your donation now"
+msgstr "立即捐贈"
+
+#: templates/donate_payment.html.j2:35
+msgid ""
+"“ Imagine a world in which every single person on the planet has free "
+"access to the sum of all human\n"
+"      knowledge. ”\n"
+"      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
+"Wales, Founder of Wikipedia</span>"
+msgstr "“ 想像一個世界，每個人都能免費獲得所有人類知識的總和。”<br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy Wales，維基百科創始人</span>"
+
+#: templates/donate_payment.html.j2:41
+msgid "Donation amount"
+msgstr "捐贈金額"
+
+#: templates/donate_payment.html.j2:44
+msgid "Billing information"
+msgstr "賬單信息"
+
+#: templates/index.html.j2:13
+msgid "Welcome to"
+msgstr "歡迎來到"
 
 #: templates/login.html.j2:10
-msgid "New User?"
-msgstr ""
+msgid "Forgot your password?"
+msgstr "忘記密碼？"
 
-#: templates/login.html.j2:10
-msgid "Click to Register!"
-msgstr ""
+#: templates/logout.html.j2:4
+msgid "Return to "
+msgstr "返回到"
 
-#: templates/login.html.j2:13
-msgid "Forgot Your Password?"
-msgstr ""
+#: templates/logout.html.j2:4
+msgid "Home Page."
+msgstr "首頁。"
 
-#: templates/login.html.j2:14
-msgid "Click to Reset It"
-msgstr ""
+#: templates/logout.html.j2:5
+msgid "You will be redirected in "
+msgstr "您將在"
+
+#: templates/logout.html.j2:5
+msgid " seconds."
+msgstr "秒後重定向。"
+
+#: templates/practice.html.j2:6
+msgid "This is the Practice page."
+msgstr "這是練習頁面。"
+
+#: templates/profile.html.j2:23
+msgid "Email: "
+msgstr "電子郵件："
+
+#: templates/random_post.html.j2:8
+msgid "Posted by"
+msgstr "發布者"
+
+#: templates/random_post.html.j2:11
+msgid "The post that you're looking for doesn't exist."
+msgstr "您查找的帖子不存在。"
 
 #: templates/reset_password.html.j2:4
 msgid "Reset Your Password"
-msgstr ""
+msgstr "重置您的密碼"
 
-#: templates/user.html.j2:9
-msgid "User"
-msgstr ""
+#: templates/search.html.j2:7
+msgid "Search"
+msgstr "搜索"
 
-#: templates/user.html.j2:11
-msgid "Last seen on"
-msgstr ""
+#: templates/search.html.j2:12
+msgid "There is a page named \""
+msgstr "有一個名為\""
 
-#: templates/user.html.j2:13
-#, python-format
-msgid "%(count)d followers"
-msgstr ""
+#: templates/search.html.j2:12
+msgid "\" on Wikipedia"
+msgstr "\"的頁面在維基百科上"
 
-#: templates/user.html.j2:13
-#, python-format
-msgid "%(count)d following"
-msgstr ""
+#: templates/search.html.j2:28
+msgid "previous posts"
+msgstr "以前的帖子"
 
-#: templates/user.html.j2:17
-msgid "Edit your profile"
-msgstr ""
+#: templates/search.html.j2:33
+msgid "Next posts"
+msgstr "下一篇帖子"
 
-#: templates/user.html.j2:21
-msgid "Follow"
-msgstr ""
+#: templates/watchlist.html.j2:3
+msgid "Your watchlist has "
+msgstr "您的監視列表有"
 
-#: templates/user.html.j2:25
-msgid "Unfollow"
-msgstr ""
+#: templates/watchlist.html.j2:3
+msgid ""
+" pages (and their talk pages). Changes to pages since you last visited "
+"them\n"
+"are shown with solid markers."
+msgstr "頁面（及其討論頁面）。自您上次訪問以來，頁面的更改顯示為實心標記。"
+
+#~ msgid "Your post is now live!"
+#~ msgstr "您的帖子現在已上線！"
+
+#~ msgid "Explore"
+#~ msgstr "探索"
+
+#~ msgid "Register"
+#~ msgstr "註冊"
+
+#~ msgid "Edit Profile"
+#~ msgstr "編輯個人資料"
+
+#~ msgid "User %(username)s not found."
+#~ msgstr "未找到用戶 %(username)s。"
+
+#~ msgid "You cannot follow yourself!"
+#~ msgstr "您不能關注自己！"
+
+#~ msgid "You are following %(username)s!"
+#~ msgstr "您正在關注 %(username)s！"
+
+#~ msgid "You cannot unfollow yourself!"
+#~ msgstr "您不能取消關注自己！"
+
+#~ msgid "You are not following %(username)s."
+#~ msgstr "您沒有關注 %(username)s。"
+
+#~ msgid "Not Found"
+#~ msgstr "未找到"
+
+#~ msgid "%(username)s said %(when)s"
+#~ msgstr "%(username)s 說 %(when)s"
+
+#~ msgid "Login"
+#~ msgstr "登入"
+
+#~ msgid "Logout"
+#~ msgstr "登出"
+
+#~ msgid "Hi, %(username)s!"
+#~ msgstr "你好，%(username)s！"
+
+#~ msgid "Older posts"
+#~ msgstr "較舊的帖子"
+
+#~ msgid "New User?"
+#~ msgstr "新用戶？"
+
+#~ msgid "Click to Register!"
+#~ msgstr "點擊註冊！"
+
+#~ msgid "Click to Reset It"
+#~ msgstr "點擊重置"
+
+#~ msgid "Last seen on"
+#~ msgstr "最後一次在線"
+
+#~ msgid "%(count)d followers"
+#~ msgstr "%(count)d 關注者"
+
+#~ msgid "%(count)d following"
+#~ msgstr "關注了 %(count)d 人"
+
+#~ msgid "Edit your profile"
+#~ msgstr "編輯您的個人資料"
+
+#~ msgid "Follow"
+#~ msgstr "關注"
+
+#~ msgid "Unfollow"
+#~ msgstr "取消關注"
 

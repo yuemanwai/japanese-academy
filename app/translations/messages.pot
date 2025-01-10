@@ -1,107 +1,108 @@
 # Translations template for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-11 16:29+0000\n"
+"POT-Creation-Date: 2025-01-10 06:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: forms.py:29 forms.py:64
+#: forms.py:32
 msgid "Please use a different username."
 msgstr ""
 
-#: forms.py:34
+#: forms.py:37
 msgid "Please use a different email address."
 msgstr ""
 
-#: routes.py:30
-msgid "Your post is now live!"
-msgstr ""
-
-#: routes.py:39 templates/base.html.j2:28
-msgid "Home"
-msgstr ""
-
-#: routes.py:54 templates/base.html.j2:31
-msgid "Explore"
-msgstr ""
-
-#: routes.py:67
+#: routes.py:52
 msgid "Invalid username or password"
 msgstr ""
 
-#: routes.py:74 templates/login.html.j2:4
-msgid "Sign In"
+#: routes.py:60 templates/base.html.j2:210
+msgid "Sign in"
 msgstr ""
 
-#: routes.py:93
-msgid "Congratulations, you are now a registered user!"
+#: routes.py:66 templates/base.html.j2:226
+msgid "Sign out"
 msgstr ""
 
-#: routes.py:95 templates/register.html.j2:4
-msgid "Register"
+#: routes.py:79
+msgid "Congratulations, you are one of us now!"
 msgstr ""
 
-#: routes.py:108
+#: routes.py:81 templates/base.html.j2:207
+msgid "Sign up"
+msgstr ""
+
+#: routes.py:96
 msgid "Check your email for the instructions to reset your password"
 msgstr ""
 
-#: routes.py:111 templates/reset_password_request.html.j2:4
+#: routes.py:99 templates/reset_password_request.html.j2:4
 msgid "Reset Password"
 msgstr ""
 
-#: routes.py:125
+#: routes.py:113
 msgid "Your password has been reset."
 msgstr ""
 
-#: routes.py:153
-msgid "Your changes have been saved."
+#: routes.py:150
+msgid "Your user page has been saved."
 msgstr ""
 
-#: routes.py:158 templates/edit_profile.html.j2:4
-msgid "Edit Profile"
+#: routes.py:173
+msgid "Changes have been saved."
 msgstr ""
 
-#: routes.py:167 routes.py:183
+#: routes.py:175
+msgid "Changes have been canceled."
+msgstr ""
+
+#: routes.py:189
 #, python-format
-msgid "User %(username)s not found."
+msgid ""
+"<%(title)s> and its talk page have been added to your watchlist "
+"permanently."
 msgstr ""
 
-#: routes.py:170
-msgid "You cannot follow yourself!"
-msgstr ""
-
-#: routes.py:174
+#: routes.py:200
 #, python-format
-msgid "You are following %(username)s!"
+msgid "<%(title)s> and its talk page have been removed from your watchlist."
 msgstr ""
 
-#: routes.py:186
-msgid "You cannot unfollow yourself!"
+#: routes.py:210
+msgid "Watchlist"
 msgstr ""
 
-#: routes.py:190
-#, python-format
-msgid "You are not following %(username)s."
+#: routes.py:230 routes.py:231 routes.py:232
+msgid "Article"
 msgstr ""
 
-#: templates/404.html.j2:3
-msgid "Not Found"
+#: routes.py:247
+msgid "Search results"
 msgstr ""
 
-#: templates/404.html.j2:5 templates/500.html.j2:6
-msgid "Back"
+#: routes.py:320
+msgid "Leave a Message..."
+msgstr ""
+
+#: routes.py:379 templates/chat_with_copilot.html.j2:99
+msgid "An error occurred while processing your request. Please try again later."
+msgstr ""
+
+#: routes.py:382
+msgid "Settings updated successfully."
 msgstr ""
 
 #: templates/500.html.j2:3
@@ -112,87 +113,232 @@ msgstr ""
 msgid "The administrator has been notified. Sorry for the inconvenience!"
 msgstr ""
 
-#: templates/_post.html.j2:12
-#, python-format
-msgid "%(username)s said %(when)s"
+#: templates/500.html.j2:6
+msgid "Back"
 msgstr ""
 
-#: templates/base.html.j2:6
-msgid "Welcome to Microblog"
+#: templates/base.html.j2:182
+msgid "Search..."
 msgstr ""
 
-#: templates/base.html.j2:37
-msgid "Login"
+#: templates/base.html.j2:191
+msgid "Home"
 msgstr ""
 
-#: templates/base.html.j2:41
+#: templates/base.html.j2:194 templates/lessons.html.j2:5
+msgid "Lessons"
+msgstr ""
+
+#: templates/base.html.j2:197 templates/practice.html.j2:5
+msgid "Practice"
+msgstr ""
+
+#: templates/base.html.j2:200 templates/dictionary.html.j2:5
+msgid "Dictionary"
+msgstr ""
+
+#: templates/base.html.j2:203 templates/community.html.j2:5
+#: templates/community.html.j2:15
+msgid "Community"
+msgstr ""
+
+#: templates/base.html.j2:216 templates/profile.html.j2:16
 msgid "Profile"
 msgstr ""
 
-#: templates/base.html.j2:44
-msgid "Logout"
+#: templates/base.html.j2:234
+msgid "Language"
 msgstr ""
 
-#: templates/index.html.j2:4
-#, python-format
-msgid "Hi, %(username)s!"
+#: templates/base.html.j2:278
+msgid "Contact Support"
 msgstr ""
 
-#: templates/index.html.j2:16 templates/user.html.j2:38
-msgid "Newer posts"
+#: templates/base.html.j2:279
+msgid "Random post"
 msgstr ""
 
-#: templates/index.html.j2:21 templates/user.html.j2:43
-msgid "Older posts"
+#: templates/base.html.j2:280 templates/donate.html.j2:8
+msgid "Donate"
+msgstr ""
+
+#: templates/base.html.j2:281 templates/chat_with_copilot.html.j2:225
+msgid "Chat with Copilot"
+msgstr ""
+
+#: templates/base.html.j2:283
+msgid "404 Quick button"
+msgstr ""
+
+#: templates/base2.html.j2:18
+msgid "Talk"
+msgstr ""
+
+#: templates/base2.html.j2:28
+msgid "Read"
+msgstr ""
+
+#: templates/base2.html.j2:30 templates/profile.html.j2:17
+msgid "Edit"
+msgstr ""
+
+#: templates/base2.html.j2:32
+msgid "View source"
+msgstr ""
+
+#: templates/base2.html.j2:34
+msgid "View history"
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:8
+msgid "Debug"
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:12
+msgid "Word Limit"
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:15
+msgid "Condition"
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:18
+msgid "Apply"
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:26
+msgid "Type your message here..."
+msgstr ""
+
+#: templates/chat_with_copilot.html.j2:27
+msgid "Send"
+msgstr ""
+
+#: templates/community.html.j2:6
+msgid "This is the Community page."
+msgstr ""
+
+#: templates/community.html.j2:8
+msgid "討論區 (Discussion Forums)"
+msgstr ""
+
+#: templates/community.html.j2:9
+msgid "活動日曆 (Event Calendar)"
+msgstr ""
+
+#: templates/community.html.j2:10
+msgid "用戶故事 (User Stories)"
+msgstr ""
+
+#: templates/dictionary.html.j2:6
+msgid "This is the Dictionary page."
+msgstr ""
+
+#: templates/donate.html.j2:11
+msgid "Support"
+msgstr ""
+
+#: templates/donate.html.j2:13
+msgid ""
+"Your generous donations help us to continue providing high-quality "
+"Japanese learning resources and tools. Every\n"
+"  contribution, no matter how small, makes a big difference in helping us"
+" achieve our mission."
+msgstr ""
+
+#: templates/donate_payment.html.j2:28
+msgid "Make your donation now"
+msgstr ""
+
+#: templates/donate_payment.html.j2:35
+msgid ""
+"“ Imagine a world in which every single person on the planet has free "
+"access to the sum of all human\n"
+"      knowledge. ”\n"
+"      <br /> <br /><span style=\"float: right;font-size: 20px;\">— Jimmy "
+"Wales, Founder of Wikipedia</span>"
+msgstr ""
+
+#: templates/donate_payment.html.j2:41
+msgid "Donation amount"
+msgstr ""
+
+#: templates/donate_payment.html.j2:44
+msgid "Billing information"
+msgstr ""
+
+#: templates/index.html.j2:13
+msgid "Welcome to"
 msgstr ""
 
 #: templates/login.html.j2:10
-msgid "New User?"
+msgid "Forgot your password?"
 msgstr ""
 
-#: templates/login.html.j2:10
-msgid "Click to Register!"
+#: templates/logout.html.j2:4
+msgid "Return to "
 msgstr ""
 
-#: templates/login.html.j2:13
-msgid "Forgot Your Password?"
+#: templates/logout.html.j2:4
+msgid "Home Page."
 msgstr ""
 
-#: templates/login.html.j2:14
-msgid "Click to Reset It"
+#: templates/logout.html.j2:5
+msgid "You will be redirected in "
+msgstr ""
+
+#: templates/logout.html.j2:5
+msgid " seconds."
+msgstr ""
+
+#: templates/practice.html.j2:6
+msgid "This is the Practice page."
+msgstr ""
+
+#: templates/profile.html.j2:23
+msgid "Email: "
+msgstr ""
+
+#: templates/random_post.html.j2:8
+msgid "Posted by"
+msgstr ""
+
+#: templates/random_post.html.j2:11
+msgid "The post that you're looking for doesn't exist."
 msgstr ""
 
 #: templates/reset_password.html.j2:4
 msgid "Reset Your Password"
 msgstr ""
 
-#: templates/user.html.j2:9
-msgid "User"
+#: templates/search.html.j2:7
+msgid "Search"
 msgstr ""
 
-#: templates/user.html.j2:11
-msgid "Last seen on"
+#: templates/search.html.j2:12
+msgid "There is a page named \""
 msgstr ""
 
-#: templates/user.html.j2:13
-#, python-format
-msgid "%(count)d followers"
+#: templates/search.html.j2:12
+msgid "\" on Wikipedia"
 msgstr ""
 
-#: templates/user.html.j2:13
-#, python-format
-msgid "%(count)d following"
+#: templates/search.html.j2:28
+msgid "previous posts"
 msgstr ""
 
-#: templates/user.html.j2:17
-msgid "Edit your profile"
+#: templates/search.html.j2:33
+msgid "Next posts"
 msgstr ""
 
-#: templates/user.html.j2:21
-msgid "Follow"
+#: templates/watchlist.html.j2:3
+msgid "Your watchlist has "
 msgstr ""
 
-#: templates/user.html.j2:25
-msgid "Unfollow"
+#: templates/watchlist.html.j2:3
+msgid ""
+" pages (and their talk pages). Changes to pages since you last visited "
+"them\n"
+"are shown with solid markers."
 msgstr ""
 
