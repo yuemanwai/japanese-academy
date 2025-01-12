@@ -1,19 +1,189 @@
 {% extends "base.html.j2" %}
-{% block styles %}
+
+{% block head %}
 {{ super() }}
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    .custom-container {
-        background-color: rgb(255, 255, 255);
-        padding: 10px;
-        text-align: center;
-    }
+/* Adding new slider styles */
+.slider-container {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide:nth-child(1) {
+  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+}
+
+.slide:nth-child(2) {
+  background: linear-gradient(45deg, #4ecdc4, #45b7af);
+}
+
+.slide:nth-child(3) {
+  background: linear-gradient(45deg, #2c3e50, #3d5871);
+}
+
+.slide h2 {
+  margin-bottom: 1rem;
+}
+
+.slide p {
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.slider-nav {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+}
+
+.slider-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.slider-dot.active {
+  background: white;
+}
+
+.slide-content {
+  transform: translateY(50px);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.slide.active .slide-content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Button styles for links */
+.slide a.btn {
+  display: inline-block;
+  background: var(--secondary);
+  color: var(--primary);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.slide a.btn:hover {
+  background: var(--secondary);
+  color: white;
+  transform: translateY(-2px);
+}
 </style>
-{% endblock styles %}
+{% endblock head %}
+
 {% block app_content %}
-<h2 style="text-align: center;">{{ _('Welcome to') }} {{ site_name }}
-    {% if post %}
-    {% for post in posts %}
-    {{ post.body }}
-    {% endfor %}
-    {% endif %}
-    {% endblock app_content %}
+<!-- Hero Slider -->
+<div class="slider-container">
+  <div class="slide active" onclick="location.href='{{ url_for('practice') }}'">
+    <div class="slide-content">
+      <h2>Master Japanese with AI</h2>
+      <p>Interactive lessons powered by artificial intelligence to help you learn Japanese effectively</p>
+    </div>
+  </div>
+  <div class="slide" onclick="location.href='{{ url_for('practice') }}'">
+    <div class="slide-content">
+      <h2>Hiragana & Katakana</h2>
+      <p>Master the Japanese writing systems with our interactive tools and AI-powered feedback</p>
+    </div>
+  </div>
+  <div class="slide" onclick="location.href='{{ url_for('practice') }}'">
+    <div class="slide-content">
+      <h2>Grammar Essentials</h2>
+      <p>Build a strong foundation in Japanese grammar with personalized learning paths</p>
+    </div>
+  </div>
+  <div class="slider-nav">
+    <div class="slider-dot active" onclick="setSlide(0)"></div>
+    <div class="slider-dot" onclick="setSlide(1)"></div>
+    <div class="slider-dot" onclick="setSlide(2)"></div>
+  </div>
+</div>
+{% endblock app_content %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+// Adding Slider functionality
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.slider-dot');
+
+function setSlide(index) {
+  // Remove active class from current slide and dot
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  
+  // Update current slide index
+  currentSlide = index;
+  
+  // Add active class to new slide and dot
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+// Auto-advance slides
+function autoAdvance() {
+  let nextSlide = (currentSlide + 1) % slides.length;
+  setSlide(nextSlide);
+}
+
+// Start auto-advance timer 
+let slideInterval = setInterval(autoAdvance, 5000);
+
+// Pause auto-advance on hover
+document.querySelector('.slider-container').addEventListener('mouseenter', () => {
+  clearInterval(slideInterval);
+});
+
+// Resume auto-advance when mouse leaves
+document.querySelector('.slider-container').addEventListener('mouseleave', () => {
+  slideInterval = setInterval(autoAdvance, 5000);
+});
+
+// Add slide animation
+gsap.from('.slider-container', {
+  y: 100,
+  opacity: 0,
+  duration: 1,
+  ease: 'power3.out'
+});
+</script>
+{% endblock scripts %}
