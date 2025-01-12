@@ -14,7 +14,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Noto Sans JP', sans-serif;
   }
 
   .practice-container {
@@ -26,6 +25,8 @@
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
                 url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600') center/cover fixed;
     /* Using an image of Mount Fuji with cherry blossoms from Unsplash */
+    position: relative;
+    overflow: hidden;
   }
 
   .game-container {
@@ -56,16 +57,6 @@
 
   /* Cherry blossom animation */
   .cherry-blossoms {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .game-container .cherry-blossoms {
     position: absolute;
     top: 0;
     left: 0;
@@ -104,8 +95,8 @@
     padding: 1rem;
     border-radius: 1rem;
     margin: 1rem 0;
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     animation: fadeIn 0.5s ease forwards;
   }
 
@@ -190,16 +181,20 @@
   function initializePetals() {
     const globalContainer = document.getElementById('cherryBlossoms');
     const gameContainer = document.querySelector('.game-container .cherry-blossoms');
+    const practiceContainer = document.querySelector('.practice-container .cherry-blossoms');
 
     createPetals(globalContainer);
     createPetals(gameContainer, 15);
+    createPetals(practiceContainer);
 
     // Recreate petals when animation ends
     setInterval(() => {
       globalContainer.innerHTML = '';
       gameContainer.innerHTML = '';
+      practiceContainer.innerHTML = '';
       createPetals(globalContainer);
       createPetals(gameContainer, 15);
+      createPetals(practiceContainer);
     }, 5000);
   }
 
@@ -213,7 +208,7 @@
     },
     {
       question: 'Which character means "tree"?',
-      options: ['木', '水', '火', '土'],
+      options: ['木', '水', '火', '土','金'],
       correct: 0
     },
     {
@@ -287,9 +282,10 @@
 
 {% block app_content %}
 <div class="practice-container">
-    <div class="cherry-blossoms" id="cherryBlossoms"></div>
-    
+    <div class="cherry-blossoms" id="cherryBlossoms"></div>    
+
     <div class="game-container">
+        <div class="cherry-blossoms"></div>
         <div class="score">Score: <span id="scoreValue">0</span></div>
     <div class="character">
       <svg class="character-svg" viewBox="0 0 100 100">
@@ -311,4 +307,9 @@
     <div class="options" id="options"></div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    updateUI();
+  });
+</script>
 {% endblock %}
