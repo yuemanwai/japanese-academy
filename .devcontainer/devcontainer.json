@@ -51,7 +51,8 @@
         "samuelcolvin.jinjahtml",
         "monosans.djlint",
         "ms-azuretools.vscode-docker",
-        "github.copilot"
+        "github.copilot",
+        "esbenp.prettier-vscode"
       ]
     }
   },
