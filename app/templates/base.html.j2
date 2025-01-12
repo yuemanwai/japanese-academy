@@ -24,11 +24,11 @@
   }
 
   body:lang(zh) {
-    font-family: "FZShuTi", "微軟正黑體 Light", "Noto Sans";
+    font-family: "微軟正黑體 Light", "Noto Sans";
   }
 
   body:lang(ja) {
-    font-family: "FZShuTi", "微軟正黑體 Light", "Noto Sans";
+    font-family: "Noto Sans", "微軟正黑體 Light",;
   }
 
   .navbar-brand {
@@ -199,9 +199,6 @@
           <li class="nav-item {% if request.endpoint == 'dictionary' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('dictionary') }}">{{ _('Dictionary') }}</a>
           </li>
-          <li class="nav-item {% if request.endpoint == 'community' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('community') }}">{{ _('Community') }}</a>
-          </li>
           {% if current_user.is_anonymous %}
           <li class="nav-item {% if request.endpoint == 'register' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('register') }}">{{ _('Sign up') }}</a>
@@ -210,104 +207,97 @@
             <a class="nav-link" href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
           </li>
           {% else %}
-          
           <li class="nav-item {% if request.endpoint == 'user' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">
               {{_('Profile')}}
             </a>
           </li>
-          {# <li class="nav-item {% if request.endpoint == 'watchlist' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('watchlist', username=current_user.username) }}">
-              <i class="fa-regular fa-star" style="font-size: 20px; "></i>
-            </a>
-          </li> #}
           <li class="nav-item {% if request.endpoint == 'logout' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('logout') }}">
               {{_('Sign out')}}
             </a>
           </li>
+          {% endif %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa-solid fa-earth-americas"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="languageDropdown">
+              <form id="language-form-en" method="post" action="{{ url_for('set_language') }}">
+                <input type="hidden" name="language" value="en">
+                <button type="submit" class="dropdown-item">English</button>
+              </form>
+              <form id="language-form-zh" method="post" action="{{ url_for('set_language') }}">
+                <input type="hidden" name="language" value="zh">
+                <button type="submit" class="dropdown-item">中文</button>
+              </form>
+              <form id="language-form-ja" method="post" action="{{ url_for('set_language') }}">
+                <input type="hidden" name="language" value="ja">
+                <button type="submit" class="dropdown-item">日本語</button>
+              </form>
+            </div>
+          </li>
         </div>
-        
-        {% endif %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa-solid fa-earth-americas"></i> {{ _('Language') }}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="languageDropdown">
-            <form id="language-form-en" method="post" action="{{ url_for('set_language') }}">
-              <input type="hidden" name="language" value="en">
-              <button type="submit" class="dropdown-item">English</button>
-            </form>
-            <form id="language-form-zh" method="post" action="{{ url_for('set_language') }}">
-              <input type="hidden" name="language" value="zh">
-              <button type="submit" class="dropdown-item">中文</button>
-            </form>
-            <form id="language-form-ja" method="post" action="{{ url_for('set_language') }}">
-              <input type="hidden" name="language" value="ja">
-              <button type="submit" class="dropdown-item">日本語</button>
-            </form>
-          </div>
-        </li>
-
       </ul>
+    </div>
   </nav>
-  {% endblock navbar %}
+</div>
+{% endblock navbar %}
 
-  {% block content %}
-  <div class="container-fluid">
-    <div class="col-md-12">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-info" role="alert">{{ message }}</div>
-      {% endfor %}
-      {% endif %}
-      {% endwith %}
-      {% block app_content %} {% endblock app_content %}
-      <div style="position: fixed; bottom: 20px; right: 20px;">
-        <a href="{{ url_for('chat_with_copilot') }}">
-          <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;">
-        </a>
-      </div>
+{% block content %}
+<div class="container-fluid">
+  <div class="col-md-12">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% block app_content %} {% endblock app_content %}
+    <div style="position: fixed; bottom: 20px; right: 20px;">
+      <a href="{{ url_for('chat_with_copilot') }}">
+        <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;">
+      </a>
     </div>
   </div>
+</div>
 
-  {% block footer %}
-  <footer class="footer">
-    {# Placeholder #}
-    <a href="{{ url_for('leave_message') }}">{{ _('Contact Support') }}</a>
-    <a href="{{ url_for('get_random_post') }}">{{ _('Random post') }}</a>
-    <a href="{{ url_for('donate') }}">{{_('Donate') }}</a>
-    <a href="{{ url_for('chat_with_copilot') }}">{{ _('Chat with Copilot') }}</a>
-    {% if current_user.is_authenticated and current_user.is_admin %}
-    <a href="/404">{{ _('404 Quick button') }}</a>
-    {% endif %}
-  </footer>
-  {% endblock footer %}
-  {% endblock content %}
+{% block footer %}
+<footer class="footer">
+  {# Placeholder #}
+  <a href="{{ url_for('leave_message') }}">{{ _('Contact Support') }}</a>
+  <a href="{{ url_for('get_random_post') }}">{{ _('Random post') }}</a>
+  <a href="{{ url_for('donate') }}">{{_('Donate') }}</a>
+  <a href="{{ url_for('chat_with_copilot') }}">{{ _('Chat with Copilot') }}</a>
+  {% if current_user.is_authenticated and current_user.is_admin %}
+  <a href="/404">{{ _('404 Quick button') }}</a>
+  {% endif %}
+</footer>
+{% endblock footer %}
+{% endblock content %}
 
-
-  {% block scripts %}
-  {{ super() }}
-  {{ moment.include_moment() }}
-  {{ moment.lang(g.locale) }}
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
-  <script>
-    // Hide flash messages after 5 seconds
-    setTimeout(() => {
-      const alerts = document.querySelectorAll('.alert');
-      alerts.forEach(alert => {
-        alert.style.opacity = '0';
-      });
-    }, 5000);
-  </script>
-  {% endblock scripts %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang(g.locale) }}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
+<script>
+  // Hide flash messages after 5 seconds
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      alert.style.opacity = '0';
+    });
+  }, 5000);
+</script>
+{% endblock scripts %}
