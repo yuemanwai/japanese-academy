@@ -1,7 +1,314 @@
-
 {% extends 'base.html.j2' %}
 
+
+{% block head %}
+{{ super() }}
+<style>
+  :root {
+    --primary: #ff5c85;
+    --secondary: #5c9eff;
+    --text: #333;
+  }
+
+  .practice-container * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .practice-container {
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600') center/cover fixed;
+    /* Using an image of Mount Fuji with cherry blossoms from Unsplash */
+  }
+
+  .game-container {
+    max-width: 800px;
+    width: 95%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .character {
+    width: 200px;
+    height: 200px;
+    margin: 1rem auto;
+    position: relative;
+  }
+
+  .character-svg {
+    width: 100%;
+    height: 100%;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Cherry blossom animation */
+  .cherry-blossoms {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .game-container .cherry-blossoms {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .petal {
+    position: absolute;
+    background: #ffd7e6;
+    border-radius: 150% 0 150% 0;
+    animation: falling linear infinite;
+  }
+
+  @keyframes falling {
+    0% {
+      transform: translate(0, -10px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(100px, 100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .chat-bubble {
+    background: var(--primary);
+    color: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 1rem 0;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .option {
+    padding: 1rem;
+    border: 2px solid var(--secondary);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text);
+  }
+
+  .option:hover {
+    background: var(--secondary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .score {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 92, 133, 0.9);
+    color: white;
+    border-radius: 2rem;
+    backdrop-filter: blur(5px);
+  }
+
+  .progress {
+    width: 100%;
+    height: 0.5rem;
+    background: rgba(238, 238, 238, 0.5);
+    border-radius: 1rem;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--secondary);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+{% endblock head %} 
+
+{% block scripts %}
+{{ super() }}
+<script>
+  // Create cherry blossom petals
+  function createPetals(container, petalCount = 30) {
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.width = Math.random() * 15 + 5 + 'px';
+      petal.style.height = Math.random() * 15 + 5 + 'px';
+      petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+      petal.style.opacity = Math.random() * 0.5 + 0.5;
+      container.appendChild(petal);
+    }
+  }
+
+  function initializePetals() {
+    const globalContainer = document.getElementById('cherryBlossoms');
+    const gameContainer = document.querySelector('.game-container .cherry-blossoms');
+
+    createPetals(globalContainer);
+    createPetals(gameContainer, 15);
+
+    // Recreate petals when animation ends
+    setInterval(() => {
+      globalContainer.innerHTML = '';
+      gameContainer.innerHTML = '';
+      createPetals(globalContainer);
+      createPetals(gameContainer, 15);
+    }, 5000);
+  }
+
+  initializePetals();
+
+  const questions = [
+    {
+      question: 'What does "おはよう" (ohayou) mean?',
+      options: ['Good morning', 'Good night', 'Hello', 'Goodbye'],
+      correct: 0
+    },
+    {
+      question: 'Which character means "tree"?',
+      options: ['木', '水', '火', '土'],
+      correct: 0
+    },
+    {
+      question: 'How do you say "Thank you" in Japanese?',
+      options: ['さようなら', 'ありがとう', 'すみません', 'こんにちは'],
+      correct: 1
+    },
+    {
+      question: 'Which season is "春" (haru)?',
+      options: ['Summer', 'Winter', 'Spring', 'Fall'],
+      correct: 2
+    },
+    {
+      question: 'What does "富士山" (Fujisan) mean?',
+      options: ['Mount Fuji', 'Mountain Peak', 'Sacred Mountain', 'Snow Mountain'],
+      correct: 0
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  function updateUI() {
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const progressBar = document.getElementById('progressBar');
+
+    progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
+
+    optionsEl.innerHTML = '';
+
+    if (currentQuestion >= questions.length) {
+      questionEl.textContent = `Game Complete! Final Score: ${score}/${questions.length}`;
+      return;
+    }
+
+    const question = questions[currentQuestion];
+    questionEl.textContent = question.question;
+
+    question.options.forEach((option, index) => {
+      const button = document.createElement('div');
+      button.className = 'option';
+      button.textContent = option;
+      button.onclick = () => checkAnswer(index);
+      optionsEl.appendChild(button);
+    });
+  }
+
+  function checkAnswer(selectedIndex) {
+    const question = questions[currentQuestion];
+
+    if (selectedIndex === question.correct) {
+      score++;
+      document.getElementById('scoreValue').textContent = score;
+    }
+
+    currentQuestion++;
+    updateUI();
+
+    const character = document.querySelector('.character-svg');
+    character.style.animation = 'none';
+    character.offsetHeight;
+    character.style.animation = 'float 3s ease-in-out infinite';
+  }
+
+  // Initialize game
+  updateUI();
+</script>
+{% endblock scripts %}
+
+
 {% block app_content %}
-<h1>{{ _('Practice') }}</h1>
-<p>{{ _('This is the Practice page.') }}</p>
+<div class="practice-container">
+    <div class="cherry-blossoms" id="cherryBlossoms"></div>
+    
+    <div class="game-container">
+        <div class="score">Score: <span id="scoreValue">0</span></div>
+    <div class="character">
+      <svg class="character-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#5c9eff"/>
+        <circle cx="35" cy="40" r="5" fill="white"/>
+        <circle cx="65" cy="40" r="5" fill="white"/>
+        <path d="M 35 60 Q 50 70 65 60" stroke="white" fill="none" stroke-width="3"/>
+      </svg>
+    </div>
+
+    <div class="chat-bubble" id="question">
+      はじめまして! Ready to learn Japanese?
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="options" id="options"></div>
+  </div>
+</div>
 {% endblock %}

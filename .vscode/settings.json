@@ -1,11 +1,11 @@
 {
-    "[jinja-html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
-    "djlint.showInstallError": false,
-    "python.testing.pytestArgs": [
-        "."
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[jinja-html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "djlint.showInstallError": false,
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
