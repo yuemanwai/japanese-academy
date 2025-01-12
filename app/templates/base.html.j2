@@ -7,7 +7,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=FZShuTi:wght@400&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Microsoft+JhengHei:wght@300&display=swap" rel="stylesheet">
 <style>
   * {
     font-family: "FZShuTi", "Noto Sans";
@@ -24,11 +23,11 @@
   }
 
   body:lang(zh) {
-    font-family: "微軟正黑體 Light", "Noto Sans";
+    font-family: "Noto Sans";
   }
 
   body:lang(ja) {
-    font-family: "Noto Sans", "微軟正黑體 Light",;
+    font-family: "Noto Sans";
   }
 
   .navbar-brand {
@@ -175,10 +174,6 @@
         <li>
           <form class="d-flex" action="{{ url_for('search') }}" role="search"
             style="display: inline-flex;width: 350px;padding: 8px 0px;">
-            <span class="search-icon">
-              <i class="fa-solid fa-magnifying-glass"
-                style="font-size: 20px;margin-top:8px; margin-right:8px;  color: writesmoke;"></i>
-            </span>
             <input class="form-control" type="search" placeholder="{{ _('Search...') }}" aria-label="Search">
           </form>
         </li>
