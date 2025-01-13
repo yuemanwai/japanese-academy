@@ -2,7 +2,6 @@
 
 {% block head %}
 {{ super() }}
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* Adding new slider styles */
 .slider-container {
@@ -103,30 +102,23 @@
 {% block app_content %}
 <!-- Hero Slider -->
 <div class="slider-container">
-  <div class="slide active">
+  <div class="slide active" data-url="{{ url_for('lessons') }}">
     <div class="slide-content">
-      <a href="{{ url_for('practice') }}">
-        <img src="../static/image/slide1.png" alt="Icon">
-      </a>
-
+      <img src="../static/image/slide1.png" alt="Icon">
       <h2>Master Japanese with AI</h2>
       <p>Interactive lessons powered by artificial intelligence to help you learn Japanese effectively</p>
     </div>
   </div>
-  <div class="slide">
+  <div class="slide" data-url="{{ url_for('lessons') }}">
     <div class="slide-content">
-      <a href="{{ url_for('lessons') }}">
-        <img src="../static/image/slide2.png" alt="Icon">
-      </a>
+      <img src="../static/image/slide2.png" alt="Icon">
       <h2>Hiragana & Katakana</h2>
       <p>Master the Japanese writing systems with our interactive tools and AI-powered feedback</p>
     </div>
   </div>
-  <div class="slide">
+  <div class="slide" data-url="{{ url_for('lessons') }}">
     <div class="slide-content">
-      <a href="{{ url_for('dictionary') }}">
-        <img src="../static/image/slide3.png" alt="Icon">
-      </a>
+      <img src="../static/image/slide3.png" alt="Icon">
       <h2>Grammar Essentials</h2>
       <p>Build a strong foundation in Japanese grammar with personalized learning paths</p>
     </div>
@@ -178,6 +170,13 @@ document.querySelector('.slider-container').addEventListener('mouseenter', () =>
 // Resume auto-advance when mouse leaves
 document.querySelector('.slider-container').addEventListener('mouseleave', () => {
   slideInterval = setInterval(autoAdvance, 5000);
+});
+
+// Ensure each slide's link is not overridden by JavaScript
+slides.forEach((slide) => {
+  slide.addEventListener('click', () => {
+    window.location.href = slide.dataset.url; // Manually set the location to the slide's data-url
+  });
 });
 
 // Add slide animation
