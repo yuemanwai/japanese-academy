@@ -1,7 +1,151 @@
-
 {% extends 'base.html.j2' %}
 
+{% block head %}
+{{ super() }}
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  .dictionary-container {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://plus.unsplash.com/premium_photo-1661964177687-57387c2cbd14?w=1600') center/cover fixed;
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .dictionary-container p {
+  color: var(--dark);
+  }
+  
+.dictionary-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  color: var(--dark);
+}
+
+.dictionary-card:hover {
+  transform: translateY(-5px);
+}
+
+.dictionary-title {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature-box {
+  background: var(--light);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  color: var(--dark);
+}
+
+.objective {
+  border-left: 4px solid var(--secondary);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--dark);
+}
+
+.practice-area {
+  background: white;
+  border: 2px dashed var(--primary);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--secondary);
+}
+
+.kana-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.kana-character {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+.canvas-container {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+}
+</style>
+{% endblock head %}
+
 {% block app_content %}
-<h1>{{ _('Dictionary') }}</h1>
-<p>{{ _('This is the Dictionary page.') }}</p>
+<div class="dictionary-container">
+  <div class="container">
+    <!-- Dictionary Section -->
+    <div class="dictionary-card">
+      <h2 class="dictionary-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">D</text>
+        </svg>
+        Japanese Dictionary
+      </h2>
+      
+      <div class="feature-box">
+        <h3>Search for Words</h3>
+        <input type="text" class="form-control" placeholder="Enter a word to search...">
+        <button class="btn" onclick="searchWord()">Search</button>
+      </div>
+
+      <div class="objective">
+        <h4>Dictionary Objective:</h4>
+        <p>Find meanings, pronunciations, and examples of Japanese words.</p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+function searchWord() {
+  alert('Search functionality will be implemented here.');
+}
+
+// Add some animation on page load
+gsap.from('.dictionary-card', {
+  y: 50,
+  opacity: 0,
+  duration: 1,
+  stagger: 0.2,
+  ease: 'power2.out'
+});
+</script>
+{% endblock scripts %}

@@ -1,0 +1,61 @@
+{% extends 'base.html.j2' %}
+
+{% block head %}
+{{ super() }}
+<style>
+.lesson-list-container {
+  padding: 2rem;
+}
+
+.lesson-list-container h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.lesson-list-container h3 {
+  color: var(--secondary);
+  margin-top: 2rem;
+}
+
+.lesson-list-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.lesson-list-container li {
+  background: var(--light);
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lesson-list-container p {
+  margin: 0.5rem 0 0;
+  color: var(--dark);
+}
+</style>
+{% endblock head %}
+
+{% block app_content %}
+<div class="lesson-list-container">
+  <h1>{{ _('Lessons') }}</h1>
+  {% set sorted_lessons = lessons|sort(attribute='level.id') %}
+  {% set levels_order = ['Beginner', 'Intermediate', 'Advanced'] %}
+  {% for level in levels_order %}
+      {% set level_lessons = sorted_lessons|selectattr('level.name', 'equalto', level)|list %}
+      {% if level_lessons %}
+          <h3>{{ level }}</h3>
+          <ul>
+              {% for lesson in level_lessons %}
+                  <li>
+                      <strong>Name:</strong> {{ lesson.name }}
+                      <p><strong>Description:</strong> {{ lesson.description }}</p>
+                  </li>
+              {% endfor %}
+          </ul>
+      {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

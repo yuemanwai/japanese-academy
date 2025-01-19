@@ -96,6 +96,30 @@
   margin-bottom: 1rem;
 }
 
+/* Feature card styles */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background: #f5f5f5;
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  color: var(--dark); /* 設置字體顏色為深色 */
+}
+.feature-card p {
+  color: var(--dark); /* 設置字體顏色為深色 */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
 </style>
 {% endblock head %}
 
@@ -129,6 +153,22 @@
     <div class="slider-dot" onclick="setSlide(2)"></div>
   </div>
 </div>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="feature-card">
+    <h3>AI Conversation Practice</h3>
+    <p>Practice speaking Japanese with our AI language partners anytime, anywhere.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Smart Learning Path</h3>
+    <p>Personalized curriculum that adapts to your learning style and progress.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Real-time Feedback</h3>
+    <p>Get instant corrections and suggestions to improve your Japanese skills.</p>
+  </div>
+</section>
 {% endblock app_content %}
 
 {% block scripts %}

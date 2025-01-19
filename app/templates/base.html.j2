@@ -8,147 +8,145 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&display=swap" rel="stylesheet">
 <style>
-  * {
-    font-family: "Comic Neue", "Noto Sans", sans-serif;
-    font-size: 19px;
-    color: whitesmoke;
-  }
+:root {
+  --primary: #ff4081;
+  --secondary: #3d5afe;
+  --dark: #1a1a1a;
+  --light: #ffffff;
+  --font-family: "Comic Neue", "Noto Sans", sans-serif;
+  --font-size: 19px;
+  --text-color: whitesmoke;
+  --background-color: black;
+  --alert-border-color: lightgoldenrodyellow;
+  --alert-text-color: goldenrod;
+}
 
-  body {
-    background-color: black;
-  }
+* {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--text-color);
+}
 
-  body:lang(en) {
-    font-family: "Comic Neue", "Noto Sans", sans-serif;
-  }
+body {
+  background-color: var(--background-color);
+}
 
-  body:lang(zh) {
-    font-family: "Comic Neue", "Noto Sans", sans-serif;
-  }
+.navbar-brand {
+  font-size: 27px;
+  font-weight: bold;
+}
 
-  body:lang(ja) {
-    font-family: "Comic Neue", "Noto Sans", sans-serif;
-  }
+.footer {
+  width: 100%;
+  background-color: var(--background-color);
+  text-align: center;
+  padding: 1rem 0;
+  position: relative;
+  margin-top: 2rem; /* 增加 margin-top 以避免擋住 ai_icon */
+}
 
-  .navbar-brand {
-    font-size: 27px;
-    font-weight: bold;
-  }
+.footer a {
+  margin: 0 10px;
+  font-size: smaller;
+  color: var(--text-color);
+}
 
-  .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: black;
-    text-align: center;
-  }
+.footer a:hover {
+  color: var(--text-color);
+}
 
-  .footer a {
-    margin: 0 10px;
-    font-size: smaller;
-    color: whitesmoke;
-  }
+.navbar-nav .nav-link {
+  padding: 10px;
+  margin: 8px;
+  text-decoration: none;
+}
 
-  .footer a:hover {
-    margin: 0 10px;
-    font-size: smaller;
-    color: whitesmoke;
-  }
+.navbar-nav .nav-item.active .nav-link {
+  background-color: var(--background-color);
+  color: var(--text-color) !important;
+  font-weight: bold;
+  border-bottom: 2px solid var(--text-color);
+}
 
-  .navbar-nav .nav-link {
-    padding: 10px;
-    margin: 8px;
-    text-decoration: none;
-  }
+.navbar-nav .nav-item {
+  margin-top: 8px;
+  margin-right: 10px;
+}
 
-  .navbar-nav .nav-item.active .nav-link {
-    background-color: black;
-    color: whitesmoke !important;
-    font-weight: bold;
-    border-bottom: 2px solid whitesmoke;
-  }
+.nav-item.dropdown .dropdown-menu {
+  background-color: var(--background-color);
+  border: 1px solid var(--text-color);
+  margin-top: 20px;
+}
 
-  .navbar-nav .nav-item {
-    margin-top: 8px;
-    margin-right: 10px;
-  }
+.nav-item.dropdown .dropdown-item {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--background-color);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+}
 
-  .nav-item.dropdown .dropdown-menu {
-    background-color: black;
-    border: 1px solid whitesmoke;
-    margin-top: 20px; /* Add space between the box and the language text */
-  }
+.nav-item.dropdown .dropdown-item:hover {
+  background-color: grey;
+  text-decoration: underline;
+}
 
-  .nav-item.dropdown .dropdown-item {
-    color: whitesmoke;
-    display: block;
-    width: 100%;
-    background-color: black;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 5px 0;
-  }
+.nav-item.dropdown .dropdown-item:active {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
 
-  .nav-item.dropdown .dropdown-item:hover {
-    background-color: grey;
-    text-decoration: underline;
-  }
+.nav-item.dropdown .dropdown-toggle {
+  background-color: var(--background-color);
+  border: 1px solid var(--background-color);
+}
 
-  .nav-item.dropdown .dropdown-item:active {
-    background-color: black;
-    color: whitesmoke;
-  }
+.nav-item.dropdown .dropdown-toggle:focus {
+  background-color: var(--background-color);
+  border: 1px solid var(--background-color);
+  color: var(--text-color);
+}
 
-  .nav-item.dropdown .dropdown-toggle {
-    background-color: black;
-    border: 1px solid black;
-  }
+#submit {
+  font-size: 18px;
+  font-weight: bold;
+  width: 200px;
+  background-color: var(--primary);
+  color: var(--background-color);
+  border: 1px solid var(--primary);
+  margin-top: 15px;
+}
 
-  .nav-item.dropdown .dropdown-toggle:focus {
-    background-color: black;
-    border: 1px solid black;
-    color: whitesmoke;
-  }
+.form-control {
+  margin-top: 4px;
+  background-color: var(--background-color);
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+}
 
-  #submit {
-    font-size: 18px;
-    font-weight: bold;
-    width: 200px;
-    background-color: #ff6b6b;
-    color: black;
-    border: 1px solid #ff6b6b;
-    margin-top: 15px;
-  }
+.search-icon {
+  margin-top: 4px;
+}
 
-  .form-control {
-    margin-top: 4px;
-    background-color: black;
-    border: 1px solid whitesmoke;
-    color: whitesmoke;
-  }
+.alert {
+  background-color: var(--background-color);
+  border: 1px solid var(--alert-border-color);
+  color: var(--alert-text-color);
+  opacity: 1;
+  transition: opacity 5s ease-out;
+  text-align: center;
+}
 
-  .search-icon {
-    margin-top: 4px;
-  }
+.nav-item a {
+  color: var(--text-color);
+}
 
-  .alert {
-    background-color: black;
-    border: 1px solid lightgoldenrodyellow;
-    color: goldenrod;
-    opacity: 1;
-    transition: opacity 5s ease-out;
-    text-align: center;
-  }
-
-  .nav-item a {
-    color: whitesmoke;
-  }
-
-  .nav-item a:hover {
-    color: whitesmoke;
-    border-bottom: 2px solid whitesmoke;
-  }
+.nav-item a:hover {
+  color: var(--text-color);
+  border-bottom: 2px solid var(--text-color);
+}
 </style>
 {% endblock head %}
 
@@ -251,7 +249,7 @@
     {% endif %}
     {% endwith %}
     {% block app_content %} {% endblock app_content %}
-    <div style="position: fixed; bottom: 20px; right: 20px;">
+    <div style="position: fixed; bottom: 40px; right: 20px;">
       <a href="{{ url_for('chat_with_copilot') }}">
         <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;">
       </a>
@@ -297,3 +295,4 @@
   }, 5000);
 </script>
 {% endblock scripts %}
+

@@ -1,20 +1,278 @@
-
 {% extends 'base.html.j2' %}
 
+{% block head %}
+{{ super() }}
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  .lesson-container {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1549693578-d683be217e58?w=1600') center/cover fixed;
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .lesson-container p {
+  color: var(--dark);
+  }
+  
+.lesson-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  color: var(--dark);
+}
+
+.lesson-card:hover {
+  transform: translateY(-5px);
+}
+
+.lesson-title {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature-box {
+  background: var(--light);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  color: var(--dark);
+}
+
+.objective {
+  border-left: 4px solid var(--secondary);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--dark);
+}
+
+.practice-area {
+  background: white;
+  border: 2px dashed var(--primary);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--secondary);
+}
+
+.kana-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.kana-character {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+.canvas-container {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+}
+</style>
+{% endblock head %}
+
 {% block app_content %}
-<h1>{{ _('Lessons') }}</h1>
-{% set sorted_lessons = lessons|sort(attribute='level.id') %}
-{% set levels_order = ['Beginner', 'Intermediate', 'Advanced'] %}
-{% for level in levels_order %}
-    {% set level_lessons = sorted_lessons|selectattr('level.name', 'equalto', level)|list %}
-    {% if level_lessons %}
-        <h3>{{ level }}</h2>
-        <ul>
-            {% for lesson in level_lessons %}
-                <li>Name: {{ lesson.name }}</li>
-                <p>Description: {{ lesson.description }}</p>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endfor %}
+<div class="lesson-container">
+  <div class="container">
+    <!-- Lesson 1 -->
+    <div class="lesson-card">
+      <h2 class="lesson-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">1</text>
+        </svg>
+        Lesson 1: Mastering Hiragana and Katakana
+      </h2>
+      
+      <div class="feature-box">
+        <h3>50 Sounds Practice</h3>
+        <div class="kana-grid" id="hiraganaGrid">
+          <!-- JavaScript will populate this -->
+        </div>
+        <button class="btn" onclick="playSound(this)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2v20M2 12h20"/>
+          </svg>
+          Listen to Pronunciation
+        </button>
+      </div>
+
+      <div class="objective">
+        <h4>Lesson Objective:</h4>
+        <p>By the end of this lesson, you will be able to recognize and pronounce all 50 sounds.</p>
+      </div>
+    </div>
+
+    <!-- Lesson 2 -->
+    <div class="lesson-card">
+      <h2 class="lesson-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">2</text>
+        </svg>
+        Lesson 2: Handwriting Practice
+      </h2>
+      
+      <div class="practice-area">
+        <canvas id="handwritingPad" width="400" height="400"></canvas>
+        <div>
+          <button class="btn" onclick="clearCanvas()">Clear</button>
+          <button class="btn" onclick="recognizeCharacter()">Check Character</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lesson 3 -->
+    <div class="lesson-card">
+      <h2 class="lesson-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">3</text>
+        </svg>
+        Lesson 3: Grammar Essentials
+      </h2>
+      
+      <div class="feature-box">
+        <h3>Basic Grammar Structure</h3>
+        <p>Topic は Subject が Verb です</p>
+        <button class="btn" onclick="searchGrammarExamples()">Find More Examples</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+// Hiragana characters array
+const hiragana = [
+  'あ', 'い', 'う', 'え', 'お',
+  'か', 'き', 'く', 'け', 'こ',
+  'さ', 'し', 'す', 'せ', 'そ',
+  'た', 'ち', 'つ', 'て', 'と',
+  'な', 'に', 'ぬ', 'ね', 'の'
+];
+
+// Populate Hiragana grid
+const hiraganaGrid = document.getElementById('hiraganaGrid');
+hiragana.forEach(char => {
+  const div = document.createElement('div');
+  div.className = 'kana-character';
+  div.textContent = char;
+  div.onclick = () => playCharacterSound(char);
+  hiraganaGrid.appendChild(div);
+});
+
+// Canvas setup for handwriting
+const canvas = document.getElementById('handwritingPad');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+
+ctx.strokeStyle = '#000';
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
+ctx.lineWidth = 8;
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+function startDrawing(e) {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+function draw(e) {
+  if (!isDrawing) return;
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+function stopDrawing() {
+  isDrawing = false;
+}
+
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Text-to-Speech functionality
+function playCharacterSound(character) {
+  const utterance = new SpeechSynthesisUtterance(character);
+  utterance.lang = 'ja-JP';
+  speechSynthesis.speak(utterance);
+}
+
+function playSound(btn) {
+  gsap.to(btn, {
+    scale: 0.95,
+    duration: 0.1,
+    yoyo: true,
+    repeat: 1
+  });
+  const utterance = new SpeechSynthesisUtterance('こんにちは');
+  utterance.lang = 'ja-JP';
+  speechSynthesis.speak(utterance);
+}
+
+// OCR Character Recognition (mock function)
+function recognizeCharacter() {
+  // In a real implementation, this would send the canvas data to an OCR service
+  alert('Character recognition would analyze your handwriting here!');
+}
+
+// Grammar Search (mock function)
+function searchGrammarExamples() {
+  // In a real implementation, this would integrate with Bing Web Search API
+  alert('Searching for grammar examples using Bing Web Search API...');
+}
+
+// Add some animation on page load
+gsap.from('.lesson-card', {
+  y: 50,
+  opacity: 0,
+  duration: 1,
+  stagger: 0.2,
+  ease: 'power2.out'});
+</script>
+{% endblock scripts %}
