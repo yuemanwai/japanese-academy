@@ -1,0 +1,115 @@
+{% extends "base.html.j2" %}
+
+{% block head %}
+{{ super() }}
+<style>
+  .record-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  video {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+  .btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn:hover {
+    background: var(--secondary);
+  }
+</style>
+{% endblock head %}
+
+{% block app_content %}
+<div class="record-container">
+  <video id="video" width="640" height="480" autoplay></video>
+  <button id="startBtn" class="btn">Start Recording</button>
+  <button id="stopBtn" class="btn" disabled>Stop Recording</button>
+  <button id="uploadBtn" class="btn" disabled>Upload Video</button>
+</div>
+{% endblock app_content %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  const video = document.getElementById('video');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const uploadBtn = document.getElementById('uploadBtn');
+  let mediaRecorder;
+  let recordedChunks = [];
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = function(event) {
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = function() {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const formData = new FormData();
+        formData.append('video', blob, 'recorded_video.webm');
+
+        fetch('/upload_video', {
+          method: 'POST',
+          body: formData
+        }).then(response => response.json())
+          .then(data => {
+            alert('Video uploaded successfully!');
+          }).catch(error => {
+            console.error('Error uploading video:', error);
+          });
+      };
+    })
+    .catch(error => {
+      console.error('Error accessing media devices.', error);
+    });
+
+  startBtn.addEventListener('click', () => {
+    recordedChunks = [];
+    mediaRecorder.start();
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    uploadBtn.disabled = true;
+  });
+
+  stopBtn.addEventListener('click', () => {
+    mediaRecorder.stop();
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    uploadBtn.disabled = false;
+  });
+
+  uploadBtn.addEventListener('click', () => {
+    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const formData = new FormData();
+    formData.append('video', blob, 'recorded_video.webm');
+
+    fetch('/upload_video', {
+      method: 'POST',
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        alert('Video uploaded successfully!');
+      }).catch(error => {
+        console.error('Error uploading video:', error);
+      });
+  });
+</script>
+{% endblock scripts %}

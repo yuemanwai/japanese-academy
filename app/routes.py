@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify
+from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from flask_babel import _, get_locale, refresh
@@ -15,6 +15,7 @@ import time
 import random
 import subprocess
 from copilot import CopilotChat
+# from app.gemini import process_video_with_gemini
 
 
 @app.before_request
@@ -393,3 +394,27 @@ def set_language():
         session['lang'] = lang
         refresh()
     return redirect(request.referrer)
+
+@app.route('/record')
+def record():
+    return render_template('record.html.j2')
+
+@app.route('/upload_video', methods=['POST'])
+def upload_video():
+    if 'video' not in request.files:
+        return jsonify({'error': 'No video file provided'}), 400
+
+    video = request.files['video']
+    video_path = os.path.join(current_app.root_path, 'static/video', video.filename)
+    try:
+        video.save(video_path)
+    except Exception as e:
+        current_app.logger.error(f'Error saving video: {e}')
+        return jsonify({'error': 'Error saving video'}), 500
+
+    # Call the AI function to process the video
+    # score = process_video_with_gemini(video_path)
+
+    score = 5
+
+    return jsonify({'message': 'Video uploaded successfully', 'score': score})
