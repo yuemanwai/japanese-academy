@@ -3,115 +3,34 @@
 {% block head %}
 {{ super() }}
 <style>
-/* Adding new slider styles */
-.slider-container {
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  position: relative;
-  margin: 2rem 0;
-}
-
-.slide {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.slide.active {
-  opacity: 1;
-  position: relative;
-}
-
-.slide:nth-child(1) {
-  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-}
-
-.slide:nth-child(2) {
-  background: linear-gradient(45deg, #4ecdc4, #45b7af);
-}
-
-.slide:nth-child(3) {
-  background: linear-gradient(45deg, #2c3e50, #3d5871);
-}
-
-.slide h2 {
-  margin-bottom: 1rem;
-}
-
-.slide p {
-  max-width: 600px;
-  margin-bottom: 2rem;
-}
-
-.slider-nav {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 1rem;
-}
-
-.slider-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.5);
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.slider-dot.active {
-  background: white;
-}
-
-.slide-content {
-  transform: translateY(50px);
-  opacity: 0;
-  transition: all 0.5s ease;
-}
-
-.slide.active .slide-content {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide img {
-  max-width: 100%;
-  height: 300px;
-  border-radius: 15px;
-  margin-bottom: 1rem;
-}
-
 /* Feature card styles */
 .features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   padding: 4rem 2rem;
-  background: #f5f5f5;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1612741389124-b659f38b528e') center/cover fixed;
+}
+
+.feature-card img {
+  max-width: 100%;
+  max-height: 70%;
+  border-radius: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .feature-card {
-  background: white;
+  margin: 20px;
+  height: 400px;
+  background-image: radial-gradient(circle, #80f9bd, #4cf3e7, #53e9ff, #86daff, #b4cbff, #cec3f8, #e4bbea, #f4b5d7, #fab5c9, #fcb7bd, #f9bbb3, #f4bfab);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
   color: var(--dark); /* 設置字體顏色為深色 */
+  text-align: center; /* 置中文字 */
 }
 .feature-card p {
   color: var(--dark); /* 設置字體顏色為深色 */
@@ -119,56 +38,44 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
+  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);  color: white; /* 改變字體顏色 */
+  color: var(--light);
+}
+
+.centered-title {
+  text-align: center; /* 置中標題 */
+  width: 100%; /* 佔全行 */
 }
 </style>
 {% endblock head %}
 
 {% block app_content %}
-<!-- Hero Slider -->
-<div class="slider-container">
-  <div class="slide active" data-url="{{ url_for('lessons') }}">
-    <div class="slide-content">
-      <img src="../static/image/slide1.png" alt="Icon">
-      <h2>Master Japanese with AI</h2>
-      <p>Interactive lessons powered by artificial intelligence to help you learn Japanese effectively</p>
-    </div>
-  </div>
-  <div class="slide" data-url="{{ url_for('lessons') }}">
-    <div class="slide-content">
-      <img src="../static/image/slide2.png" alt="Icon">
-      <h2>Hiragana & Katakana</h2>
-      <p>Master the Japanese writing systems with our interactive tools and AI-powered feedback</p>
-    </div>
-  </div>
-  <div class="slide" data-url="{{ url_for('lessons') }}">
-    <div class="slide-content">
-      <img src="../static/image/slide3.png" alt="Icon">
-      <h2>Grammar Essentials</h2>
-      <p>Build a strong foundation in Japanese grammar with personalized learning paths</p>
-    </div>
-  </div>
-  <div class="slider-nav">
-    <div class="slider-dot active" onclick="setSlide(0)"></div>
-    <div class="slider-dot" onclick="setSlide(1)"></div>
-    <div class="slider-dot" onclick="setSlide(2)"></div>
-  </div>
-</div>
-
 <!-- Features Section -->
+<div class="centered-title"><h1>Master Japanese with AI</h1></div>
 <section class="features">
+
+
+
+
+
   <div class="feature-card">
+    <img src="../static/image/slide1.png" alt="Icon">
     <h3>AI Conversation Practice</h3>
     <p>Practice speaking Japanese with our AI language partners anytime, anywhere.</p>
   </div>
   <div class="feature-card">
+    <img src="../static/image/slide2.png" alt="Icon">
     <h3>Smart Learning Path</h3>
     <p>Personalized curriculum that adapts to your learning style and progress.</p>
   </div>
   <div class="feature-card">
+    <img src="../static/image/slide3.png" alt="Icon">
     <h3>Real-time Feedback</h3>
     <p>Get instant corrections and suggestions to improve your Japanese skills.</p>
   </div>
+
 </section>
+
 {% endblock app_content %}
 
 {% block scripts %}
