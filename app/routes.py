@@ -8,11 +8,9 @@ from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
 from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings
 from app.email import send_password_reset_email
-from random import randint
-from werkzeug.utils import secure_filename
 import os
 import time
-import random
+import random # Ensure the correct import of the random module
 import subprocess
 from copilot import CopilotChat
 # from app.gemini import process_video_with_gemini
@@ -89,7 +87,7 @@ def reset_password_request():
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         # Add a random delay
-        time.sleep(random.randint(1, 5))
+        time.sleep(random.randint(1, 5))  # Use the correct random module
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
@@ -222,8 +220,8 @@ def get_random_post():
     return render_template('random_post.html.j2', title=post.title, posts=[post], user=user)
 
 
-@app.route('/random/<title>')
-def random(title):
+@app.route('/randompost/<title>')
+def random_post(title):
     post = Post.query.filter_by(title=title).first()
     if post:
         if current_user.is_authenticated:
