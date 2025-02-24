@@ -13,6 +13,7 @@ import time
 import random # Ensure the correct import of the random module
 import subprocess
 from copilot import CopilotChat
+from werkzeug.utils import secure_filename
 # from app.gemini import process_video_with_gemini
 
 

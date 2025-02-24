@@ -18,3 +18,5 @@ SQLAlchemy==2.0.37
 urllib3==2.3.0
 Werkzeug==2.2.2
 WTForms==3.0.1
+google-genai
+dotenv
