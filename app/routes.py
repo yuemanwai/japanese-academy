@@ -7,7 +7,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
 from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings
-from app.email import send_password_reset_email
+from app.email_service import send_password_reset_email
 import os
 import time
 import random # Ensure the correct import of the random module
