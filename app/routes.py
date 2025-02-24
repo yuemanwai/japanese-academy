@@ -322,7 +322,7 @@ def leave_message():
 
 @app.route('/lessons')
 def lessons():
-    lessons = Lesson.query.all()
+    # lessons = Lesson.query.all()
     return render_template('lessons.html.j2', lessons=lessons)
 
 @app.route('/practice')
