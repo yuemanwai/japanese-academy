@@ -131,6 +131,7 @@ flask db upgrade
 ### Additional Resources
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
+- [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
 
 ### How to Create Translations
 
@@ -164,5 +165,3 @@ After creating or updating translations, remember to re-run the Flask applicatio
 ```bash
 flask --debug run --host=0.0.0.0
 ```
-
-
