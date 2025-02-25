@@ -2,6 +2,12 @@
 
 Wait until the page on port 5000 pops up, and everything will be set up.
 
+OR
+
+```bash
+flask --debug run --host=0.0.0.0
+```
+
 ## File Structure
 
 ```
@@ -132,6 +138,7 @@ flask db upgrade
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
 - [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
+- [CSS Inspiration](https://codepen.io/topics/)
 
 ### How to Create Translations
 
