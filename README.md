@@ -6,6 +6,7 @@ OR
 
 ```bash
 flask --debug run --host=0.0.0.0
+python test_data.py
 ```
 
 ## File Structure
