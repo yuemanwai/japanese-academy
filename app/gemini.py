@@ -4,31 +4,36 @@ import time
 import os
 from dotenv import load_dotenv
 
+
 # Load environment variables from .env file
 load_dotenv()
 
 class GeminiClient:
-    def __init__(self, sys_instruct):
+    def __init__(self, sys_instruct=None, model="gemini-2.0-flash", config=None):
         """初始化 GeminiClient 並設置 API 密鑰和系統指令"""
         self.sys_instruct = sys_instruct
+        self.model = model
+        self.config = config or types.GenerateContentConfig(
+            system_instruction=sys_instruct,
+            max_output_tokens=100,
+            temperature=0.1
+        )
         api_key = os.getenv("GEMINI_API_KEY")
         self.client = genai.Client(api_key=api_key)
 
-    def generate_content(self, model, contents, config=None):
+    def generate_content(self, contents):
         """
         使用指定的模型和內容生成文本。
 
-        :param model: 模型名稱
         :param contents: 要生成的內容
-        :param config: 生成內容的配置（可選）
         :return: 生成的文本
         """
         response = self.client.models.generate_content(
-            model=model, contents=contents, config=config
+            model=self.model, contents=contents, config=self.config
         )
         return response.text
 
-    def upload_video(self, video_path):
+    def _upload_video(self, video_name):
         """
         上傳視頻文件並返回文件對象。
 
@@ -36,11 +41,12 @@ class GeminiClient:
         :return: 上傳的文件對象
         """
         print("Uploading file...")
-        video_file = self.client.files.upload(path=video_path)
+        video_path = f'/workspaces/FYP_AI-powered_Interactive_Japanese_Academy/app/static/video/{video_name}'
+        video_file = self.client.files.upload(file=video_path)
         print(f"Completed upload: {video_file.uri}")
         return video_file
 
-    def check_file_status(self, video_file):
+    def _check_file_status(self, video_file):
         """
         檢查文件的處理狀態，直到文件處於 ACTIVE 狀態。
 
@@ -58,19 +64,57 @@ class GeminiClient:
         print('Done')
         return video_file
 
-    def summarize_video(self, video_file):
+    def _list_files(self):
         """
-        使用指定的模型生成視頻摘要和測驗。
+        列出所有上傳的文件及其 URI。
 
-        :param video_file: 視頻文件對象
-        :return: 生成的摘要和測驗文本
+        :return: 文件名稱和 URI 的列表
         """
+        files = self.client.files.list()
+        return [(f.name, f.uri) for f in files]
+
+    def evaluate_video(self, video_name):
+        """
+        使用指定的模型評價視頻。
+
+        :param video_name: 視頻文件名稱
+        :return: 生成的評價文本
+        """
+        files = self._list_files()
+        video_file = next((f for f in files if f[0] == video_name), None)
+
+        if not video_file:
+            video_file = self._upload_video(video_name)
+        else:
+            video_file = self.client.files.get(name=video_file[0])
+
+        video_file = self._check_file_status(video_file)
         response = self.client.models.generate_content(
-            model="gemini-1.5-pro",
+            model=self.model,
             contents=[
                 video_file,
-                "Summarize this video. Then create a quiz with answer key "
-                "based on the information in the video."
+                """
+                You are a Japanese language master. Please evaluate the uploaded video based on the following criteria:
+
+                1. **Evaluation Criteria**:
+                    a. Pronunciation Accuracy: Assess the clarity and correctness of Japanese word and phrase pronunciation.
+                    b. Grammar Usage: Check the correctness of grammar and sentence structure in spoken Japanese.
+                    c. Vocabulary Usage: Evaluate whether the vocabulary used is appropriate for the context and diverse.
+                    d. Fluency: Rate the overall fluency and naturalness of spoken Japanese.
+                    e. Comprehension: Ensure that the spoken Japanese is easy to understand and coherent.
+                    f. JLPT Level: Assess the speaker's spoken Japanese level corresponding to the JLPT levels (N1-N5).
+                2. **Scoring System**:
+                    a. Pronunciation Accuracy: 1-5 (1 = Poor, 5 = Excellent)
+                    b. Grammar Usage: 1-5 (1 = Poor, 5 = Excellent)
+                    c. Vocabulary Usage: 1-5 (1 = Poor, 5 = Excellent)
+                    d. Fluency: 1-5 (1 = Poor, 5 = Excellent)
+                    e. Comprehension: 1-5 (1 = Poor, 5 = Excellent)
+                    f. JLPT Level: N1-N5 (N1 = Advanced, N5 = Beginner)
+                3. **Feedback Generation**:
+                    a. Provide detailed feedback for each evaluation criterion, highlighting strengths and areas for improvement.
+                    b. Offer examples or suggestions for better pronunciation, grammar, vocabulary, and fluency.
+                    c. Estimate the probability of passing the JLPT exam based on the scores. For example: "Based on your scores, you have about an 80% chance of passing the JLPT N3 exam. It is recommended to continue improving pronunciation and vocabulary to increase the success rate."
+                """
             ]
         )
         return response.text
@@ -82,6 +126,7 @@ class GeminiClient:
         :param video_file: 視頻文件對象
         :return: 轉錄的文本和視覺描述
         """
+        video_file = self._check_file_status(video_file)
         prompt = (
             "Transcribe the audio from this video, giving timestamps for "
             "salient events in the video. Also provide visual descriptions."
@@ -92,15 +137,6 @@ class GeminiClient:
         )
         return response.text
 
-    def list_files(self):
-        """
-        列出所有上傳的文件及其 URI。
-
-        :return: 文件名稱和 URI 的列表
-        """
-        files = self.client.files.list()
-        return [(f.name, f.uri) for f in files]
-
     def delete_file(self, file_name):
         """
         刪除指定名稱的文件。
@@ -109,40 +145,25 @@ class GeminiClient:
         """
         self.client.files.delete(name=file_name)
 
+
 # Example usage
 if __name__ == "__main__":
-    sys_instruct = "You are a cat. Your name is Neko."  # 替換為你的系統指令
-    gemini_client = GeminiClient(sys_instruct)
+    gemini_client = GeminiClient()
     
     # Generate content example
-    result = gemini_client.generate_content("gemini-2.0-flash", "講下JLPT",
-    config=types.GenerateContentConfig(
-        system_instruction=gemini_client.sys_instruct,
-        max_output_tokens=100,
-        temperature=0.1
-    ))
+    result = gemini_client.generate_content(contents="講下JLPT")
     print(result)
     
-    # Upload video example
-    # video_file = gemini_client.upload_video("GreatRedSpot.mp4")
-    
-    # Check file status example
-    # video_file = gemini_client.check_file_status(video_file)
-    
-    # Summarize video example
-    # summary = gemini_client.summarize_video(video_file)
-    # print(summary)
+    # Evaluate video example
+    evaluation = gemini_client.evaluate_video("test_video.mp4")
+    print(evaluation)
     
     # Transcribe video example
     # transcription = gemini_client.transcribe_video(video_file)
     # print(transcription)
-    
-    # List files example
-    # files = gemini_client.list_files()
-    # print('My files:')
-    # for name, uri in files:
-    #     print(f" {name}: {uri}")
-    
+
     # Delete file example
     # gemini_client.delete_file(video_file.name)
+
+
 
