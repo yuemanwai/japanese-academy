@@ -9,7 +9,6 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f5f5f5;
   }
   video {
     border: 2px solid #ccc;
@@ -24,9 +23,25 @@
     border-radius: 25px;
     cursor: pointer;
     transition: background 0.3s ease;
+    margin: 0 0.5rem;
   }
   .btn:hover {
     background: var(--secondary);
+    color: white;
+  }
+  .btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  .record-container h2 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  .button-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
   }
 </style>
 {% endblock head %}
@@ -34,9 +49,11 @@
 {% block app_content %}
 <div class="record-container">
   <video id="video" width="640" height="480" autoplay></video>
-  <button id="startBtn" class="btn">Start Recording</button>
-  <button id="stopBtn" class="btn" disabled>Stop Recording</button>
-  <button id="uploadBtn" class="btn" disabled>Upload Video</button>
+  <div class="button-row">
+    <button id="startBtn" class="btn">Start Recording</button>
+    <button id="stopBtn" class="btn" disabled>Stop Recording</button>
+    <button id="uploadBtn" class="btn" disabled>Upload Video</button>
+  </div>
 </div>
 {% endblock app_content %}
 
