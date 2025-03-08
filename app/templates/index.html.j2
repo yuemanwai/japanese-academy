@@ -70,40 +70,25 @@ a.feature-card:hover {
 <div class="centered-title"><h1>Master Japanese with AI</h1></div>
 <section class="features">
 
-  <a href="#" class="feature-card">
+  <a href="{{ url_for('lessons') }}#lesson1" class="feature-card">
     <img src="../static/image/slide1.png" alt="Image not found">
     <h3>AI Conversation Practice</h3>
     <p>Practice speaking Japanese with our AI language partners anytime, anywhere.</p>
   </a>
-  <a href="#" class="feature-card">
+  <a href="{{ url_for('lessons') }}#lesson2" class="feature-card">
     <img src="../static/image/slide2.png" alt="Image not found">
     <h3>Smart Learning Path</h3>
     <p>Personalized curriculum that adapts to your learning style and progress.</p>
   </a>
-  <a href="#" class="feature-card">
+  <a href="{{ url_for('lessons') }}#lesson3" class="feature-card">
     <img src="../static/image/slide3.png" alt="Image not found">
     <h3>Real-time Feedback</h3>
     <p>Get instant corrections and suggestions to improve your Japanese skills.</p>
   </a>
-  <a href="#" class="feature-card">
-    <img src="../static/image/slide4.png" alt="Image not found">
-    <h3>Interactive Lessons</h3>
-    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
-  </a>
-  <a href="#" class="feature-card">
-    <img src="../static/image/slide4.png" alt="Image not found">
-    <h3>Interactive Lessons</h3>
-    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
-  </a>
-  <a href="#" class="feature-card">
-    <img src="../static/image/slide4.png" alt="Image not found">
-    <h3>Interactive Lessons</h3>
-    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
-  </a>
-  <a href="#" class="feature-card">
-    <img src="../static/image/slide4.png" alt="Image not found">
-    <h3>Interactive Lessons</h3>
-    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
+  <a href="{{ url_for('record') }}" class="feature-card">
+    <img src="../static/image/JP.jpeg" alt="Image not found">
+    <h3>Video evaluation</h3>
+    <p>Japanese Video Evaluation Powered by Gemini</p>
   </a>
   
 </section>
