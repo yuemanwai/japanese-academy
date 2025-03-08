@@ -151,12 +151,12 @@ if __name__ == "__main__":
     gemini_client = GeminiClient()
     
     # Generate content example
-    result = gemini_client.generate_content(contents="講下JLPT")
-    print(result)
+    # result = gemini_client.generate_content(contents="講下JLPT")
+    # print(result)
     
-    # Evaluate video example
-    evaluation = gemini_client.evaluate_video("test_video.mp4")
-    print(evaluation)
+    # # Evaluate video example
+    # evaluation = gemini_client.evaluate_video("test_video.mp4")
+    # print(evaluation)
     
     # Transcribe video example
     # transcription = gemini_client.transcribe_video(video_file)

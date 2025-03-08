@@ -45,6 +45,8 @@
   }
   .upload-container {
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
   }
 </style>
 {% endblock head %}
@@ -59,6 +61,7 @@
   </div>
   <div class="upload-container">
     <input type="file" id="uploadInput" accept="video/*">
+    <button id="evaluateUploadBtn" class="btn" disabled>Evaluate Upload Video</button>
   </div>
 </div>
 {% endblock app_content %}
@@ -70,6 +73,7 @@
   const startBtn = document.getElementById('startBtn');
   const stopBtn = document.getElementById('stopBtn');
   const evaluateBtn = document.getElementById('evaluateBtn');
+  const evaluateUploadBtn = document.getElementById('evaluateUploadBtn');
   const uploadInput = document.getElementById('uploadInput');
   let mediaRecorder;
   let recordedChunks = [];
@@ -90,15 +94,17 @@
         const formData = new FormData();
         formData.append('video', blob, 'recorded_video.webm');
 
-        fetch('/upload_video', {
+        fetch('/video_evaluation', {
           method: 'POST',
           body: formData
-        }).then(response => response.json())
-          .then(data => {
-            // alert('Video uploaded successfully!');
-          }).catch(error => {
-            console.error('Error uploading video:', error);
-          });
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log('Recorded video uploaded successfully');
+        }).catch(error => {
+          console.error('Error uploading recorded video:', error);
+        });
       };
     })
     .catch(error => {
@@ -125,23 +131,43 @@
     const formData = new FormData();
     formData.append('video', blob, 'recorded_video.webm');
 
-    fetch('/evaluate_video', {
+    fetch('/video_evaluation', {
       method: 'POST',
       body: formData
-    }).then(response => response.json())
-      .then(data => {
-        const geminiClient = new GeminiClient();
-        const evaluation = geminiClient.evaluate_video("test_video.mp4");
-        console.log(evaluation);
-      }).catch(error => {
-        console.error('Error evaluating video:', error);
-      });
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log('Evaluation request sent successfully');
+    }).catch(error => {
+      console.error('Error sending evaluation request:', error);
+      alert('Error sending evaluation request: ' + error.message);
+    });
   });
 
   uploadInput.addEventListener('change', () => {
-    if (uploadInput.files.length > 0) {
-      evaluateBtn.disabled = false;
-    }
+    console.log('File input changed');
+    evaluateUploadBtn.disabled = uploadInput.files.length === 0;
   });
+
+  evaluateUploadBtn.addEventListener('click', () => {
+    const file = uploadInput.files[0];
+    const formData = new FormData();
+    formData.append('video', file);
+
+    fetch('/video_evaluation', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log('Uploaded video successfully');
+    }).catch(error => {
+      console.error('Error uploading video:', error);
+      alert('Error uploading video: ' + error.message);
+    });
+  });
+
 </script>
 {% endblock scripts %}

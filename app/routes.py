@@ -14,7 +14,8 @@ import random # Ensure the correct import of the random module
 import subprocess
 from copilot import CopilotChat
 from werkzeug.utils import secure_filename
-# from app.gemini import process_video_with_gemini
+from mimetypes import guess_type
+from app.gemini import GeminiClient  # 確保從正確的模塊導入
 
 
 @app.before_request
@@ -398,22 +399,37 @@ def set_language():
 def record():
     return render_template('record.html.j2')
 
-@app.route('/upload_video', methods=['POST'])
-def upload_video():
+@app.route('/video_evaluation', methods=['POST'])
+def video_evaluation():
     if 'video' not in request.files:
-        return jsonify({'error': 'No video file provided'}), 400
+        flash('No video file provided')
+        return redirect(url_for('record'))
 
     video = request.files['video']
-    video_path = os.path.join(current_app.root_path, 'static/video', video.filename)
+    mime_type, _ = guess_type(video.filename)
+    allowed_mime_types = [
+        'video/mp4', 'video/mpeg', 'video/mov', 'video/avi', 'video/x-flv',
+        'video/mpg', 'video/webm', 'video/wmv', 'video/3gpp'
+    ]
+    if not mime_type or mime_type not in allowed_mime_types:
+        flash('不支援此格式, 請重新上傳！')
+        return redirect(url_for('record'))
+
+    video_path = os.path.join(current_app.root_path, 'static/video', secure_filename(video.filename))
     try:
         video.save(video_path)
     except Exception as e:
         current_app.logger.error(f'Error saving video: {e}')
-        return jsonify({'error': 'Error saving video'}), 500
+        flash('Error saving video')
+        return redirect(url_for('record'))
 
-    # Call the AI function to process the video
-    # score = process_video_with_gemini(video_path)
+    gemini_client = GeminiClient()
+    try:
+        evaluation = gemini_client.evaluate_video(video.filename)
+        if evaluation:
+            print("有資料")
+    except Exception as e:
+        current_app.logger.error(f'Error evaluating video: {e}')
+        return jsonify({'error': 'Error evaluating video'}), 500
 
-    score = 5
-
-    return jsonify({'message': 'Video uploaded successfully', 'score': score})
+    return render_template('score.html.j2', evaluation=evaluation)
