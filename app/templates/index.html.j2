@@ -6,7 +6,7 @@
 /* Feature card styles */
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 每行顯示3個 */
   gap: 2rem;
   padding: 4rem 2rem;
 }
@@ -45,6 +45,23 @@
   text-align: center; /* 置中標題 */
   width: 100%; /* 佔全行 */
 }
+
+a.feature-card:hover {
+  text-decoration: none; /* 移除底線 */
+}
+
+@media (max-width: 900px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr); /* 每行顯示2個 */
+  }
+}
+
+@media (max-width: 600px) {
+  .features {
+    grid-template-columns: 1fr; /* 每行顯示1個 */
+  }
+}
+
 </style>
 {% endblock head %}
 
@@ -53,24 +70,43 @@
 <div class="centered-title"><h1>Master Japanese with AI</h1></div>
 <section class="features">
 
-  <div class="feature-card">
-    <img src="../static/image/slide1.png" alt="Icon">
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide1.png" alt="Image not found">
     <h3>AI Conversation Practice</h3>
     <p>Practice speaking Japanese with our AI language partners anytime, anywhere.</p>
-  </div>
-  <div class="feature-card">
-    <img src="../static/image/slide2.png" alt="Icon">
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide2.png" alt="Image not found">
     <h3>Smart Learning Path</h3>
     <p>Personalized curriculum that adapts to your learning style and progress.</p>
-  </div>
-  <div class="feature-card">
-    <img src="../static/image/slide3.png" alt="Icon">
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide3.png" alt="Image not found">
     <h3>Real-time Feedback</h3>
     <p>Get instant corrections and suggestions to improve your Japanese skills.</p>
-  </div>
-
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide4.png" alt="Image not found">
+    <h3>Interactive Lessons</h3>
+    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide4.png" alt="Image not found">
+    <h3>Interactive Lessons</h3>
+    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide4.png" alt="Image not found">
+    <h3>Interactive Lessons</h3>
+    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
+  </a>
+  <a href="#" class="feature-card">
+    <img src="../static/image/slide4.png" alt="Image not found">
+    <h3>Interactive Lessons</h3>
+    <p>Engage in interactive lessons designed to enhance your learning experience.</p>
+  </a>
+  
 </section>
-
 {% endblock app_content %}
 
 {% block scripts %}
