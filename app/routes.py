@@ -432,4 +432,9 @@ def video_evaluation():
         current_app.logger.error(f'Error evaluating video: {e}')
         return jsonify({'error': 'Error evaluating video'}), 500
 
+    return redirect(url_for('score', evaluation=evaluation))
+
+@app.route('/score')
+def score():
+    evaluation = request.args.get('evaluation')
     return render_template('score.html.j2', evaluation=evaluation)

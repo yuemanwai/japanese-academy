@@ -97,11 +97,6 @@
         fetch('/video_evaluation', {
           method: 'POST',
           body: formData
-        }).then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          console.log('Recorded video uploaded successfully');
         }).catch(error => {
           console.error('Error uploading recorded video:', error);
         });
@@ -134,11 +129,6 @@
     fetch('/video_evaluation', {
       method: 'POST',
       body: formData
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log('Evaluation request sent successfully');
     }).catch(error => {
       console.error('Error sending evaluation request:', error);
       alert('Error sending evaluation request: ' + error.message);
@@ -158,11 +148,6 @@
     fetch('/video_evaluation', {
       method: 'POST',
       body: formData
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log('Uploaded video successfully');
     }).catch(error => {
       console.error('Error uploading video:', error);
       alert('Error uploading video: ' + error.message);
