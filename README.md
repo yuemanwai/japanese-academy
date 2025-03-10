@@ -33,17 +33,30 @@ FYP_AI-powered_Interactive_Japanese_Academy/
 │   │   ├── community.html.j2 # Community page template
 │   │   ├── shared.html.j2   # Shared page template for coming soon features
 │   │   ├── 404.html.j2      # 404 error page template
+│   │   ├── profile.html.j2  # User profile page template
+│   │   ├── settings.html.j2 # User settings page template
+│   │   ├── notifications.html.j2 # Notifications page template
+│   │   ├── messages.html.j2 # Messages page template
 │   ├── static/              # Contains static files like CSS, JavaScript, and images
 │   │   ├── css/
+│   │   │   ├── styles.css   # Main CSS file
 │   │   ├── js/
+│   │   │   ├── scripts.js   # Main JavaScript file
 │   │   ├── images/
+│   │       ├── logo.png     # Logo image
 │   ├── translations/        # Contains translation files
 │   ├── babel.cfg            # Configuration file for Babel
+│   ├── config.py            # Configuration file for the Flask application
+│   ├── errors.py            # Error handlers for the application
+│   ├── utils.py             # Utility functions for the application
 ├── migrations/              # Database migration files
 ├── test_data.py             # Script to load mock data into the database
 ├── requirements.txt         # List of Python dependencies
 ├── README.md                # This file
 ├── .env                     # Environment variables
+├── .gitignore               # Git ignore file
+├── Dockerfile               # Docker configuration file
+├── docker-compose.yml       # Docker Compose configuration file
 ```
 
 ### Description of Key Files
@@ -67,9 +80,22 @@ FYP_AI-powered_Interactive_Japanese_Academy/
   - `community.html.j2`: Community page template.
   - `shared.html.j2`: Shared page template for coming soon features.
   - `404.html.j2`: 404 error page template.
+  - `profile.html.j2`: User profile page template.
+  - `settings.html.j2`: User settings page template.
+  - `notifications.html.j2`: Notifications page template.
+  - `messages.html.j2`: Messages page template.
 - `app/static/`: Contains static files like CSS, JavaScript, and images.
+  - `css/`: Contains CSS files.
+    - `styles.css`: Main CSS file.
+  - `js/`: Contains JavaScript files.
+    - `scripts.js`: Main JavaScript file.
+  - `images/`: Contains image files.
+    - `logo.png`: Logo image.
 - `app/translations/`: Contains translation files.
 - `babel.cfg`: Configuration file for Babel.
+- `config.py`: Configuration file for the Flask application.
+- `errors.py`: Error handlers for the application.
+- `utils.py`: Utility functions for the application.
 - `migrations/`: Database migration files.
 - `test_data.py`: Script to load mock data into the database.
 - `requirements.txt`: List of Python dependencies.
@@ -77,6 +103,45 @@ FYP_AI-powered_Interactive_Japanese_Academy/
 - `.env`: Environment variables.
 
 ## Commands That Might Help
+
+### Flask Commands
+
+Run the following commands to manage the Flask application:
+
+```bash
+# Initialize the migration repository
+flask db init
+
+# Generate an initial migration
+flask db migrate -m "Initial migration."
+
+# Apply the migration to the database
+flask db upgrade
+
+# Generate a new migration after making changes to the models
+flask db migrate -m "Description of changes."
+
+# Apply the new migration to the database
+flask db upgrade
+```
+
+### How to Modify Columns in Existing Database
+
+If you need to modify some columns in the existing database, follow these steps:
+
+1. Manually delete the table from the database.
+2. Run the following commands to apply the changes:
+
+```bash
+# Apply the migration to the database
+flask db upgrade
+
+# Generate a new migration after making changes to the models
+flask db migrate -m "Description of changes."
+
+# Apply the new migration to the database
+flask db upgrade
+```
 
 ### How to Install Google Chrome on Linux
 
@@ -114,33 +179,6 @@ google-chrome --version
 ./chromedriver-linux64/chromedriver --version
 ```
 
-### How to Use Flask-Migrate
-
-Run the following commands to manage database migrations:
-
-```bash
-# Initialize the migration repository
-flask db init
-
-# Generate an initial migration
-flask db migrate -m "Initial migration."
-
-# Apply the migration to the database
-flask db upgrade
-
-# Generate a new migration after making changes to the models
-flask db migrate -m "Description of changes."
-
-# Apply the new migration to the database
-flask db upgrade
-```
-
-### Additional Resources
-
-- [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
-- [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
-- [CSS Inspiration](https://codepen.io/topics/)
-
 ### How to Create Translations
 
 Run the following commands to set up and create translations:
@@ -165,6 +203,12 @@ pybabel extract -F babel.cfg -k lazy_gettext -o translations/messages.pot .
 pybabel update -i translations/messages.pot -d translations
 pybabel compile -d translations
 ```
+
+### Additional Resources
+
+- [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
+- [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
+- [CSS Inspiration](https://codepen.io/topics/)
 
 #### Important Note
 
