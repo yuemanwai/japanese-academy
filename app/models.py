@@ -258,3 +258,25 @@ class ChatSettings(db.Model):
     word_limit = db.Column(db.Integer, default=50)
     condition = db.Column(db.String(255), default="answer using only text and in simple japanese(and explain what you mean in short eng)")
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+class Evaluation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    pronunciation_accuracy = db.Column(db.Integer, nullable=False)
+    grammar_usage = db.Column(db.Integer, nullable=False)
+    vocabulary_usage = db.Column(db.Integer, nullable=False)
+    fluency = db.Column(db.Integer, nullable=False)
+    comprehension = db.Column(db.Integer, nullable=False)
+    jlpt_level = db.Column(db.String(10), nullable=False)
+    passing_probability_n1 = db.Column(db.String(10), nullable=False)
+    passing_probability_n2 = db.Column(db.String(10), nullable=False)
+    passing_probability_n3 = db.Column(db.String(10), nullable=False)
+    passing_probability_n4 = db.Column(db.String(10), nullable=False)
+    passing_probability_n5 = db.Column(db.String(10), nullable=False)
+    feedback_and_recommendations = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref='evaluations', lazy=True)
+
+    def __repr__(self):
+        return f"<Evaluation(id={self.id}, user_id={self.user_id})>"

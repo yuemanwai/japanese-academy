@@ -6,16 +6,19 @@ from flask_babel import _, get_locale, refresh
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
-from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings
+from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings,Evaluation
 from app.email_service import send_password_reset_email
 import os
 import time
-import random # Ensure the correct import of the random module
+import random 
 import subprocess
 from copilot import CopilotChat
 from werkzeug.utils import secure_filename
 from mimetypes import guess_type
-from app.gemini import GeminiClient  # 確保從正確的模塊導入
+from app.gemini import GeminiClient  
+from urllib.parse import quote
+import json
+import re  
 
 
 @app.before_request
@@ -396,8 +399,10 @@ def set_language():
     return redirect(request.referrer)
 
 @app.route('/record')
+@login_required
 def record():
-    return render_template('record.html.j2')
+    evaluation = session.pop('evaluation', None)  # Retrieve and remove evaluation from session
+    return render_template('record.html.j2', evaluation=evaluation)
 
 @app.route('/video_evaluation', methods=['POST'])
 def video_evaluation():
@@ -425,16 +430,48 @@ def video_evaluation():
 
     gemini_client = GeminiClient()
     try:
-        evaluation = gemini_client.evaluate_video(video.filename)
-        if evaluation:
+        evaluation_response = gemini_client.evaluate_video(video.filename)
+        current_app.logger.info(f'Evaluation response: {evaluation_response}')
+        if evaluation_response:
             print("有資料")
+            # Extract JSON part from the response text
+            json_match = re.search(r'```json(.*?)```', evaluation_response, re.DOTALL)
+            if json_match:
+                evaluation_data = json.loads(json_match.group(1).strip())  # Parse JSON response
+                current_app.logger.info(f'Evaluation data: {evaluation_data}')
+
+                # Save evaluation data to the database
+                evaluation = Evaluation(
+                    user_id=current_user.id,
+                    pronunciation_accuracy=evaluation_data['evaluation_criteria']['pronunciation_accuracy']['score'],
+                    grammar_usage=evaluation_data['evaluation_criteria']['grammar_usage']['score'],
+                    vocabulary_usage=evaluation_data['evaluation_criteria']['vocabulary_usage']['score'],
+                    fluency=evaluation_data['evaluation_criteria']['fluency']['score'],
+                    comprehension=evaluation_data['evaluation_criteria']['comprehension']['score'],
+                    jlpt_level=evaluation_data['evaluation_criteria']['jlpt_level']['score'],
+                    passing_probability_n1=evaluation_data['summary']['passing_probability']['N1'],
+                    passing_probability_n2=evaluation_data['summary']['passing_probability']['N2'],
+                    passing_probability_n3=evaluation_data['summary']['passing_probability']['N3'],
+                    passing_probability_n4=evaluation_data['summary']['passing_probability']['N4'],
+                    passing_probability_n5=evaluation_data['summary']['passing_probability']['N5'],
+                    feedback_and_recommendations=evaluation_data['summary']['feedback_and_recommendations']
+                )
+                db.session.add(evaluation)
+                db.session.commit()
+                return redirect(url_for('score', evaluation_id=evaluation.id))
+            else:
+                current_app.logger.error('No valid JSON found in the response')
+                return redirect(url_for('record'))
     except Exception as e:
         current_app.logger.error(f'Error evaluating video: {e}')
-        return jsonify({'error': 'Error evaluating video'}), 500
+        return redirect(url_for('record'))
 
-    return redirect(url_for('score', evaluation=evaluation))
+    current_app.logger.info('Redirecting to record page')
+    return redirect(url_for('record'))
 
-@app.route('/score')
-def score():
-    evaluation = request.args.get('evaluation')
+@app.route('/score/<int:evaluation_id>', methods=['GET'])
+@login_required
+def score(evaluation_id):
+    evaluation = Evaluation.query.get_or_404(evaluation_id)
+    current_app.logger.info(f'Evaluation retrieved from database: {evaluation}')
     return render_template('score.html.j2', evaluation=evaluation)

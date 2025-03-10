@@ -33,10 +33,21 @@
     background: #ccc;
     cursor: not-allowed;
   }
-  .record-container h2 {
+  .record-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    text-align: center;
+  }
+  .record-card h2 {
     font-size: 2rem;
     color: var(--primary);
     margin-bottom: 1rem;
+  }
+  .record-card p {
+    font-size: 1.2rem;
+    color: var(--dark);
   }
   .button-row {
     display: flex;
@@ -48,20 +59,54 @@
     display: flex;
     align-items: center;
   }
+  .evaluation-results {
+    text-align: left;
+    margin-top: 1rem;
+  }
+  .evaluation-results h3 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .evaluation-results p {
+    font-size: 1rem;
+    color: var(--dark);
+  }
 </style>
 {% endblock head %}
 
 {% block app_content %}
 <div class="record-container">
-  <video id="video" width="640" height="480" autoplay></video>
-  <div class="button-row">
-    <button id="startBtn" class="btn">Start Recording</button>
-    <button id="stopBtn" class="btn" disabled>Stop Recording</button>
-    <button id="evaluateBtn" class="btn" disabled>Evaluate Video</button>
-  </div>
-  <div class="upload-container">
-    <input type="file" id="uploadInput" accept="video/*">
-    <button id="evaluateUploadBtn" class="btn" disabled>Evaluate Upload Video</button>
+  <div class="record-card">
+    <h2>Record Your Video</h2>
+    {% if evaluation %}
+      <div class="evaluation-results">
+        <h3>Evaluation Criteria</h3>
+        {% for criterion, details in evaluation.evaluation_criteria.items() %}
+          <p><strong>{{ criterion|capitalize }}:</strong> Score: {{ details.score }}</p>
+        {% endfor %}
+        <h3>Summary</h3>
+        <p><strong>Passing Probability:</strong></p>
+        <ul>
+          {% for level, probability in evaluation.summary.passing_probability.items() %}
+            <li>{{ level }}: {{ probability }}</li>
+          {% endfor %}
+        </ul>
+        <p><strong>Recommendations:</strong> {{ evaluation.summary.feedback_and_recommendations }}</p>
+      </div>
+    {% else %}
+      <p>Record your video and get an evaluation.</p>
+      <video id="video" width="640" height="480" autoplay></video>
+      <div class="button-row">
+        <button id="startBtn" class="btn">Start Recording</button>
+        <button id="stopBtn" class="btn" disabled>Stop Recording</button>
+        <button id="evaluateBtn" class="btn" disabled>Evaluate Video</button>
+      </div>
+      <div class="upload-container">
+        <input type="file" id="uploadInput" accept="video/*">
+        <button id="evaluateUploadBtn" class="btn" disabled>Evaluate Upload Video</button>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock app_content %}

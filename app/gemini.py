@@ -3,6 +3,8 @@ from google.genai import types
 import time
 import os
 from dotenv import load_dotenv
+import json
+import re 
 
 
 # Load environment variables from .env file
@@ -94,26 +96,44 @@ class GeminiClient:
             contents=[
                 video_file,
                 """
-                You are a Japanese language master. Please evaluate the uploaded video based on the following criteria:
-
-                1. **Evaluation Criteria**:
-                    a. Pronunciation Accuracy: Assess the clarity and correctness of Japanese word and phrase pronunciation.
-                    b. Grammar Usage: Check the correctness of grammar and sentence structure in spoken Japanese.
-                    c. Vocabulary Usage: Evaluate whether the vocabulary used is appropriate for the context and diverse.
-                    d. Fluency: Rate the overall fluency and naturalness of spoken Japanese.
-                    e. Comprehension: Ensure that the spoken Japanese is easy to understand and coherent.
-                    f. JLPT Level: Assess the speaker's spoken Japanese level corresponding to the JLPT levels (N1-N5).
-                2. **Scoring System**:
-                    a. Pronunciation Accuracy: 1-5 (1 = Poor, 5 = Excellent)
-                    b. Grammar Usage: 1-5 (1 = Poor, 5 = Excellent)
-                    c. Vocabulary Usage: 1-5 (1 = Poor, 5 = Excellent)
-                    d. Fluency: 1-5 (1 = Poor, 5 = Excellent)
-                    e. Comprehension: 1-5 (1 = Poor, 5 = Excellent)
-                    f. JLPT Level: N1-N5 (N1 = Advanced, N5 = Beginner)
-                3. **Feedback Generation**:
-                    a. Provide detailed feedback for each evaluation criterion, highlighting strengths and areas for improvement.
-                    b. Offer examples or suggestions for better pronunciation, grammar, vocabulary, and fluency.
-                    c. Estimate the probability of passing the JLPT exam based on the scores. For example: "Based on your scores, you have about an 80% chance of passing the JLPT N3 exam. It is recommended to continue improving pronunciation and vocabulary to increase the success rate."
+                You are a Japanese language master. 
+                Please evaluate the uploaded video based on the following criteria, 
+                and respond ONLY in JSON format, starts with '{' and ends with '}'. 
+                Limit "feedback_and_recommendations" text around 200 words, 
+                and with a more natural and conversational tone.
+                Here is the response format:
+                {
+                "evaluation_criteria": {
+                    "pronunciation_accuracy": {
+                    "score": 1-10
+                    },
+                    "grammar_usage": {
+                    "score": 1-10
+                    },
+                    "vocabulary_usage": {
+                    "score": 1-10
+                    },
+                    "fluency": {
+                    "score": 1-10
+                    },
+                    "comprehension": {
+                    "score": 1-10
+                    },
+                    "jlpt_level": {
+                    "score": "N1-N5"
+                    }
+                },
+                "summary": {
+                    "passing_probability": {
+                    "N1": "1-100%",
+                    "N2": "1-100%",
+                    "N3": "1-100%",
+                    "N4": "1-100%",
+                    "N5": "1-100%"
+                    },
+                    "feedback_and_recommendations": "detailed feedback and recommendations"
+                }
+                }
                 """
             ]
         )
@@ -155,8 +175,11 @@ if __name__ == "__main__":
     # print(result)
     
     # # Evaluate video example
-    # evaluation = gemini_client.evaluate_video("test_video.mp4")
-    # print(evaluation)
+    evaluation = gemini_client.evaluate_video("test_video2.mp4")
+    # json_match = re.search(r'```json(.*?)```', evaluation, re.DOTALL)
+    # if json_match:
+    #     evaluation = json.loads(json_match.group(1).strip())  # Parse JSON response
+    print(evaluation)
     
     # Transcribe video example
     # transcription = gemini_client.transcribe_video(video_file)

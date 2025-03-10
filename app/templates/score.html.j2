@@ -33,7 +33,25 @@
 <div class="score-container">
   <div class="score-card">
     <h2>Video Evaluation Result</h2>
-    <p>{{ evaluation }}</p>
+    <div class="evaluation-results">
+      <h3>Evaluation Criteria</h3>
+      <p><strong>Pronunciation Accuracy:</strong> Score: {{ evaluation.pronunciation_accuracy }}</p>
+      <p><strong>Grammar Usage:</strong> Score: {{ evaluation.grammar_usage }}</p>
+      <p><strong>Vocabulary Usage:</strong> Score: {{ evaluation.vocabulary_usage }}</p>
+      <p><strong>Fluency:</strong> Score: {{ evaluation.fluency }}</p>
+      <p><strong>Comprehension:</strong> Score: {{ evaluation.comprehension }}</p>
+      <p><strong>JLPT Level:</strong> {{ evaluation.jlpt_level }}</p>
+      <h3>Summary</h3>
+      <p><strong>Passing Probability:</strong></p>
+      <ul>
+        <li>N1: {{ evaluation.passing_probability_n1 }}</li>
+        <li>N2: {{ evaluation.passing_probability_n2 }}</li>
+        <li>N3: {{ evaluation.passing_probability_n3 }}</li>
+        <li>N4: {{ evaluation.passing_probability_n4 }}</li>
+        <li>N5: {{ evaluation.passing_probability_n5 }}</li>
+      </ul>
+      <p><strong>Recommendations:</strong> {{ evaluation.feedback_and_recommendations }}</p>
+    </div>
   </div>
 </div>
 {% endblock app_content %}
