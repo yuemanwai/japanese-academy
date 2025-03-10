@@ -34,7 +34,6 @@
     cursor: not-allowed;
   }
   .record-card {
-    background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
@@ -51,13 +50,32 @@
   }
   .button-row {
     display: flex;
-    justify-content: center;
     margin-top: 1rem;
   }
   .upload-container {
     margin-top: 1rem;
     display: flex;
     align-items: center;
+  }
+  .upload-container input[type="file"] {
+    display: none;
+  }
+  .upload-container label {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 0 0.5rem;
+  }
+  .upload-container label:hover {
+    background: var(--secondary);
+    color: white;
+  }
+  .file-name {
+    font-size: 1.5rem;
   }
   .evaluation-results {
     text-align: left;
@@ -95,16 +113,19 @@
 {% block app_content %}
 <div class="record-container">
   <div class="record-card">
-    <h2>Record Your Video</h2>
-    <p>Record your video and get an evaluation.</p>
+    <h2>Record Or Upload Your Video</h2>
     <video id="video" width="640" height="480" autoplay></video>
     <div class="button-row">
+      You can record a video 
       <button id="startBtn" class="btn">Start Recording</button>
       <button id="stopBtn" class="btn" disabled>Stop Recording</button>
       <button id="evaluateBtn" class="btn" disabled>Evaluate Video</button>
     </div>
     <div class="upload-container">
+      Or upload a video
+      <label for="uploadInput" class="btn">Choose File :  <span id="fileName" class="file-name"></span></label>
       <input type="file" id="uploadInput" accept="video/*">
+      
       <button id="evaluateUploadBtn" class="btn" disabled>Evaluate Upload Video</button>
     </div>
     <div id="loader" class="loader"></div>
@@ -121,6 +142,7 @@
   const evaluateBtn = document.getElementById('evaluateBtn');
   const evaluateUploadBtn = document.getElementById('evaluateUploadBtn');
   const uploadInput = document.getElementById('uploadInput');
+  const fileName = document.getElementById('fileName');
   const loader = document.getElementById('loader');
   let mediaRecorder;
   let recordedChunks = [];
@@ -136,28 +158,27 @@
         }
       };
 
-      mediaRecorder.onstop = function() {
+      mediaRecorder.onstop = async function() {
         const blob = new Blob(recordedChunks, { type: 'video/webm' });
         const formData = new FormData();
         formData.append('video', blob, 'recorded_video.webm');
 
-        fetch('/video_evaluation', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+          const response = await fetch('/video_evaluation', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await response.json();
           loader.style.display = 'none';
           if (data.success) {
             window.location.href = `/score/${data.user_id}`;
           } else {
             alert('Error evaluating video');
           }
-        })
-        .catch(error => {
+        } catch (error) {
           loader.style.display = 'none';
           console.error('Error uploading recorded video:', error);
-        });
+        }
       };
     })
     .catch(error => {
@@ -179,61 +200,60 @@
     evaluateBtn.disabled = false;
   });
 
-  evaluateBtn.addEventListener('click', () => {
+  evaluateBtn.addEventListener('click', async () => {
     loader.style.display = 'block';
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
     formData.append('video', blob, 'recorded_video.webm');
 
-    fetch('/video_evaluation', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+      const response = await fetch('/video_evaluation', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
       loader.style.display = 'none';
       if (data.success) {
         window.location.href = `/score/${data.user_id}`;
       } else {
         alert('Error evaluating video');
       }
-    })
-    .catch(error => {
+    } catch (error) {
       loader.style.display = 'none';
       console.error('Error sending evaluation request:', error);
       alert('Error sending evaluation request: ' + error.message);
-    });
+    }
   });
 
   uploadInput.addEventListener('change', () => {
     console.log('File input changed');
     evaluateUploadBtn.disabled = uploadInput.files.length === 0;
+    fileName.textContent = uploadInput.files.length > 0 ? uploadInput.files[0].name : '';
   });
 
-  evaluateUploadBtn.addEventListener('click', () => {
+  evaluateUploadBtn.addEventListener('click', async () => {
     loader.style.display = 'block';
     const file = uploadInput.files[0];
     const formData = new FormData();
     formData.append('video', file);
 
-    fetch('/video_evaluation', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+      const response = await fetch('/video_evaluation', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
       loader.style.display = 'none';
       if (data.success) {
         window.location.href = `/score/${data.user_id}`;
       } else {
         alert('Error evaluating video');
       }
-    })
-    .catch(error => {
+    } catch (error) {
       loader.style.display = 'none';
       console.error('Error uploading video:', error);
       alert('Error uploading video: ' + error.message);
-    });
+    }
   });
 
 </script>
