@@ -72,6 +72,23 @@
     font-size: 1rem;
     color: var(--dark);
   }
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid var(--primary);
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 </style>
 {% endblock head %}
 
@@ -90,6 +107,7 @@
       <input type="file" id="uploadInput" accept="video/*">
       <button id="evaluateUploadBtn" class="btn" disabled>Evaluate Upload Video</button>
     </div>
+    <div id="loader" class="loader"></div>
   </div>
 </div>
 {% endblock app_content %}
@@ -103,6 +121,7 @@
   const evaluateBtn = document.getElementById('evaluateBtn');
   const evaluateUploadBtn = document.getElementById('evaluateUploadBtn');
   const uploadInput = document.getElementById('uploadInput');
+  const loader = document.getElementById('loader');
   let mediaRecorder;
   let recordedChunks = [];
 
@@ -125,7 +144,18 @@
         fetch('/video_evaluation', {
           method: 'POST',
           body: formData
-        }).catch(error => {
+        })
+        .then(response => response.json())
+        .then(data => {
+          loader.style.display = 'none';
+          if (data.success) {
+            window.location.href = `/score/${data.user_id}`;
+          } else {
+            alert('Error evaluating video');
+          }
+        })
+        .catch(error => {
+          loader.style.display = 'none';
           console.error('Error uploading recorded video:', error);
         });
       };
@@ -150,6 +180,7 @@
   });
 
   evaluateBtn.addEventListener('click', () => {
+    loader.style.display = 'block';
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
     formData.append('video', blob, 'recorded_video.webm');
@@ -157,7 +188,18 @@
     fetch('/video_evaluation', {
       method: 'POST',
       body: formData
-    }).catch(error => {
+    })
+    .then(response => response.json())
+    .then(data => {
+      loader.style.display = 'none';
+      if (data.success) {
+        window.location.href = `/score/${data.user_id}`;
+      } else {
+        alert('Error evaluating video');
+      }
+    })
+    .catch(error => {
+      loader.style.display = 'none';
       console.error('Error sending evaluation request:', error);
       alert('Error sending evaluation request: ' + error.message);
     });
@@ -169,6 +211,7 @@
   });
 
   evaluateUploadBtn.addEventListener('click', () => {
+    loader.style.display = 'block';
     const file = uploadInput.files[0];
     const formData = new FormData();
     formData.append('video', file);
@@ -176,7 +219,18 @@
     fetch('/video_evaluation', {
       method: 'POST',
       body: formData
-    }).catch(error => {
+    })
+    .then(response => response.json())
+    .then(data => {
+      loader.style.display = 'none';
+      if (data.success) {
+        window.location.href = `/score/${data.user_id}`;
+      } else {
+        alert('Error evaluating video');
+      }
+    })
+    .catch(error => {
+      loader.style.display = 'none';
       console.error('Error uploading video:', error);
       alert('Error uploading video: ' + error.message);
     });

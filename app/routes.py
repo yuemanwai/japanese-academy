@@ -408,7 +408,7 @@ def record():
 def video_evaluation():
     if 'video' not in request.files:
         flash('No video file provided')
-        return redirect(url_for('record'))
+        return jsonify({'success': False, 'message': 'No video file provided'})
 
     video = request.files['video']
     mime_type, _ = guess_type(video.filename)
@@ -418,7 +418,7 @@ def video_evaluation():
     ]
     if not mime_type or mime_type not in allowed_mime_types:
         flash('Unsupported file format, please upload again!')
-        return redirect(url_for('record'))
+        return jsonify({'success': False, 'message': 'Unsupported file format'})
 
     video_path = os.path.join(current_app.root_path, 'static/video', secure_filename(video.filename))
     try:
@@ -426,7 +426,7 @@ def video_evaluation():
     except Exception as e:
         current_app.logger.error(f'Error saving video: {e}')
         flash('Error saving video')
-        return redirect(url_for('record'))
+        return jsonify({'success': False, 'message': 'Error saving video'})
 
     gemini_client = GeminiClient()
     try:
@@ -459,16 +459,16 @@ def video_evaluation():
                 db.session.add(evaluation)
                 db.session.commit()
                 user_id = current_user.id
-                return redirect(url_for('score', user_id=user_id))
+                return jsonify({'success': True, 'user_id': user_id})
             else:
                 current_app.logger.error('No valid JSON found in the response')
-                return redirect(url_for('record'))
+                return jsonify({'success': False, 'message': 'No valid JSON found in the response'})
     except Exception as e:
         current_app.logger.error(f'Error evaluating video: {e}')
-        return redirect(url_for('record'))
+        return jsonify({'success': False, 'message': 'Error evaluating video'})
 
     current_app.logger.info('Redirecting to record page')
-    return redirect(url_for('record'))
+    return jsonify({'success': False, 'message': 'Unknown error'})
 
 @app.route('/score/<int:user_id>', methods=['GET'])
 @login_required
