@@ -176,9 +176,6 @@ if __name__ == "__main__":
     
     # # Evaluate video example
     evaluation = gemini_client.evaluate_video("test_video2.mp4")
-    # json_match = re.search(r'```json(.*?)```', evaluation, re.DOTALL)
-    # if json_match:
-    #     evaluation = json.loads(json_match.group(1).strip())  # Parse JSON response
     print(evaluation)
     
     # Transcribe video example
