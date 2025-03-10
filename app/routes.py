@@ -417,7 +417,7 @@ def video_evaluation():
         'video/mpg', 'video/webm', 'video/wmv', 'video/3gpp'
     ]
     if not mime_type or mime_type not in allowed_mime_types:
-        flash('不支援此格式, 請重新上傳！')
+        flash('Unsupported file format, please upload again!')
         return redirect(url_for('record'))
 
     video_path = os.path.join(current_app.root_path, 'static/video', secure_filename(video.filename))
@@ -458,7 +458,8 @@ def video_evaluation():
                 )
                 db.session.add(evaluation)
                 db.session.commit()
-                return redirect(url_for('score', evaluation_id=evaluation.id))
+                user_id = current_user.id
+                return redirect(url_for('score', user_id=user_id))
             else:
                 current_app.logger.error('No valid JSON found in the response')
                 return redirect(url_for('record'))
@@ -469,9 +470,9 @@ def video_evaluation():
     current_app.logger.info('Redirecting to record page')
     return redirect(url_for('record'))
 
-@app.route('/score/<int:evaluation_id>', methods=['GET'])
+@app.route('/score/<int:user_id>', methods=['GET'])
 @login_required
-def score(evaluation_id):
-    evaluation = Evaluation.query.get_or_404(evaluation_id)
-    current_app.logger.info(f'Evaluation retrieved from database: {evaluation}')
-    return render_template('score.html.j2', evaluation=evaluation)
+def score(user_id):
+    evaluations = Evaluation.query.filter_by(user_id=user_id).order_by(Evaluation.id.desc()).all()
+    current_app.logger.info(f'Evaluations retrieved from database: {evaluations}')
+    return render_template('score.html.j2', evaluations=evaluations)
