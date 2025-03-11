@@ -158,27 +158,33 @@
         }
       };
 
-      mediaRecorder.onstop = async function() {
+      mediaRecorder.onstop = function() {
         const blob = new Blob(recordedChunks, { type: 'video/webm' });
         const formData = new FormData();
         formData.append('video', blob, 'recorded_video.webm');
 
-        try {
-          const response = await fetch('/video_evaluation', {
-            method: 'POST',
-            body: formData
-          });
-          const data = await response.json();
+        fetch('/video_evaluation', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
           loader.style.display = 'none';
           if (data.success) {
             window.location.href = `/score/${data.user_id}`;
           } else {
             alert('Error evaluating video');
           }
-        } catch (error) {
+        })
+        .catch(error => {
           loader.style.display = 'none';
           console.error('Error uploading recorded video:', error);
-        }
+        });
       };
     })
     .catch(error => {
@@ -200,29 +206,35 @@
     evaluateBtn.disabled = false;
   });
 
-  evaluateBtn.addEventListener('click', async () => {
+  evaluateBtn.addEventListener('click', () => {
     loader.style.display = 'block';
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const formData = new FormData();
     formData.append('video', blob, 'recorded_video.webm');
 
-    try {
-      const response = await fetch('/video_evaluation', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
+    fetch('/video_evaluation', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
       loader.style.display = 'none';
       if (data.success) {
         window.location.href = `/score/${data.user_id}`;
       } else {
         alert('Error evaluating video');
       }
-    } catch (error) {
+    })
+    .catch(error => {
       loader.style.display = 'none';
       console.error('Error sending evaluation request:', error);
       alert('Error sending evaluation request: ' + error.message);
-    }
+    });
   });
 
   uploadInput.addEventListener('change', () => {
@@ -231,29 +243,35 @@
     fileName.textContent = uploadInput.files.length > 0 ? uploadInput.files[0].name : '';
   });
 
-  evaluateUploadBtn.addEventListener('click', async () => {
+  evaluateUploadBtn.addEventListener('click', () => {
     loader.style.display = 'block';
     const file = uploadInput.files[0];
     const formData = new FormData();
     formData.append('video', file);
 
-    try {
-      const response = await fetch('/video_evaluation', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
+    fetch('/video_evaluation', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
       loader.style.display = 'none';
       if (data.success) {
         window.location.href = `/score/${data.user_id}`;
       } else {
         alert('Error evaluating video');
       }
-    } catch (error) {
+    })
+    .catch(error => {
       loader.style.display = 'none';
       console.error('Error uploading video:', error);
       alert('Error uploading video: ' + error.message);
-    }
+    });
   });
 
 </script>
