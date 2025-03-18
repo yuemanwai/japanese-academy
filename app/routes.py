@@ -364,11 +364,10 @@ def chat_with_copilot():
         # Update the single ChatSettings record
         chat_settings = ChatSettings.query.first()
         if chat_settings is None:
-            chat_settings = ChatSettings(debug=debug, headless=True, word_limit=word_limit, condition=condition)
+            chat_settings = ChatSettings(debug=debug, word_limit=word_limit, condition=condition)
             db.session.add(chat_settings)
         else:
             chat_settings.debug = debug
-            chat_settings.headless = True
             chat_settings.word_limit = word_limit
             chat_settings.condition = condition
             chat_settings.timestamp = datetime.utcnow()
@@ -377,7 +376,7 @@ def chat_with_copilot():
         if 'message' in request.form:
             input_text = request.form.get('message')
             chrome_driver_path = "./chromedriver-linux64/chromedriver"
-            copilot = CopilotChat(chrome_driver_path, debug=debug, headless=True)
+            copilot = CopilotChat(chrome_driver_path, debug=debug)
             response_text = copilot.chat(input_text, word_limit, condition)
             if response_text is None:
                 response_text = _('An error occurred while processing your request. Please try again later.')
