@@ -6,7 +6,7 @@
     "cpus": 2
   },
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "flask --debug run --host=0.0.0.0",
+  "postAttachCommand": "sudo apt-get update && sudo apt-get install -y xvfb && flask --debug run --host=0.0.0.0",
   "portsAttributes": {
     "5000": {
       "label": "Flask Apps",

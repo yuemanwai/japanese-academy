@@ -145,6 +145,12 @@ flask db upgrade
 
 ### How to Install Google Chrome on Linux
 
+### Different Google Chrome Versions
+
+You can find different versions of Google Chrome at the following URL:
+
+[https://googlechromelabs.github.io/chrome-for-testing/](https://googlechromelabs.github.io/chrome-for-testing/)
+
 Run the following commands:
 
 ```bash
@@ -164,7 +170,11 @@ sudo apt install ./google-chrome-stable_current_amd64.deb -y
 Run the following command to download ChromeDriver:
 
 ```bash
-wget https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.204/linux64/chromedriver-linux64.zip
+curl -O https://storage.googleapis.com/chrome-for-testing-public/134.0.6998.88/linux64/chromedriver-linux64.zip
+
+unzip chromedriver-linux64.zip
+
+rm chromedriver-linux64.zip
 ```
 
 ### How to Check Chrome and ChromeDriver Versions
