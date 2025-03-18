@@ -4,14 +4,15 @@
 {{ super() }}
 <style>
 /* Feature card styles */
-.features {
+.panel {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65') center/cover fixed;
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 每行顯示3個 */
   gap: 2rem;
   padding: 4rem 2rem;
 }
 
-.feature-card img {
+.glass-panel img {
   max-width: 100%;
   max-height: 70%;
   border-radius: 15px;
@@ -20,25 +21,10 @@
   margin-right: auto;
 }
 
-.feature-card {
+.glass-panel {
   margin: 20px;
   height: 400px;
-  background-image: linear-gradient(to right bottom, #b6f5f8, #a1f7f6, #8cf9f1, #77fae9, #63fbde);
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  color: var(--dark); /* 設置字體顏色為深色 */
-  text-align: center; /* 置中文字 */
-}
-.feature-card p {
-  color: var(--dark); /* 設置字體顏色為深色 */
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  background-image: linear-gradient(to left top, #63a9fb, #5dc0fe, #6fd3fc, #90e5f9, #b6f5f8);
-  color: var(--light);
 }
 
 .centered-title {
@@ -46,18 +32,15 @@
   width: 100%; /* 佔全行 */
 }
 
-a.feature-card:hover {
-  text-decoration: none; /* 移除底線 */
-}
 
 @media (max-width: 900px) {
-  .features {
+  .panel {
     grid-template-columns: repeat(2, 1fr); /* 每行顯示2個 */
   }
 }
 
 @media (max-width: 600px) {
-  .features {
+  .panel {
     grid-template-columns: 1fr; /* 每行顯示1個 */
   }
 }
@@ -66,29 +49,32 @@ a.feature-card:hover {
 {% endblock head %}
 
 {% block app_content %}
-<!-- Features Section -->
-<div class="centered-title"><h1>Master Japanese with AI</h1></div>
-<section class="features">
+<!-- Panel -->
+<div class="centered-title"><h1>{{_('Master Japanese with AI')}}</h1></div>
 
-  <a href="{{ url_for('chat_with_copilot') }}" class="feature-card">
+<section class="panel">
+  <a href="{{ url_for('chat_with_copilot') }}" class="glass-panel">
     <img src="../static/image/copilot.png" alt="Image not found">
-    <h3>AI Conversation Practice</h3>
-    <p>Practice speaking Japanese with Copilot anytime, anywhere</p>
+    <h3>{{ _('AI Conversation Practice') }}</h3>
+    <p>{{ _('Practice speaking Japanese with Copilot anytime, anywhere') }}</p>
   </a>
-  <a href="{{ url_for('lessons') }}#lesson1" class="feature-card">
+
+  <a href="{{ url_for('lessons') }}#lesson1" class="glass-panel">
     <img src="../static/image/a.png" alt="Image not found">
-    <h3>Smart Learning Path</h3>
-    <p>Personalized curriculum that adapts to your learning style and progress</p>
+    <h3>{{ _('Smart Learning Path') }}</h3>
+    <p>{{ _('Personalized curriculum that adapts to your learning style and progress') }}</p>
   </a>
-  <a href="{{ url_for('lessons') }}#lesson2" class="feature-card">
+  
+  <a href="{{ url_for('lessons') }}#lesson2" class="glass-panel">
     <img src="../static/image/jp.jpeg" alt="Image not found">
-    <h3>Real-time Feedback</h3>
-    <p>Get instant corrections and suggestions to improve your Japanese skills</p>
+    <h3>{{ _('Real-time Feedback') }}</h3>
+    <p>{{ _('Get instant corrections and suggestions to improve your Japanese skills') }}</p>
   </a>
-  <a href="{{ url_for('record') }}" class="feature-card">
+
+  <a href="{{ url_for('record') }}" class="glass-panel">
     <img src="../static/image/video_icon.png" alt="Image not found">
-    <h3>Video evaluation</h3>
-    <p>Japanese Video Evaluation Powered by Gemini</p>
+    <h3>{{ _('Video evaluation') }}</h3>
+    <p>{{ _('Japanese Video Evaluation Powered by Gemini') }}</p>
   </a>
   
 </section>
@@ -96,58 +82,4 @@ a.feature-card:hover {
 
 {% block scripts %}
 {{ super() }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-// Adding Slider functionality
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.slider-dot');
-
-function setSlide(index) {
-  // Remove active class from current slide and dot
-  slides[currentSlide].classList.remove('active');
-  dots[currentSlide].classList.remove('active');
-  
-  // Update current slide index
-  currentSlide = index;
-  
-  // Add active class to new slide and dot
-  slides[currentSlide].classList.add('active');
-  dots[currentSlide].classList.add('active');
-}
-
-// Auto-advance slides
-function autoAdvance() {
-  let nextSlide = (currentSlide + 1) % slides.length;
-  setSlide(nextSlide);
-}
-
-// Start auto-advance timer 
-let slideInterval = setInterval(autoAdvance, 5000);
-
-// Pause auto-advance on hover
-document.querySelector('.slider-container').addEventListener('mouseenter', () => {
-  clearInterval(slideInterval);
-});
-
-// Resume auto-advance when mouse leaves
-document.querySelector('.slider-container').addEventListener('mouseleave', () => {
-  slideInterval = setInterval(autoAdvance, 5000);
-});
-
-// Ensure each slide's link is not overridden by JavaScript
-slides.forEach((slide) => {
-  slide.addEventListener('click', () => {
-    window.location.href = slide.dataset.url; // Manually set the location to the slide's data-url
-  });
-});
-
-// Add slide animation
-gsap.from('.slider-container', {
-  y: 100,
-  opacity: 0,
-  duration: 1,
-  ease: 'power3.out'
-});
-</script>
 {% endblock scripts %}

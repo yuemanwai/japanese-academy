@@ -1,14 +1,8 @@
 {% extends 'base.html.j2' %}
 
-
 {% block head %}
 {{ super() }}
 <style>
-  :root {
-    --primary: #ff5c85;
-    --secondary: #5c9eff;
-    --text: #333;
-  }
 
   .practice-container * {
     box-sizing: border-box;
@@ -17,34 +11,28 @@
   }
 
   .practice-container {
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
                 url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600') center/cover fixed;
-    /* Using an image of Mount Fuji with cherry blossoms from Unsplash */
     position: relative;
     overflow: hidden;
   }
 
-  .game-container {
-    max-width: 800px;
+  .glass-panel {
+    max-width: 1000px;
     width: 95%;
-    margin: 2rem auto;
+    margin: 4rem auto;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 1rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
+  }
+
+  .glass-panel:hover {
+    background-color: rgba(255, 255, 255, 0.06);
   }
 
   .character {
     width: 200px;
-    height: 200px;
+    height: 250px;
     margin: 1rem auto;
     position: relative;
   }
@@ -90,7 +78,8 @@
   }
 
   .chat-bubble {
-    background: var(--primary);
+    font-size: 18px;
+    width: 100%;
     color: white;
     padding: 1rem;
     border-radius: 1rem;
@@ -98,6 +87,7 @@
     opacity: 1;
     transform: translateY(0);
     animation: fadeIn 0.5s ease forwards;
+    cursor: default;
   }
 
   @keyframes fadeIn {
@@ -121,14 +111,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
     color: var(--text);
   }
 
   .option:hover {
-    background: var(--secondary);
-    color: white;
     transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   .score {
@@ -136,10 +124,12 @@
     top: 1rem;
     right: 1rem;
     padding: 0.5rem 1rem;
-    background: rgba(255, 92, 133, 0.9);
-    color: white;
     border-radius: 2rem;
-    backdrop-filter: blur(5px);
+    font-size: 16px;
+  }
+
+  #scoreValue {
+    font-size: 16px;
   }
 
   .progress {
@@ -161,6 +151,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 {% endblock head %} 
 
+
+{% block app_content %}
+<div class="practice-container">
+  <div class="cherry-blossoms" id="cherryBlossoms"></div>    
+
+    <div class="glass-panel">
+        <div class="cherry-blossoms"></div>
+        <div class="score glass-button">Score: <span id="scoreValue">0</span></div>
+      <div class="character">
+        <svg class="character-svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="#5c9eff"/>
+          <circle cx="35" cy="40" r="5" fill="white"/>
+          <circle cx="65" cy="40" r="5" fill="white"/>
+          <path d="M 35 60 Q 50 70 65 60" stroke="white" fill="none" stroke-width="3"/>
+        </svg>
+      </div>
+
+    <div class="chat-bubble glass-button" id="question">
+      はじめまして! Ready to learn Japanese?
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div> 
+    </div>
+
+    <div class="options" id="options"></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    updateUI();
+  });
+</script>
+{% endblock %}
+
 {% block scripts %}
 {{ super() }}
 <script>
@@ -180,7 +206,7 @@
 
   function initializePetals() {
     const globalContainer = document.getElementById('cherryBlossoms');
-    const gameContainer = document.querySelector('.game-container .cherry-blossoms');
+    const gameContainer = document.querySelector('.glass-panel .cherry-blossoms');
     const practiceContainer = document.querySelector('.practice-container .cherry-blossoms');
 
     createPetals(globalContainer);
@@ -208,7 +234,7 @@
     },
     {
       question: 'Which character means "tree"?',
-      options: ['木', '水', '火', '土','金'],
+      options: ['き', 'は', 'じゃがいも','はな'],
       correct: 0
     },
     {
@@ -217,12 +243,12 @@
       correct: 1
     },
     {
-      question: 'Which season is "春" (haru)?',
+      question: 'Which season is "haru"?',
       options: ['Summer', 'Winter', 'Spring', 'Fall'],
       correct: 2
     },
     {
-      question: 'What does "富士山" (Fujisan) mean?',
+      question: 'What does "ふじさん" mean?',
       options: ['Mount Fuji', 'Mountain Peak', 'Sacred Mountain', 'Snow Mountain'],
       correct: 0
     }
@@ -278,38 +304,3 @@
   updateUI();
 </script>
 {% endblock scripts %}
-
-
-{% block app_content %}
-<div class="practice-container">
-    <div class="cherry-blossoms" id="cherryBlossoms"></div>    
-
-    <div class="game-container">
-        <div class="cherry-blossoms"></div>
-        <div class="score">Score: <span id="scoreValue">0</span></div>
-    <div class="character">
-      <svg class="character-svg" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="#5c9eff"/>
-        <circle cx="35" cy="40" r="5" fill="white"/>
-        <circle cx="65" cy="40" r="5" fill="white"/>
-        <path d="M 35 60 Q 50 70 65 60" stroke="white" fill="none" stroke-width="3"/>
-      </svg>
-    </div>
-
-    <div class="chat-bubble" id="question">
-      はじめまして! Ready to learn Japanese?
-    </div>
-
-    <div class="progress">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="options" id="options"></div>
-  </div>
-</div>
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    updateUI();
-  });
-</script>
-{% endblock %}

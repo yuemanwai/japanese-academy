@@ -10,7 +10,7 @@
 <style>
 :root {
   --primary: #ff4081;
-  --secondary: #5c9eff;
+  --secondary: #B6F5F8; {#  #5c9eff; #}
   --dark: #1a1a1a;
   --light: #ffffff;
   --font-family: "Comic Neue", "Noto Sans", sans-serif;
@@ -42,7 +42,6 @@ body {
   text-align: center;
   padding: 1rem 0;
   position: relative;
-  margin-top: 2rem; /* 增加 margin-top 以避免擋住 ai_icon */
 }
 
 .footer a {
@@ -147,6 +146,51 @@ body {
   color: var(--text-color);
   border-bottom: 2px solid var(--text-color);
 }
+
+/* Glass panel styles */
+.glass-panel {
+  color: #fff; /* 文字顏色 */
+  margin: 40px auto; /* 外邊距 */
+  background-color: rgba(255, 255, 255, 0.06); /* 背景顏色 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
+  width: 100%; /* 寬度 */
+  border-radius: 15px; /* 邊框圓角 */
+  padding: 32px; /* 內邊距 */
+  backdrop-filter: blur(10px); /* 背景模糊效果 */
+  text-align: center;
+}
+
+.glass-panel:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--whitesmoke);
+}
+
+a.glass-panel:hover {
+  text-decoration: none; /* 移除底線 */
+}
+
+/* Glass button styles */
+.glass-button {
+  display: inline-block; /* 設置為行內塊元素 */
+  padding: 24px 32px; /* 內邊距 */
+  border: 0; /* 無邊框 */
+  text-decoration: none; /* 無文字裝飾 */
+  border-radius: 15px; /* 邊框圓角 */
+  background-color: rgba(255, 255, 255, 0.1); /* 背景顏色 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
+  backdrop-filter: blur(30px); /* 背景模糊效果 */
+  color: rgba(255, 255, 255, 0.8); /* 文字顏色 */
+  font-size: 14px; /* 字體大小 */
+  letter-spacing: 2px; /* 字母間距 */
+  cursor: pointer; /* 鼠標指針樣式 */
+  text-transform: uppercase; /* 文字轉為大寫 */
+}
+
+.glass-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--whitesmoke);
+}
+
 </style>
 {% endblock head %}
 
