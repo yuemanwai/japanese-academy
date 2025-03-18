@@ -165,7 +165,7 @@ def user():
 
 
 @app.route('/edit', methods=['GET', 'POST'])
-def edit():  # 唔可以係呢個位用title, 會出現TypeError
+def edit(): 
     title = request.args.get('title')
     if title is None:
         print("No title provided")

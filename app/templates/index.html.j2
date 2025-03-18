@@ -23,7 +23,7 @@
 .feature-card {
   margin: 20px;
   height: 400px;
-  background-image: radial-gradient(circle, #80f9bd, #4cf3e7, #53e9ff, #86daff, #b4cbff, #cec3f8, #e4bbea, #f4b5d7, #fab5c9, #fcb7bd, #f9bbb3, #f4bfab);
+  background-image: linear-gradient(to right bottom, #b6f5f8, #a1f7f6, #8cf9f1, #77fae9, #63fbde);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);  color: white; /* 改變字體顏色 */
+  background-image: linear-gradient(to left top, #63a9fb, #5dc0fe, #6fd3fc, #90e5f9, #b6f5f8);
   color: var(--light);
 }
 
@@ -70,23 +70,23 @@ a.feature-card:hover {
 <div class="centered-title"><h1>Master Japanese with AI</h1></div>
 <section class="features">
 
-  <a href="{{ url_for('lessons') }}#lesson1" class="feature-card">
-    <img src="../static/image/slide1.png" alt="Image not found">
+  <a href="{{ url_for('chat_with_copilot') }}" class="feature-card">
+    <img src="../static/image/copilot.png" alt="Image not found">
     <h3>AI Conversation Practice</h3>
-    <p>Practice speaking Japanese with our AI language partners anytime, anywhere.</p>
+    <p>Practice speaking Japanese with Copilot anytime, anywhere</p>
+  </a>
+  <a href="{{ url_for('lessons') }}#lesson1" class="feature-card">
+    <img src="../static/image/a.png" alt="Image not found">
+    <h3>Smart Learning Path</h3>
+    <p>Personalized curriculum that adapts to your learning style and progress</p>
   </a>
   <a href="{{ url_for('lessons') }}#lesson2" class="feature-card">
-    <img src="../static/image/slide2.png" alt="Image not found">
-    <h3>Smart Learning Path</h3>
-    <p>Personalized curriculum that adapts to your learning style and progress.</p>
-  </a>
-  <a href="{{ url_for('lessons') }}#lesson3" class="feature-card">
-    <img src="../static/image/slide3.png" alt="Image not found">
+    <img src="../static/image/jp.jpeg" alt="Image not found">
     <h3>Real-time Feedback</h3>
-    <p>Get instant corrections and suggestions to improve your Japanese skills.</p>
+    <p>Get instant corrections and suggestions to improve your Japanese skills</p>
   </a>
   <a href="{{ url_for('record') }}" class="feature-card">
-    <img src="../static/image/JP.jpeg" alt="Image not found">
+    <img src="../static/image/video_icon.png" alt="Image not found">
     <h3>Video evaluation</h3>
     <p>Japanese Video Evaluation Powered by Gemini</p>
   </a>
