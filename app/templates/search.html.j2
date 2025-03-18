@@ -1,4 +1,4 @@
-{% extends "base2.html.j2" %}
+{% extends "base.html.j2" %}
 {% block app_content %}
 {# Whoosh / Elasticsearch 可以做search engine??? #}
 <form class="d-flex-inliine" action="{{ url_for('search') }}" role="search"
@@ -13,7 +13,7 @@
 <ul>
     {% for post in posts %}
     <li>
-        <a href="{{ url_for('wiki',title=post.title) }}"><h3>{{ post.title }}</h3></a>
+        <h3>{{ post.title }}</h3></a>
         <p>{{ post.body }}</p>
     </li>
     {% endfor %}
