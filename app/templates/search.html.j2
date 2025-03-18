@@ -1,10 +1,9 @@
 {% extends "base.html.j2" %}
 {% block app_content %}
-{# Whoosh / Elasticsearch 可以做search engine??? #}
-<form class="d-flex-inliine" action="{{ url_for('search') }}" role="search"
-    style="display: inline-flex;width: 800px;">
-    <input class="form-control me-2 " type="search" placeholder="{{ keyword }}" aria-label="Search" name="keyword">
-    <button class="btn btn-outline-success" type="submit">{{_('Search') }}</button>
+<form class="d-flex-inline" action="{{ url_for('search') }}" method="post" style="display: inline-flex;width: 800px;">
+    {{ g.search_form.hidden_tag() }}
+    {{ g.search_form.keyword(class="form-control me-2", placeholder=keyword, aria_label="Search") }}
+    <button class="btn btn-outline-success" type="submit" style="display: none;">{{_('Search') }}</button>
 </form>
 
 {% if posts %}
@@ -19,7 +18,7 @@
     {% endfor %}
 </ul>
 {% else %}
-<p>No results found.</p>
+<p>{{_('No results found.')}} </p>
 {% endif %}
     <nav aria-label="...">
         <ul class="pager">
@@ -35,6 +34,4 @@
             </li>
         </ul>
     </nav>
-
-
 {% endblock %}

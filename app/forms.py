@@ -83,3 +83,8 @@ class LeaveMessageForm(FlaskForm):
     name=StringField(_('Guest name'), validators=[DataRequired()])
     message=StringField(_('Message'), validators=[DataRequired()])
     submit = SubmitField(_('Send'))
+
+
+class SearchForm(FlaskForm):
+    keyword = StringField(_('Keyword'), validators=[DataRequired()])
+    submit = SubmitField(_('Search'))

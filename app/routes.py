@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale, refresh
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm
+    ResetPasswordRequestForm, ResetPasswordForm, DonationForm, PaymentForm, LeaveMessageForm, SearchForm
 from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Lesson, Level, ChatSettings,Evaluation
 from app.email_service import send_password_reset_email
 import os
@@ -27,6 +27,7 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
     g.locale = str(get_locale())
+    g.search_form = SearchForm()  # 初始化 SearchForm
 
 
 @app.context_processor
@@ -236,19 +237,20 @@ def random_post(title):
     return render_template('random_post.html.j2', category=_('Article'), title=title, posts=[], following_post=False)
 
 
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    keyword = request.args.get('keyword', '')
-    if keyword is None:
-        return redirect(url_for('index'))
-    page_num = request.args.get('page', 1, type=int)
-    posts = Post.query.filter(Post.title.like(f'%{keyword}%')).paginate(
-        page=page_num, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
-    next_url = url_for('search', keyword=keyword,
-                       page=page_num + 1) if posts.has_next else None
-    prev_url = url_for('search', keyword=keyword,
-                       page=page_num - 1) if posts.has_prev else None
-    return render_template('search.html.j2', title=_('Search results'), posts=posts.items, keyword=keyword, next_url=next_url, prev_url=prev_url)
+    form = SearchForm()
+    if form.validate_on_submit():
+        keyword = form.keyword.data
+        page_num = request.args.get('page', 1, type=int)
+        posts = Post.query.filter(Post.title.like(f'%{keyword}%')).paginate(
+            page=page_num, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
+        next_url = url_for('search', keyword=keyword,
+                           page=page_num + 1) if posts.has_next else None
+        prev_url = url_for('search', keyword=keyword,
+                           page=page_num - 1) if posts.has_prev else None
+        return render_template('search.html.j2', title=_('Search results'), posts=posts.items, keyword=keyword, next_url=next_url, prev_url=prev_url)
+    return render_template('search.html.j2', title=_('Search'), form=form)
 
 
 @app.route('/donate', methods=['GET', 'POST'])
