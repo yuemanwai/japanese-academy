@@ -6,17 +6,12 @@
 <style>
   .lesson-container {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1549693578-d683be217e58?w=1600') center/cover fixed;
-    color: var(--dark);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     overflow: hidden;
-  }
-  
-  .lesson-container p {
-  color: var(--dark);
   }
   
 .lesson-card {
@@ -26,7 +21,6 @@
   margin: 2rem 0;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
-  color: var(--dark);
 }
 
 .lesson-card:hover {
@@ -34,7 +28,6 @@
 }
 
 .lesson-title {
-  color: var(--primary);
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -42,23 +35,22 @@
 }
 
 .feature-box {
-  background: var(--light);
   padding: 1rem;
   border-radius: 8px;
   margin: 1rem 0;
-  color: var(--dark);
+  background-color: transparent; 
 }
 
 .objective {
   border-left: 4px solid var(--secondary);
   padding-left: 1rem;
   margin: 1rem 0;
-  color: var(--dark);
+  text-align: left;
 }
 
 .practice-area {
   background: white;
-  border: 2px dashed var(--primary);
+  border: 2px dashed var(--secondary);
   border-radius: 8px;
   padding: 2rem;
   margin: 1rem 0;
@@ -66,8 +58,8 @@
 }
 
 .btn {
-  background: var(--primary);
-  color: white;
+  background: var(--secondary);
+  color: var(--dark);
   border: none;
   padding: 0.8rem 1.5rem;
   border-radius: 25px;
@@ -86,20 +78,27 @@
   margin: 2rem 0;
 }
 
-.kana-character {
-  background: #B6F5F8;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  color: var(--dark);
-}
-
 .canvas-container {
   width: 100%;
   height: 100%;
   margin: 0 auto;
 }
+
+
+.glass-button {
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+.glass-panel h3{
+  text-align: left;
+}
+
+.glass-panel:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
 </style>
 {% endblock head %}
 
@@ -107,7 +106,7 @@
 <div class="lesson-container">
   <div class="container">
     <!-- Lesson 1 -->
-    <div class="lesson-card" id="lesson1">
+    <div class="glass-panel" id="lesson1">
       <h2 class="lesson-title">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
@@ -121,7 +120,7 @@
         <div class="kana-grid" id="hiraganaGrid">
           <!-- JavaScript will populate this -->
         </div>
-        <button class="btn" onclick="playSound(this)">
+        <button class="glass-button" onclick="playSound(this)">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M12 2v20M2 12h20"/>
           </svg>
@@ -136,7 +135,7 @@
     </div>
 
     <!-- Lesson 2 -->
-    <div class="lesson-card" id="lesson2">
+    <div class="glass-panel" id="lesson2">
       <h2 class="lesson-title">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
@@ -147,7 +146,7 @@
       
       <div class="practice-area">
         <div class="canvas-container">
-          <canvas id="handwritingPad" width="1000" height="500"></canvas>
+          <canvas id="handwritingPad" width="1000" height="500" ></canvas>
         </div>
         <div>
           <button class="btn" onclick="clearCanvas()">Clear</button>
@@ -157,7 +156,7 @@
     </div>
 
     <!-- Lesson 3 -->
-    <div class="lesson-card" id="lesson3">
+    <div class="glass-panel" id="lesson3">
       <h2 class="lesson-title">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
@@ -193,7 +192,7 @@ const hiragana = [
 const hiraganaGrid = document.getElementById('hiraganaGrid');
 hiragana.forEach(char => {
   const div = document.createElement('div');
-  div.className = 'kana-character';
+  div.className = 'glass-button';
   div.textContent = char;
   div.onclick = () => playCharacterSound(char);
   hiraganaGrid.appendChild(div);
