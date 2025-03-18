@@ -4,24 +4,32 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import timeit
+import subprocess
+import os
+from pyvirtualdisplay import Display
 
 class CopilotChat:
     def __init__(self, chrome_driver_path, chrome_binary_path="/usr/bin/google-chrome", debug=False, headless=True):
         self.debug = debug
-        # 初始化 WebDriver
+        # 啟動虛擬顯示器
+        self.display = Display(visible=0, size=(1920, 1080))
+        self.display.start()
         options = webdriver.ChromeOptions()
         if headless:
-            # 使用無界面模式
-            options.add_argument('--mute-audio')
-            options.add_argument('--headless')
-            options.add_argument('--disable-gpu')
-            options.add_argument('--no-sandbox')
-            options.add_argument('--disable-dev-shm-usage')
-            options.add_argument('--window-size=1920,1080')
-            options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
-            options.add_argument('--enable-javascript')
+            options.add_argument('--headless')  # 使用無界面模式
+            options.add_argument('--disable-gpu')  # 禁用 GPU 加速
+            options.add_argument('--no-sandbox')  # 禁用沙盒模式
+        #     options.add_argument('--disable-dev-shm-usage')  # 禁用 /dev/shm 使用
+            
+        else:
+            options.add_argument('--disable-software-rasterizer')  # 禁用軟件光柵化器
+        options.add_argument('--no-sandbox')  # 禁用沙盒模式
+        # options.add_argument('--mute-audio')  # 靜音音頻
+        # options.add_argument('--window-size=1920,1080')  # 設置窗口大小
+        # options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')  # 設置用戶代理
+        # options.add_argument('--enable-javascript')  # 啟用 JavaScript
         # options.add_argument('--remote-debugging-port=9222')  # 添加遠程調試端口
+        # options.add_argument('--disable-software-rasterizer')  # 禁用軟件光柵化器
         options.binary_location = chrome_binary_path  # 確保 Chrome 瀏覽器的路徑正確
 
         # 設置 ChromeDriver 的路徑
@@ -67,14 +75,14 @@ class CopilotChat:
             # 等待並找到回應元素
             attempts = 0
             response_elements = []
-            while attempts < 5 and not response_elements:
+            while attempts < 3 and not response_elements:
                 try:
                     response_elements = WebDriverWait(self.driver, 10).until(
                         EC.presence_of_all_elements_located((By.TAG_NAME, "p"))
                     )
                 except:
                     if self.debug:
-                        print(f"Attempt {attempts + 1} failed, retrying in 5 seconds...")
+                        print(f"Attempt {attempts + 1}/3 failed, retrying in 5 seconds...")
                     time.sleep(5)
                     attempts += 1
             if self.debug:
@@ -97,16 +105,20 @@ class CopilotChat:
         finally:
             # 关闭 WebDriver
             self.driver.quit()
-
-def test_runtime():
-    chrome_driver_path = "./chromedriver-linux64/chromedriver"
-    copilot = CopilotChat(chrome_driver_path)
-    input_text = "How to install python?"
-    word_limit = 30
-    condition = "answer using only text"
-    runtime = timeit.timeit(lambda: copilot.chat(input_text, word_limit, condition), number=1)
-    print("Response Text:", response_text)
-    print("Runtime:", runtime)
+            # 停止虛擬顯示器
+            self.display.stop()
 
 if __name__ == "__main__":
-    test_runtime()
+    # 更新 chrome_driver_path 以指向新的 ChromeDriver 路徑
+    chrome_driver_path = "./chromedriver-linux64/chromedriver"  # 確保這裡指向下載的匹配版本的 ChromeDriver
+    # 確保 ChromeDriver 文件具有可執行權限
+    if not os.access(chrome_driver_path, os.X_OK):
+        print(f"PermissionError: 無法訪問 {chrome_driver_path}，請手動設置可執行權限：")
+        print(f"sudo chmod +x {chrome_driver_path}")
+    else:
+        copilot = CopilotChat(chrome_driver_path, debug=True, headless=False)
+        input_text = input("Enter your question: ")
+        word_limit = 30
+        condition = "answer using only text"
+        response_text = copilot.chat(input_text, word_limit, condition)
+        print("Response Text:", response_text)
