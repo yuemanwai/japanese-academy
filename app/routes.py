@@ -331,6 +331,11 @@ def lessons():
     # lessons = Lesson.query.all()
     return render_template('lessons.html.j2', lessons=lessons)
 
+@app.route('/lessons_list')
+def lessons_list():
+    lessons = Lesson.query.all()
+    return render_template('lessons_list.html.j2', lessons=lessons)
+
 @app.route('/practice')
 def practice():
     return render_template('practice.html.j2')

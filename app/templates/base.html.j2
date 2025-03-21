@@ -10,7 +10,7 @@
 <style>
 :root {
   --primary: #ff4081;
-  --secondary: #B6F5F8; {#  #5c9eff; #}
+  --secondary: #B6F5F8;
   --dark: #1a1a1a;
   --light: #ffffff;
   --font-family: "Comic Neue", "Noto Sans", sans-serif;
@@ -109,20 +109,41 @@ body {
 }
 
 #submit {
-  font-size: 18px;
+  {# font-size: 18px;
   font-weight: bold;
   width: 200px;
-  background-color: var(--primary);
-  color: var(--background-color);
-  border: 1px solid var(--primary);
-  margin-top: 15px;
+  background-color: var(--secondary);
+  color: var(--dark);
+  border: 1px solid var(--secondary);
+  margin-top: 15px; #}
 }
+
+.control-label{
+
+}
+
 
 .form-control {
   margin-top: 4px;
-  background-color: var(--background-color);
+  background-color: var(--light);
   border: 1px solid var(--text-color);
   color: var(--text-color);
+}
+
+.btn {
+  display: inline-block; /* 設置為行內塊元素 */
+  {# padding: 24px 32px; /* 內邊距 */ #}
+  border: 0; /* 無邊框 */
+  text-decoration: none; /* 無文字裝飾 */
+  border-radius: 15px; /* 邊框圓角 */
+  background-color: rgba(255, 255, 255, 0.1); /* 背景顏色 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
+  backdrop-filter: blur(30px); /* 背景模糊效果 */
+  color: rgba(255, 255, 255, 0.8); /* 文字顏色 */
+  font-size: 14px; /* 字體大小 */
+  letter-spacing: 2px; /* 字母間距 */
+  cursor: pointer; /* 鼠標指針樣式 */
+  text-transform: uppercase; /* 文字轉為大寫 */
 }
 
 .search-icon {

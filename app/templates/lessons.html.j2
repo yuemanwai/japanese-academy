@@ -48,6 +48,17 @@
   text-align: left;
 }
 
+.practice-areas-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.practice-area {
+  flex: 0 0 50%; /* Ensure equal width for both sections */
+  box-sizing: border-box;
+}
+
 .practice-area {
   background: white;
   border: 2px dashed var(--secondary);
@@ -55,6 +66,11 @@
   padding: 2rem;
   margin: 1rem 0;
   text-align: center;
+}
+
+#targetWord {
+  font-size: 10rem; /* Increase font size */
+  color: var(--dark); /* Set color to dark */
 }
 
 .btn {
@@ -100,6 +116,16 @@
 }
 
 </style>
+<script>
+  // Move the hiragana array definition here so it is available globally
+  const hiragana = [
+    'あ', 'い', 'う', 'え', 'お',
+    'か', 'き', 'く', 'け', 'こ',
+    'さ', 'し', 'す', 'せ', 'そ',
+    'た', 'ち', 'つ', 'て', 'と',
+    'な', 'に', 'ぬ', 'ね', 'の'
+  ];
+</script>
 {% endblock head %}
 
 {% block app_content %}
@@ -143,14 +169,23 @@
         </svg>
         Lesson 2: Handwriting Practice
       </h2>
-      
-      <div class="practice-area">
-        <div class="canvas-container">
-          <canvas id="handwritingPad" width="1000" height="500" ></canvas>
+      <div class="practice-areas-container">
+        <div class="practice-area">
+            <div id="targetWord" class="glass-button">
+            <script>
+              const randomHiragana = hiragana[Math.floor(Math.random() * hiragana.length)];
+              document.write(randomHiragana);
+            </script>
+            </div>
         </div>
-        <div>
-          <button class="btn" onclick="clearCanvas()">Clear</button>
-          <button class="btn" onclick="recognizeCharacter()">Check Character</button>
+        <div class="practice-area">
+          <div class="canvas-container">
+            <canvas id="handwritingPad"></canvas>
+          </div>
+          <div>
+            <button class="btn" onclick="clearCanvas()">Clear</button>
+            <button class="btn" onclick="recognizeCharacter()">Check Character</button>
+          </div>
         </div>
       </div>
     </div>
@@ -179,15 +214,6 @@
 {{ super() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-// Hiragana characters array
-const hiragana = [
-  'あ', 'い', 'う', 'え', 'お',
-  'か', 'き', 'く', 'け', 'こ',
-  'さ', 'し', 'す', 'せ', 'そ',
-  'た', 'ち', 'つ', 'て', 'と',
-  'な', 'に', 'ぬ', 'ね', 'の'
-];
-
 // Populate Hiragana grid
 const hiraganaGrid = document.getElementById('hiraganaGrid');
 hiragana.forEach(char => {
