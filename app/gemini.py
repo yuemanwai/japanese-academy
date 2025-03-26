@@ -63,17 +63,19 @@ class GeminiClient:
         if video_file.state.name == "FAILED":
             raise ValueError(video_file.state.name)
 
-        print('Done')
+        print('File is ready!')
         return video_file
 
     def _list_files(self):
         """
-        列出所有上傳的文件及其 URI。
+        列出所有上傳的文件及其 URI，並打印文件數量。
 
         :return: 文件名稱和 URI 的列表
         """
         files = self.client.files.list()
-        return [(f.name, f.uri) for f in files]
+        file_list = [(f.name, f.uri) for f in files]
+        print(f"Total number of files: {len(file_list)}")
+        return file_list
 
     def evaluate_video(self, video_name):
         """
@@ -82,14 +84,7 @@ class GeminiClient:
         :param video_name: 視頻文件名稱
         :return: 生成的評價文本
         """
-        files = self._list_files()
-        video_file = next((f for f in files if f[0] == video_name), None)
-
-        if not video_file:
-            video_file = self._upload_video(video_name)
-        else:
-            video_file = self.client.files.get(name=video_file[0])
-
+        video_file = self._upload_video(video_name)
         video_file = self._check_file_status(video_file)
         response = self.client.models.generate_content(
             model=self.model,
@@ -137,6 +132,7 @@ class GeminiClient:
                 """
             ]
         )
+        self._delete_file()  # Delete all uploaded files before returning
         return response.text
 
     def transcribe_video(self, video_file):
@@ -157,13 +153,14 @@ class GeminiClient:
         )
         return response.text
 
-    def delete_file(self, file_name):
+    def _delete_file(self):
         """
-        刪除指定名稱的文件。
-
-        :param file_name: 文件名稱
+        刪除所有上傳的文件。
         """
-        self.client.files.delete(name=file_name)
+        files = self._list_files()
+        for file_name, _ in files:
+            self.client.files.delete(name=file_name)
+            print(f"Deleted file: {file_name}")
 
 
 # Example usage
@@ -183,7 +180,13 @@ if __name__ == "__main__":
     # print(transcription)
 
     # Delete file example
-    # gemini_client.delete_file(video_file.name)
+    # try:
+    #     gemini_client._delete_file()
+    #     print("All files have been deleted successfully.")
+    # except Exception as e:
+    #     print(f"An error occurred while deleting files: {e}")
 
-
-
+    # List files example
+    # files = gemini_client._list_files()
+    # for file_name, file_uri in files:
+    #     print(f"File Name: {file_name}, File URI: {file_uri}")
