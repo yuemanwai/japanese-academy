@@ -12,7 +12,7 @@ import os
 import time
 import random 
 import subprocess
-from copilot import CopilotChat
+from app.copilot import CopilotChat
 from werkzeug.utils import secure_filename
 from mimetypes import guess_type
 from app.gemini import GeminiClient  
@@ -512,7 +512,7 @@ def charts():
     # 第二個子圖：長條圖 (非極坐標，所以不使用 'polar')
     fig.delaxes(axes[1])  # 刪除默認的第二極坐標子圖
     ax_bar = fig.add_subplot(1, 2, 2)  # 添加普通的笛卡爾坐標系
-    ax_bar.bar(labels, values2, color='lightgreen', alpha=0.7)  # 繪製長條圖
+    ax_bar.bar(labels, values2, color='palegreen')  # 繪製長條圖
     ax_bar.set_facecolor('black')  # 背景顏色
     ax_bar.tick_params(colors='white')  # 字體顏色
     ax_bar.set_title('Bar Chart', color='white')  # 設置標題

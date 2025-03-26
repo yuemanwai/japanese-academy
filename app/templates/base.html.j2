@@ -127,7 +127,7 @@ body {
   margin-top: 4px;
   background-color: var(--light);
   border: 1px solid var(--text-color);
-  color: var(--text-color);
+  color: var(--dark);
 }
 
 .btn {
@@ -256,9 +256,9 @@ a.glass-panel:hover {
           <li class="nav-item {% if request.endpoint == 'practice' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('practice') }}">{{ _('Practice') }}</a>
           </li>
-          <li class="nav-item {% if request.endpoint == 'dictionary' %}active{% endif %}">
+          {# <li class="nav-item {% if request.endpoint == 'dictionary' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('dictionary') }}">{{ _('Dictionary') }}</a>
-          </li>
+          </li> #}
           {% if current_user.is_anonymous %}
           <li class="nav-item {% if request.endpoint == 'register' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('register') }}">{{ _('Sign up') }}</a>
