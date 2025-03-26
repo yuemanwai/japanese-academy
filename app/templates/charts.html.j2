@@ -1,0 +1,18 @@
+{% extends "base.html.j2" %}
+{% block head %}
+{{ super() }}
+<style>
+</style>
+{% endblock head %}
+
+{% block app_content %}
+<div class="radar-chart-container">
+    <img src="{{ chart_data }}" alt="Radar Chart">
+</div>
+{% endblock app_content %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+</script>
+{% endblock scripts %}

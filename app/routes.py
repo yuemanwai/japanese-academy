@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app
+from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app, Response
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from flask_babel import _, get_locale, refresh
@@ -19,6 +19,10 @@ from app.gemini import GeminiClient
 from urllib.parse import quote
 import json
 import re  
+import matplotlib.pyplot as plt
+import numpy as np
+import io
+import base64
 
 
 @app.before_request
@@ -482,3 +486,47 @@ def score(user_id):
     evaluations = Evaluation.query.filter_by(user_id=user_id).order_by(Evaluation.id.desc()).all()
     current_app.logger.info(f'Evaluations retrieved from database: {evaluations}')
     return render_template('score.html.j2', evaluations=evaluations)
+
+@app.route('/charts')
+def charts():
+    # 定義數據
+    labels = ['A', 'B', 'C', 'D', 'E']
+    values1 = [4, 3, 5, 2, 4]  # 第一組數據
+    values2 = [3, 4, 2, 5, 3]  # 第二組數據
+    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+    values1 += values1[:1]
+    angles += angles[:1]
+
+    # 繪製雷達圖和長條圖
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6), subplot_kw={'polar': True})  # 第一子圖為極坐標
+
+    # 第一個子圖：雷達圖
+    ax_radar = axes[0]
+    ax_radar.plot(angles, values1, linewidth=2, linestyle='solid', color='blue', label='Group 1')
+    ax_radar.fill(angles, values1, color='blue', alpha=0.25)
+    ax_radar.set_thetagrids(np.degrees(angles[:-1]), labels)
+    ax_radar.set_facecolor('black')  # 背景顏色
+    ax_radar.tick_params(colors='white')  # 字體顏色
+    ax_radar.legend(labelcolor='white')
+
+    # 第二個子圖：長條圖 (非極坐標，所以不使用 'polar')
+    fig.delaxes(axes[1])  # 刪除默認的第二極坐標子圖
+    ax_bar = fig.add_subplot(1, 2, 2)  # 添加普通的笛卡爾坐標系
+    ax_bar.bar(labels, values2, color='lightgreen', alpha=0.7)  # 繪製長條圖
+    ax_bar.set_facecolor('black')  # 背景顏色
+    ax_bar.tick_params(colors='white')  # 字體顏色
+    ax_bar.set_title('Bar Chart', color='white')  # 設置標題
+
+    # 設置圖紙背景顏色
+    fig.patch.set_facecolor('black')
+
+    # 保存圖表為圖片
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    chart_data = buf.getvalue()
+    buf.close()
+
+    # 將圖表數據傳遞給模板
+    chart_data_base64 = f"data:image/png;base64,{base64.b64encode(chart_data).decode('utf-8')}"
+    return render_template('charts.html.j2', chart_data=chart_data_base64)

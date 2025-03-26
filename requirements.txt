@@ -22,3 +22,5 @@ google-genai==1.2.0
 dotenv==0.9.9
 psycopg2-binary==2.9.10
 pyvirtualdisplay==3.0
+matplotlib==3.10.1
+numpy==2.2.4
