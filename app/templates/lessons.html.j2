@@ -115,6 +115,8 @@
   background-color: rgba(255, 255, 255, 0.06);
 }
 
+
+
 </style>
 <script>
   // Move the hiragana array definition here so it is available globally
@@ -190,24 +192,73 @@
       </div>
     </div>
 
-    <!-- Lesson 3 -->
-    <div class="glass-panel" id="lesson3">
-      <h2 class="lesson-title">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">3</text>
-        </svg>
-        Lesson 3: Grammar Essentials
-      </h2>
-      
-      <div class="feature-box">
-        <h3>Basic Grammar Structure</h3>
-        <p>Topic は Subject が Verb です</p>
-        <button class="btn" onclick="searchGrammarExamples()">Find More Examples</button>
-      </div>
+<!-- Lesson 3 -->
+<div class="glass-panel" id="lesson3">
+  <h2 class="lesson-title">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="currentColor">3</text>
+    </svg>
+    Lesson 3: Grammar Essentials
+  </h2>
+  
+  <div class="feature-box">
+    <h3>Basic Grammar Structure</h3>
+    <p>Topic は Subject が Verb です</p>
+    <button class="btn" onclick="searchGrammarExamples()">Find More Examples</button>
+  </div>
+
+  <div class="feature-box">
+    <h3>Scenario Practice</h3>
+    <p>Click the button below to generate a scenario, learn suitable grammar and vocabulary, and see a related photo.</p>
+    <button class="btn" onclick="generateScenario()">Generate Scenario</button>
+    <div id="scenarioOutput" style="margin-top: 1rem; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+      <!-- Scenario content will be dynamically inserted here -->
+      <script>
+function generateScenario() {
+  const scenarios = [
+    {
+      scenario: "You are introducing yourself to a new friend.",
+      grammar: "私の名前は [Your Name] です。",
+      vocab: "名前 (なまえ) - Name, 友達 (ともだち) - Friend",
+      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGZyaWVuZHNoaXB8ZW58MHx8fHwxNjgyMDYyNjQw&ixlib=rb-4.0.3&q=80&w=300"
+    },
+    {
+      scenario: "You are ordering food at a restaurant.",
+      grammar: "すみません、[Dish Name] をください。",
+      vocab: "すみません - Excuse me, をください - Please give me",
+      image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fHJlc3RhdXJhbnR8ZW58MHx8fHwxNjgyMDYyNjQw&ixlib=rb-4.0.3&q=80&w=300"
+    },
+    {
+      scenario: "You are asking for directions to the train station.",
+      grammar: "[Place] はどこですか？",
+      vocab: "どこ - Where, 駅 (えき) - Station",
+      image: "https://images.unsplash.com/photo-1518684079-0e2e93191b4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fHRyYWluJTIwc3RhdGlvbnxlbnwwfHx8fDE2ODIwNjI2NDA&ixlib=rb-4.0.3&q=80&w=300"
+    }
+  ];
+
+  const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+  const scenarioOutput = document.getElementById('scenarioOutput');
+
+  // Apply semi-transparent background dynamically
+  scenarioOutput.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
+  scenarioOutput.style.padding = "1rem";
+  scenarioOutput.style.border = "1px solid #ccc";
+  scenarioOutput.style.borderRadius = "8px";
+
+  scenarioOutput.innerHTML = `
+    <p style="color: #000;"><strong style="color: #000;">Scenario:</strong> ${randomScenario.scenario}</p>
+    <p style="color: #000;"><strong style="color: #000;">Grammar:</strong> ${randomScenario.grammar}</p>
+    <p style="color: #000;"><strong style="color: #000;">Vocabulary:</strong> ${randomScenario.vocab}</p>
+    <img src="${randomScenario.image}" alt="Scenario Image" style="width: 100%; max-width: 300px; border-radius: 8px; margin-top: 1rem;">
+  `;
+}
+      </script>
     </div>
   </div>
 </div>
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -300,6 +351,8 @@ gsap.from('.lesson-card', {
   opacity: 0,
   duration: 1,
   stagger: 0.2,
-  ease: 'power2.out'});
+  ease: 'power2.out'
+});
+
 </script>
 {% endblock scripts %}
