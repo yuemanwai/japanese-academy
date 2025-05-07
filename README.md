@@ -147,10 +147,11 @@ pybabel compile -d translations
 - [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
 - [CSS Inspiration](https://codepen.io/topics/)
 
-#### Important Note
 
-After creating or updating translations, remember to re-run the Flask application to apply the changes:
-
-```bash
-flask --debug run --host=0.0.0.0
-```
+> **Important Note**
+>
+>After creating or updating translations, remember to re-run the Flask application to apply the changes:
+>
+>```bash
+>flask --debug run --host=0.0.0.0
+>```
