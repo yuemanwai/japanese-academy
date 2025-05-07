@@ -1,21 +1,12 @@
 # How to Use This Repository
 
-Wait until the page on port 5000 appears, and everything will be set up.
+If you are using Codespaces, simply clone this repository and wait for the page on port 5000 to appear. Everything will be set up automatically.
 
-OR
+# Commands that might help
 
-you can run these cmd:
+## For Database
 
-```bash
-flask --debug run --host=0.0.0.0
-python test_data.py
-```
-
-## Commands That Might Help
-
-### Flask Commands
-
-Run the following commands to manage the Flask application:
+### Commands for Initial migration
 
 ```bash
 # Initialize the migration repository
@@ -34,12 +25,9 @@ flask db migrate -m "Description of changes."
 flask db upgrade
 ```
 
-### How to Modify Columns in Existing Database
+### How to Modify Attributes in Existing Database
 
-If you need to modify some columns in the existing database, follow these steps:
-
-1. Manually delete the table from the database.
-2. Run the following commands to apply the changes:
+You need to **Manually** delete the table from the database and run the following commands to apply the changes:
 
 ```bash
 # Apply the migration to the database
@@ -52,30 +40,32 @@ flask db migrate -m "Description of changes."
 flask db upgrade
 ```
 
-## To use Copilot on the website, you need to install Google Chrome on Linux
+## To use Gemini on the website
 
-### How to Check Chrome and ChromeDriver Versions
+Open **.env** file and paste your api key
 
-Run the following commands to check the versions:
+## To Use Copilot on the Website
+
+You need to install Google Chrome on Linux. Since Copilot does not have an API, Selenium is used instead.
+
+To proceed, download the **latest version** of Google Chrome and ensure that you are using the **same version** for both Chrome and ChromeDriver.
+
+### Verify the versions for Chrome and ChromeDriver
 
 ```bash
-# Check Chrome version
+# Check the installed version of Google Chrome
 google-chrome --version
 
-# Check ChromeDriver version
+# Check the installed version of ChromeDriver
 ./chromedriver-linux64/chromedriver --version
 ```
 
-### Different Google Chrome Versions
-
-You can find different versions of Google Chrome at the following URL:
+### Different Versions URL
 
 [https://googlechromelabs.github.io/chrome-for-testing/](https://googlechromelabs.github.io/chrome-for-testing/)
 ![alt text](./app/static/image/image.png)
 
 ## Example
-
-Download the **latest version**, and make sure you are using the **same version** for Chrome & ChromeDriver
 
 ### Stable
 
@@ -85,8 +75,6 @@ Download the **latest version**, and make sure you are using the **same version*
 | ChromeDriver | Linux64  | https://xxx/136.x.x.x/chromedriver-linux64.zip |
 
 ### How to download Google Chrome (.deb)
-
-Run the following commands:
 
 ```bash
 # Download the Google Chrome .deb file
@@ -116,6 +104,8 @@ rm chrome-linux64.zip
 rm chromedriver-linux64.zip
 ```
 
+## For Translations
+
 ### How to Create Translations
 
 Run the following commands to set up and create translations:
@@ -141,17 +131,16 @@ pybabel update -i translations/messages.pot -d translations
 pybabel compile -d translations
 ```
 
-### Additional Resources
+## Additional Resources
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
 - [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
 - [CSS Inspiration](https://codepen.io/topics/)
 
+## Important Note
 
-> **Important Note**
->
->After creating or updating translations, remember to re-run the Flask application to apply the changes:
->
->```bash
->flask --debug run --host=0.0.0.0
->```
+After creating or updating **anything**, remember to re-run the Flask application to apply the changes:
+
+```bash
+flask --debug run --host=0.0.0.0
+```
