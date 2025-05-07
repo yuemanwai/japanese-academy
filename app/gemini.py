@@ -85,7 +85,7 @@ class GeminiClient:
         使用指定的模型評價視頻。
 
         :param video_name: 視頻文件名稱
-        :return: 生成的評價文本
+        :return: 生成的評價文本（已解析為 JSON 格式）
         """
         video_file = self._upload_file(video_name)
         video_file = self._check_file_status(video_file)
@@ -136,7 +136,7 @@ class GeminiClient:
             ]
         )
         self._delete_file()  # Delete all uploaded files before returning
-        return response.text
+        return self._parse_handwriting_response(response.text)
 
     def transcribe_video(self, video_file):
         """
@@ -162,7 +162,7 @@ class GeminiClient:
 
         :param image_name: 圖片文件名稱
         :param word: 要比較的目標字符
-        :return: 生成的描述文本
+        :return: 生成的描述文本（已解析為 JSON 格式）
         """
         image_file = self._upload_file(image_name)
         response = self.client.models.generate_content(
@@ -183,7 +183,22 @@ class GeminiClient:
             ]
         )
         self._delete_file()  # Delete all uploaded files before returning
-        return response.text
+        return self._parse_handwriting_response(response.text)
+
+    def _parse_handwriting_response(self, response):
+        """
+        Parse the JSON part from the Gemini response text.
+        """
+        try:
+            json_match = re.search(r'```json(.*?)```', response, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group(1).strip())
+            else:
+                self.logger.error('No valid JSON found in the response')
+                return None
+        except Exception as e:
+            self.logger.error(f'Error parsing handwriting response: {e}')
+            return None
 
     def _delete_file(self):
         """
@@ -213,7 +228,7 @@ if __name__ == "__main__":
 
     # Compare handwriting example
     try:
-        handwriting_result = gemini_client.compare_handwriting("test_image.png", "さ")
+        handwriting_result = gemini_client.compare_handwriting("handwriting.png", "さ")
         print(handwriting_result)
     except Exception as e:
         print(f"An error occurred while comparing handwriting: {e}")

@@ -291,10 +291,21 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 
-ctx.strokeStyle = '#000';
-ctx.lineJoin = 'round';
-ctx.lineCap = 'round';
-ctx.lineWidth = 8;
+// Initialize canvas with white background
+function initializeCanvas() {
+  ctx.fillStyle = '#FFFFFF'; // Set background to white
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#000000'; // Set stroke color to black
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 8;
+}
+
+// Clear canvas and reset to white background
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  initializeCanvas();
+}
 
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
@@ -319,9 +330,8 @@ function stopDrawing() {
   isDrawing = false;
 }
 
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+// Initialize canvas on page load
+initializeCanvas();
 
 // Text-to-Speech functionality
 function playCharacterSound(character) {
@@ -363,8 +373,9 @@ async function recognizeCharacter() {
     return;
   }
 
-  // Get the target character
-  const targetCharacter = document.getElementById('targetWord').textContent;
+  // Get the target character and extract the last character
+  const targetCharacter = document.getElementById('targetWord').textContent.trim();
+  const lastCharacter = targetCharacter.slice(-1); // Extract the last character
 
   // Convert canvas to a Base64 image
   const canvasImage = canvas.toDataURL('image/png');
@@ -377,7 +388,7 @@ async function recognizeCharacter() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        targetCharacter: targetCharacter,
+        targetCharacter: lastCharacter,
         handwritingImage: canvasImage,
       }),
     });
