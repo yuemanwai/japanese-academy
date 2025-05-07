@@ -1,106 +1,15 @@
 # How to Use This Repository
 
-Wait until the page on port 5000 pops up, and everything will be set up.
+Wait until the page on port 5000 appears, and everything will be set up.
 
 OR
+
+you can run these cmd:
 
 ```bash
 flask --debug run --host=0.0.0.0
 python test_data.py
 ```
-
-## File Structure
-
-```
-FYP_AI-powered_Interactive_Japanese_Academy/
-├── app/
-│   ├── __init__.py          # Initializes the Flask application and sets up configurations
-│   ├── routes.py            # Defines the routes and view functions for the application
-│   ├── models.py            # Defines the database models
-│   ├── forms.py             # Defines the forms used in the application
-│   ├── templates/           # Contains all the HTML templates
-│   │   ├── base.html.j2     # Base template that other templates extend from
-│   │   ├── index.html.j2    # Home page template
-│   │   ├── login.html.j2    # Login page template
-│   │   ├── register.html.j2 # Registration page template
-│   │   ├── random_post.html.j2 # Template for displaying a random post
-│   │   ├── donate.html.j2   # Donation page template
-│   │   ├── donate_payment.html.j2 # Donation payment page template
-│   │   ├── logout.html.j2   # Logout page template
-│   │   ├── lessons.html.j2  # Lessons page template
-│   │   ├── practice.html.j2 # Practice page template
-│   │   ├── dictionary.html.j2 # Dictionary page template
-│   │   ├── community.html.j2 # Community page template
-│   │   ├── shared.html.j2   # Shared page template for coming soon features
-│   │   ├── 404.html.j2      # 404 error page template
-│   │   ├── profile.html.j2  # User profile page template
-│   │   ├── settings.html.j2 # User settings page template
-│   │   ├── notifications.html.j2 # Notifications page template
-│   │   ├── messages.html.j2 # Messages page template
-│   ├── static/              # Contains static files like CSS, JavaScript, and images
-│   │   ├── css/
-│   │   │   ├── styles.css   # Main CSS file
-│   │   ├── js/
-│   │   │   ├── scripts.js   # Main JavaScript file
-│   │   ├── images/
-│   │       ├── logo.png     # Logo image
-│   ├── translations/        # Contains translation files
-│   ├── babel.cfg            # Configuration file for Babel
-│   ├── config.py            # Configuration file for the Flask application
-│   ├── errors.py            # Error handlers for the application
-│   ├── utils.py             # Utility functions for the application
-├── migrations/              # Database migration files
-├── test_data.py             # Script to load mock data into the database
-├── requirements.txt         # List of Python dependencies
-├── README.md                # This file
-├── .env                     # Environment variables
-├── .gitignore               # Git ignore file
-├── Dockerfile               # Docker configuration file
-├── docker-compose.yml       # Docker Compose configuration file
-```
-
-### Description of Key Files
-
-- `app/__init__.py`: Initializes the Flask application and sets up configurations.
-- `app/routes.py`: Defines the routes and view functions for the application.
-- `app/models.py`: Defines the database models.
-- `app/forms.py`: Defines the forms used in the application.
-- `app/templates/`: Contains all the HTML templates.
-  - `base.html.j2`: Base template that other templates extend from.
-  - `index.html.j2`: Home page template.
-  - `login.html.j2`: Login page template.
-  - `register.html.j2`: Registration page template.
-  - `random_post.html.j2`: Template for displaying a random post.
-  - `donate.html.j2`: Donation page template.
-  - `donate_payment.html.j2`: Donation payment page template.
-  - `logout.html.j2`: Logout page template.
-  - `lessons.html.j2`: Lessons page template.
-  - `practice.html.j2`: Practice page template.
-  - `dictionary.html.j2`: Dictionary page template.
-  - `community.html.j2`: Community page template.
-  - `shared.html.j2`: Shared page template for coming soon features.
-  - `404.html.j2`: 404 error page template.
-  - `profile.html.j2`: User profile page template.
-  - `settings.html.j2`: User settings page template.
-  - `notifications.html.j2`: Notifications page template.
-  - `messages.html.j2`: Messages page template.
-- `app/static/`: Contains static files like CSS, JavaScript, and images.
-  - `css/`: Contains CSS files.
-    - `styles.css`: Main CSS file.
-  - `js/`: Contains JavaScript files.
-    - `scripts.js`: Main JavaScript file.
-  - `images/`: Contains image files.
-    - `logo.png`: Logo image.
-- `app/translations/`: Contains translation files.
-- `babel.cfg`: Configuration file for Babel.
-- `config.py`: Configuration file for the Flask application.
-- `errors.py`: Error handlers for the application.
-- `utils.py`: Utility functions for the application.
-- `migrations/`: Database migration files.
-- `test_data.py`: Script to load mock data into the database.
-- `requirements.txt`: List of Python dependencies.
-- `README.md`: This file.
-- `.env`: Environment variables.
 
 ## Commands That Might Help
 
@@ -143,13 +52,39 @@ flask db migrate -m "Description of changes."
 flask db upgrade
 ```
 
-### How to Install Google Chrome on Linux
+## To use Copilot on the website, you need to install Google Chrome on Linux
+
+### How to Check Chrome and ChromeDriver Versions
+
+Run the following commands to check the versions:
+
+```bash
+# Check Chrome version
+google-chrome --version
+
+# Check ChromeDriver version
+./chromedriver-linux64/chromedriver --version
+```
 
 ### Different Google Chrome Versions
 
 You can find different versions of Google Chrome at the following URL:
 
 [https://googlechromelabs.github.io/chrome-for-testing/](https://googlechromelabs.github.io/chrome-for-testing/)
+![alt text](./app/static/image/image.png)
+
+## Example
+
+Download the **latest version**, and make sure you are using the **same version** for Chrome & ChromeDriver
+
+### Stable
+
+| Binary       | Platform | URL                                            |
+| ------------ | -------- | ---------------------------------------------- |
+| Chrome       | Linux64  | https://xxx/136.x.x.x/chrome-linux64.zip       |
+| ChromeDriver | Linux64  | https://xxx/136.x.x.x/chromedriver-linux64.zip |
+
+### How to download Google Chrome (.deb)
 
 Run the following commands:
 
@@ -165,28 +100,20 @@ sudo apt --fix-broken install -y
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
 ```
 
-### How to Download ChromeDriver
+### How to download Chrome & ChromeDriver (.zip)
 
 Run the following command to download ChromeDriver:
 
 ```bash
-curl -O https://storage.googleapis.com/chrome-for-testing-public/134.0.6998.88/linux64/chromedriver-linux64.zip
+curl -O https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/linux64/chrome-linux64.zip
 
+curl -O https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/linux64/chromedriver-linux64.zip
+
+unzip chrome-linux64.zip
 unzip chromedriver-linux64.zip
 
+rm chrome-linux64.zip
 rm chromedriver-linux64.zip
-```
-
-### How to Check Chrome and ChromeDriver Versions
-
-Run the following commands to check the versions:
-
-```bash
-# Check Chrome version
-google-chrome --version
-
-# Check ChromeDriver version
-./chromedriver-linux64/chromedriver --version
 ```
 
 ### How to Create Translations
