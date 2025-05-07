@@ -35,18 +35,21 @@ class GeminiClient:
         )
         return response.text
 
-    def _upload_video(self, video_name):
+    def _upload_file(self, file_name):
         """
-        上傳視頻文件並返回文件對象。
+        上傳文件並返回文件對象。
 
-        :param video_path: 視頻文件的路徑
+        :param file_name: 本地文件對象的名稱
         :return: 上傳的文件對象
         """
         print("Uploading file...")
-        video_path = f'/workspaces/FYP_AI-powered_Interactive_Japanese_Academy/app/static/video/{video_name}'
-        video_file = self.client.files.upload(file=video_path)
-        print(f"Completed upload: {video_file.uri}")
-        return video_file
+        if file_name.lower().endswith(('.mp4', '.avi', '.mov', '.mkv', '.flv', '.mpg', '.webm', '.wmv', '.3gp')):
+            file_path = os.path.join(os.path.dirname(__file__), 'static', 'video', file_name)
+        else:
+            file_path = os.path.join(os.path.dirname(__file__), 'static', 'image', file_name)
+        uploaded_file = self.client.files.upload(file=file_path)
+        print(f"Completed upload: {uploaded_file.uri}")
+        return uploaded_file
 
     def _check_file_status(self, video_file):
         """
@@ -84,7 +87,7 @@ class GeminiClient:
         :param video_name: 視頻文件名稱
         :return: 生成的評價文本
         """
-        video_file = self._upload_video(video_name)
+        video_file = self._upload_file(video_name)
         video_file = self._check_file_status(video_file)
         response = self.client.models.generate_content(
             model=self.model,
@@ -153,6 +156,35 @@ class GeminiClient:
         )
         return response.text
 
+    def compare_handwriting(self, image_name, word):
+        """
+        比較手寫內容並生成描述。
+
+        :param image_name: 圖片文件名稱
+        :param word: 要比較的目標字符
+        :return: 生成的描述文本
+        """
+        image_file = self._upload_file(image_name)
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=[
+                image_file,
+                f"""
+                Compare the handwriting in this image with the Japanese character '{word}'. 
+                Respond ONLY in JSON format, starting with '{{' and ending with '}}'. 
+                Provide the following structure:
+                {{
+                    "similarity_score": {{
+                        "score": 1-10
+                    }},
+                    "feedback": "Constructive feedback on how to improve the handwriting."
+                }}
+                """
+            ]
+        )
+        self._delete_file()  # Delete all uploaded files before returning
+        return response.text
+
     def _delete_file(self):
         """
         刪除所有上傳的文件。
@@ -172,12 +204,19 @@ if __name__ == "__main__":
     # print(result)
     
     # # Evaluate video example
-    evaluation = gemini_client.evaluate_video("test_video2.mp4")
-    print(evaluation)
+    # evaluation = gemini_client.evaluate_video("test_video2.mp4")
+    # print(evaluation)
     
     # Transcribe video example
     # transcription = gemini_client.transcribe_video(video_file)
     # print(transcription)
+
+    # Compare handwriting example
+    try:
+        handwriting_result = gemini_client.compare_handwriting("test_image.png", "さ")
+        print(handwriting_result)
+    except Exception as e:
+        print(f"An error occurred while comparing handwriting: {e}")
 
     # Delete file example
     # try:

@@ -530,3 +530,38 @@ def charts():
     # 將圖表數據傳遞給模板
     chart_data_base64 = f"data:image/png;base64,{base64.b64encode(chart_data).decode('utf-8')}"
     return render_template('charts.html.j2', chart_data=chart_data_base64)
+
+@app.route('/check_character', methods=['POST'])
+def check_character():
+    data = request.get_json()
+    if not data or 'targetCharacter' not in data or 'handwritingImage' not in data:
+        return jsonify({'error': 'Invalid request data'}), 400
+
+    target_character = data['targetCharacter']
+    handwriting_image = data['handwritingImage']
+
+    gemini_client = GeminiClient()
+    try:
+        # Save the handwriting image temporarily
+        image_path = os.path.join(current_app.root_path, 'static', 'image', 'temp_handwriting.png')
+        with open(image_path, "wb") as f:
+            f.write(base64.b64decode(handwriting_image.split(",")[1]))
+
+        # Use GeminiClient to compare handwriting with the target character
+        response = gemini_client.compare_handwriting(image_path, target_character)
+        response_data = json.loads(response)  # Parse the JSON response
+
+        # Extract score and feedback
+        similarity_score = response_data.get("similarity_score", {}).get("score", "N/A")
+        feedback = response_data.get("feedback", "No feedback provided.")
+
+        # Clean up the temporary file
+        os.remove(image_path)
+
+        return jsonify({
+            'similarity_score': similarity_score,
+            'feedback': feedback
+        })
+    except Exception as e:
+        current_app.logger.error(f'Error during character comparison: {e}')
+        return jsonify({'error': 'An error occurred while processing your handwriting.'}), 500
