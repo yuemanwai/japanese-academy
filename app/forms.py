@@ -11,7 +11,7 @@ from flask_wtf.file import FileField, FileRequired
 class LoginForm(FlaskForm):
     username = StringField(_('Username'), validators=[DataRequired()])
     password = PasswordField(_('Password'), validators=[DataRequired()])
-    remember_me = BooleanField(_('Keep me logged in (for up to one year)'))
+    remember_me = BooleanField(_('Remember me'))
     submit = SubmitField(_('Log in'))
 
 

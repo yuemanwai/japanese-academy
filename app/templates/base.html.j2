@@ -41,7 +41,11 @@ body {
   background-color: var(--background-color);
   text-align: center;
   padding: 1rem 0;
-  position: relative;
+  position: fixed; /* 將 footer 設定為固定定位 */
+  bottom: 0;      /* 將 footer 固定在屏幕底部 */
+  left: 0;        /* 確保 footer 從屏幕左邊開始 */
+  /* 如果你的 body 有 padding-bottom，可能需要調整這裡的 bottom 值 */
+
 }
 
 .footer a {
@@ -76,6 +80,9 @@ body {
   background-color: var(--background-color);
   border: 1px solid var(--text-color);
   margin-top: 20px;
+  min-width: auto;
+  text-align: center;
+
 }
 
 .nav-item.dropdown .dropdown-item {
@@ -84,7 +91,7 @@ body {
   border: 1px solid var(--background-color);
   border-radius: 5px;
   padding: 10px;
-  margin: 5px 0;
+  margin: 5px 15px;
 }
 
 .nav-item.dropdown .dropdown-item:hover {
@@ -315,11 +322,6 @@ a.glass-panel:hover {
     {% endif %}
     {% endwith %}
     {% block app_content %} {% endblock app_content %}
-    <div style="position: fixed; bottom: 40px; right: 20px;">
-      <a href="{{ url_for('chat_with_copilot') }}">
-        {# <img src="../static/image/ai_icon.png" alt="Icon" style="width: 100px; height: 100px;"> #}
-      </a>
-    </div>
   </div>
 </div>
 
