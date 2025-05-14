@@ -1,112 +1,12 @@
 # How to Use This Repository
 
-Wait until the page on port 5000 pops up, and everything will be set up.
+If you are using Codespaces, simply clone this repository and wait for the page on port 5000 to appear. Everything will be set up automatically.
 
-OR
+# Commands that might help
 
-```bash
-flask --debug run --host=0.0.0.0
-python test_data.py
-```
+## For Database
 
-## File Structure
-
-```
-FYP_AI-powered_Interactive_Japanese_Academy/
-├── app/
-│   ├── __init__.py          # Initializes the Flask application and sets up configurations
-│   ├── routes.py            # Defines the routes and view functions for the application
-│   ├── models.py            # Defines the database models
-│   ├── forms.py             # Defines the forms used in the application
-│   ├── templates/           # Contains all the HTML templates
-│   │   ├── base.html.j2     # Base template that other templates extend from
-│   │   ├── index.html.j2    # Home page template
-│   │   ├── login.html.j2    # Login page template
-│   │   ├── register.html.j2 # Registration page template
-│   │   ├── random_post.html.j2 # Template for displaying a random post
-│   │   ├── donate.html.j2   # Donation page template
-│   │   ├── donate_payment.html.j2 # Donation payment page template
-│   │   ├── logout.html.j2   # Logout page template
-│   │   ├── lessons.html.j2  # Lessons page template
-│   │   ├── practice.html.j2 # Practice page template
-│   │   ├── dictionary.html.j2 # Dictionary page template
-│   │   ├── community.html.j2 # Community page template
-│   │   ├── shared.html.j2   # Shared page template for coming soon features
-│   │   ├── 404.html.j2      # 404 error page template
-│   │   ├── profile.html.j2  # User profile page template
-│   │   ├── settings.html.j2 # User settings page template
-│   │   ├── notifications.html.j2 # Notifications page template
-│   │   ├── messages.html.j2 # Messages page template
-│   ├── static/              # Contains static files like CSS, JavaScript, and images
-│   │   ├── css/
-│   │   │   ├── styles.css   # Main CSS file
-│   │   ├── js/
-│   │   │   ├── scripts.js   # Main JavaScript file
-│   │   ├── images/
-│   │       ├── logo.png     # Logo image
-│   ├── translations/        # Contains translation files
-│   ├── babel.cfg            # Configuration file for Babel
-│   ├── config.py            # Configuration file for the Flask application
-│   ├── errors.py            # Error handlers for the application
-│   ├── utils.py             # Utility functions for the application
-├── migrations/              # Database migration files
-├── test_data.py             # Script to load mock data into the database
-├── requirements.txt         # List of Python dependencies
-├── README.md                # This file
-├── .env                     # Environment variables
-├── .gitignore               # Git ignore file
-├── Dockerfile               # Docker configuration file
-├── docker-compose.yml       # Docker Compose configuration file
-```
-
-### Description of Key Files
-
-- `app/__init__.py`: Initializes the Flask application and sets up configurations.
-- `app/routes.py`: Defines the routes and view functions for the application.
-- `app/models.py`: Defines the database models.
-- `app/forms.py`: Defines the forms used in the application.
-- `app/templates/`: Contains all the HTML templates.
-  - `base.html.j2`: Base template that other templates extend from.
-  - `index.html.j2`: Home page template.
-  - `login.html.j2`: Login page template.
-  - `register.html.j2`: Registration page template.
-  - `random_post.html.j2`: Template for displaying a random post.
-  - `donate.html.j2`: Donation page template.
-  - `donate_payment.html.j2`: Donation payment page template.
-  - `logout.html.j2`: Logout page template.
-  - `lessons.html.j2`: Lessons page template.
-  - `practice.html.j2`: Practice page template.
-  - `dictionary.html.j2`: Dictionary page template.
-  - `community.html.j2`: Community page template.
-  - `shared.html.j2`: Shared page template for coming soon features.
-  - `404.html.j2`: 404 error page template.
-  - `profile.html.j2`: User profile page template.
-  - `settings.html.j2`: User settings page template.
-  - `notifications.html.j2`: Notifications page template.
-  - `messages.html.j2`: Messages page template.
-- `app/static/`: Contains static files like CSS, JavaScript, and images.
-  - `css/`: Contains CSS files.
-    - `styles.css`: Main CSS file.
-  - `js/`: Contains JavaScript files.
-    - `scripts.js`: Main JavaScript file.
-  - `images/`: Contains image files.
-    - `logo.png`: Logo image.
-- `app/translations/`: Contains translation files.
-- `babel.cfg`: Configuration file for Babel.
-- `config.py`: Configuration file for the Flask application.
-- `errors.py`: Error handlers for the application.
-- `utils.py`: Utility functions for the application.
-- `migrations/`: Database migration files.
-- `test_data.py`: Script to load mock data into the database.
-- `requirements.txt`: List of Python dependencies.
-- `README.md`: This file.
-- `.env`: Environment variables.
-
-## Commands That Might Help
-
-### Flask Commands
-
-Run the following commands to manage the Flask application:
+### Commands for Initial migration
 
 ```bash
 # Initialize the migration repository
@@ -125,12 +25,9 @@ flask db migrate -m "Description of changes."
 flask db upgrade
 ```
 
-### How to Modify Columns in Existing Database
+### How to Modify Attributes in Existing Database
 
-If you need to modify some columns in the existing database, follow these steps:
-
-1. Manually delete the table from the database.
-2. Run the following commands to apply the changes:
+You need to **Manually** delete the table from the database and run the following commands to apply the changes:
 
 ```bash
 # Apply the migration to the database
@@ -143,15 +40,41 @@ flask db migrate -m "Description of changes."
 flask db upgrade
 ```
 
-### How to Install Google Chrome on Linux
+## To use Gemini on the website
 
-### Different Google Chrome Versions
+Open **.env** file and paste your api key
 
-You can find different versions of Google Chrome at the following URL:
+## To Use Copilot on the Website
+
+You need to install Google Chrome on Linux. Since Copilot does not have an API, Selenium is used instead.
+
+To proceed, download the **latest version** of Google Chrome and ensure that you are using the **same version** for both Chrome and ChromeDriver.
+
+### Verify the versions for Chrome and ChromeDriver
+
+```bash
+# Check the installed version of Google Chrome
+google-chrome --version
+
+# Check the installed version of ChromeDriver
+./chromedriver-linux64/chromedriver --version
+```
+
+### Different Versions URL
 
 [https://googlechromelabs.github.io/chrome-for-testing/](https://googlechromelabs.github.io/chrome-for-testing/)
+![alt text](./app/static/image/image.png)
 
-Run the following commands:
+## Example
+
+### Stable
+
+| Binary       | Platform | URL                                            |
+| ------------ | -------- | ---------------------------------------------- |
+| Chrome       | Linux64  | https://xxx/136.x.x.x/chrome-linux64.zip       |
+| ChromeDriver | Linux64  | https://xxx/136.x.x.x/chromedriver-linux64.zip |
+
+### How to download Google Chrome (.deb)
 
 ```bash
 # Download the Google Chrome .deb file
@@ -165,29 +88,23 @@ sudo apt --fix-broken install -y
 sudo apt install ./google-chrome-stable_current_amd64.deb -y
 ```
 
-### How to Download ChromeDriver
+### How to download Chrome & ChromeDriver (.zip)
 
 Run the following command to download ChromeDriver:
 
 ```bash
-curl -O https://storage.googleapis.com/chrome-for-testing-public/134.0.6998.88/linux64/chromedriver-linux64.zip
+curl -O https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/linux64/chrome-linux64.zip
 
+curl -O https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.92/linux64/chromedriver-linux64.zip
+
+unzip chrome-linux64.zip
 unzip chromedriver-linux64.zip
 
+rm chrome-linux64.zip
 rm chromedriver-linux64.zip
 ```
 
-### How to Check Chrome and ChromeDriver Versions
-
-Run the following commands to check the versions:
-
-```bash
-# Check Chrome version
-google-chrome --version
-
-# Check ChromeDriver version
-./chromedriver-linux64/chromedriver --version
-```
+## For Translations
 
 ### How to Create Translations
 
@@ -214,15 +131,15 @@ pybabel update -i translations/messages.pot -d translations
 pybabel compile -d translations
 ```
 
-### Additional Resources
+## Additional Resources
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
 - [Gemini API Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart?hl=zh-tw&lang=python)
 - [CSS Inspiration](https://codepen.io/topics/)
 
-#### Important Note
+## Important Note
 
-After creating or updating translations, remember to re-run the Flask application to apply the changes:
+After creating or updating **anything**, remember to re-run the Flask application to apply the changes:
 
 ```bash
 flask --debug run --host=0.0.0.0

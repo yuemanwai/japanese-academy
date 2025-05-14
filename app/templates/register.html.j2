@@ -2,7 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
 <div class="register-container">
-    <div class="register-box">
+    <div class="register-box glass-panel">
         <h2><b>{{ title }}</b></h2>
         {{ wtf.quick_form(form) }}
         <br />
@@ -14,30 +14,65 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
+        height: 80vh;
+        border-radius: 15px; /* 邊框圓角 */
+        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+                    url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600') center/cover fixed;
     }
 
     .register-box {
-        background-color: #333;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        width: 90%;
+        padding: 2rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         color: white;
-        width: 500px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .register-box:hover {
+        background-color: rgba(255, 255, 255, 0.15);
     }
 
     .register-box h2 {
-        text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .register-box a {
-        color: #ff6b6b;
+        color: whitesmoke;
+        text-decoration: none;
+        transition: color 0.3s ease;
     }
 
     .register-box a:hover {
-        color: #ff6b6b;
+        color: #ffd7e6;
         text-decoration: underline;
     }
+
+    .form .form-group label, .checkbox label {
+        text-align: left;
+        display: block; 
+    }
+
+    .checkbox {
+    margin-top: 20px; 
+    }
+
+    .form .form-group {
+        text-align: left;
+    }
+
+    .btn {
+        margin: 15px 0pc 0px 0px;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        padding: 8px 32px;
+    }
+
 </style>
 {% endblock app_content %}

@@ -443,36 +443,32 @@ def video_evaluation():
         evaluation_response = gemini_client.evaluate_video(video.filename)
         current_app.logger.info(f'Evaluation response: {evaluation_response}')
         if evaluation_response:
-            print("有資料")
-            # Extract JSON part from the response text
-            json_match = re.search(r'```json(.*?)```', evaluation_response, re.DOTALL)
-            if json_match:
-                evaluation_data = json.loads(json_match.group(1).strip())  # Parse JSON response
-                current_app.logger.info(f'Evaluation data: {evaluation_data}')
+            evaluation_data = evaluation_response  # 已由 GeminiClient 處理格式
+            current_app.logger.info(f'Evaluation data: {evaluation_data}')
 
-                # Save evaluation data to the database
-                evaluation = Evaluation(
-                    user_id=current_user.id,
-                    pronunciation_accuracy=evaluation_data['evaluation_criteria']['pronunciation_accuracy']['score'],
-                    grammar_usage=evaluation_data['evaluation_criteria']['grammar_usage']['score'],
-                    vocabulary_usage=evaluation_data['evaluation_criteria']['vocabulary_usage']['score'],
-                    fluency=evaluation_data['evaluation_criteria']['fluency']['score'],
-                    comprehension=evaluation_data['evaluation_criteria']['comprehension']['score'],
-                    jlpt_level=evaluation_data['evaluation_criteria']['jlpt_level']['score'],
-                    passing_probability_n1=evaluation_data['summary']['passing_probability']['N1'],
-                    passing_probability_n2=evaluation_data['summary']['passing_probability']['N2'],
-                    passing_probability_n3=evaluation_data['summary']['passing_probability']['N3'],
-                    passing_probability_n4=evaluation_data['summary']['passing_probability']['N4'],
-                    passing_probability_n5=evaluation_data['summary']['passing_probability']['N5'],
-                    feedback_and_recommendations=evaluation_data['summary']['feedback_and_recommendations']
-                )
-                db.session.add(evaluation)
-                db.session.commit()
-                user_id = current_user.id
-                return jsonify({'success': True, 'user_id': user_id})
-            else:
-                current_app.logger.error('No valid JSON found in the response')
-                return jsonify({'success': False, 'message': 'No valid JSON found in the response'})
+            # Save evaluation data to the database
+            evaluation = Evaluation(
+                user_id=current_user.id,
+                pronunciation_accuracy=evaluation_data['evaluation_criteria']['pronunciation_accuracy']['score'],
+                grammar_usage=evaluation_data['evaluation_criteria']['grammar_usage']['score'],
+                vocabulary_usage=evaluation_data['evaluation_criteria']['vocabulary_usage']['score'],
+                fluency=evaluation_data['evaluation_criteria']['fluency']['score'],
+                comprehension=evaluation_data['evaluation_criteria']['comprehension']['score'],
+                jlpt_level=evaluation_data['evaluation_criteria']['jlpt_level']['score'],
+                passing_probability_n1=evaluation_data['summary']['passing_probability']['N1'],
+                passing_probability_n2=evaluation_data['summary']['passing_probability']['N2'],
+                passing_probability_n3=evaluation_data['summary']['passing_probability']['N3'],
+                passing_probability_n4=evaluation_data['summary']['passing_probability']['N4'],
+                passing_probability_n5=evaluation_data['summary']['passing_probability']['N5'],
+                feedback_and_recommendations=evaluation_data['summary']['feedback_and_recommendations']
+            )
+            db.session.add(evaluation)
+            db.session.commit()
+            user_id = current_user.id
+            return jsonify({'success': True, 'user_id': user_id})
+        else:
+            current_app.logger.error('No valid JSON found in the response')
+            return jsonify({'success': False, 'message': 'No valid JSON found in the response'})
     except Exception as e:
         current_app.logger.error(f'Error evaluating video: {e}')
         return jsonify({'success': False, 'message': 'Error evaluating video'})
@@ -530,3 +526,70 @@ def charts():
     # 將圖表數據傳遞給模板
     chart_data_base64 = f"data:image/png;base64,{base64.b64encode(chart_data).decode('utf-8')}"
     return render_template('charts.html.j2', chart_data=chart_data_base64)
+
+@app.route('/check_character', methods=['POST'])
+def check_character():
+    data = request.get_json()
+    if not data or 'targetCharacter' not in data or 'handwritingImage' not in data:
+        return jsonify({'error': 'Invalid request data'}), 400
+
+    target_character = data['targetCharacter']
+    handwriting_image = data['handwritingImage']
+    
+    print(f"target_character: {target_character}")
+
+    try:
+        # Save the handwriting image temporarily
+        image_path = os.path.join(current_app.root_path, 'static', 'image', 'handwriting.png')
+        with open(image_path, "wb") as f:
+            f.write(base64.b64decode(handwriting_image.split(",")[1]))
+
+        # Use GeminiClient to compare handwriting with the target character
+        gemini_client = GeminiClient()
+        response_data = gemini_client.compare_handwriting('handwriting.png', target_character)
+        
+        if response_data:
+            # Extract score and feedback
+            similarity_score = response_data.get("similarity_score", {}).get("score", "N/A")
+            feedback = response_data.get("feedback", "No feedback provided.")
+        else:
+            current_app.logger.error('No valid JSON found in the response')
+            return jsonify({'error': 'No valid JSON found in the response'}), 500
+
+        # Clean up the temporary file
+        os.remove(image_path)
+
+        return jsonify({
+            'similarity_score': similarity_score,
+            'feedback': feedback
+        })
+
+    except Exception as e:
+        current_app.logger.error(f'Error during character comparison: {e}')
+        return jsonify({'error': 'An error occurred while processing your handwriting.'}), 500
+
+@app.route('/save_handwriting', methods=['POST'])
+def save_handwriting():
+    data = request.get_json()
+    handwriting_image = data.get('handwritingImage')
+    target_character = data.get('targetCharacter')
+
+    if not handwriting_image or not target_character:
+        return jsonify({'error': 'Invalid data'}), 400
+
+    # Decode the Base64 image
+    try:
+        image_data = base64.b64decode(handwriting_image.split(',')[1])
+        image_path = os.path.join('app', 'static', 'image', 'handwriting.png')
+
+        # Save the image to the specified path
+        with open(image_path, 'wb') as f:
+            f.write(image_data)
+
+        # Mock similarity score and feedback for demonstration
+        similarity_score = 85  # Example score
+        feedback = f"The character '{target_character}' is well-written!"
+
+        return jsonify({'similarity_score': similarity_score, 'feedback': feedback}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
