@@ -17,6 +17,8 @@ RUN pip install gunicorn
 
 COPY app app
 COPY migrations migrations
+COPY chromedriver-linux64 chromedriver-linux64
+COPY config.py config.py
 COPY jp-academy.py run.py boot.sh test_data.py ./
 
 RUN chmod +x boot.sh
