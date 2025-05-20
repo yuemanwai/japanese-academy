@@ -1,6 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 import os
+import sys
 from flask import Flask, request, session
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +12,6 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel
 from flask_session import Session
-
 
 app = Flask(__name__)
 app.config.from_object(Config)

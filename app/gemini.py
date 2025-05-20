@@ -4,7 +4,7 @@ import time
 import os
 from dotenv import load_dotenv
 import json
-import re 
+import re
 
 
 # Load environment variables from .env file

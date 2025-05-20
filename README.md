@@ -131,6 +131,16 @@ pybabel update -i translations/messages.pot -d translations
 pybabel compile -d translations
 ```
 
+### How to Run Tests and Generate Allure Reports
+
+To run all tests and generate Allure-compatible results, use the following command:
+
+```bash
+pytest tests/*.py --alluredir=allure_results
+```
+
+> **Note:** Make sure you have `pytest` and the Allure plugin installed. The results will be saved in the `allure-results` directory, which you can use to generate detailed test reports with Allure.
+
 ## Additional Resources
 
 - [Download Chrome and ChromeDriver](https://getwebdriver.com/chromedriver)
