@@ -130,4 +130,7 @@ dmypy.json
 
 logs/*
 
-allure_results/*
+/allure_results
+/allure-results
+/allure-report
+/allure_report
