@@ -1,0 +1,53 @@
+name: Test and Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+      - wai
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 檢出程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python 環境
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 安裝依賴
+        run: |
+          pip install -r requirements.txt
+          pip install pytest allure-pytest
+          chmod +x ./setup-allure.sh && sudo ./setup-allure.sh
+
+      - name: 執行測試
+        run: |
+          pytest --alluredir=allure-results
+
+      - name: 生成 Allure 測試報告
+        run: |
+          allure generate allure-results --clean -o allure-report
+
+      - name: 上傳測試報告 (Artifacts)
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report
+
+  # build:
+  #   needs: test  # 這表示「測試成功」才會執行 Build
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: 檢出程式碼
+  #       uses: actions/checkout@v3
+
+  #     - name: 建立 Docker Image
+  #       run: |
+  #         docker build -t my-flask-app .
