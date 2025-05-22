@@ -43,6 +43,7 @@ jobs:
           path: ${{ env.report_name }}
 
   build:
+    needs: test
     runs-on: ubuntu-latest
 
     env:
