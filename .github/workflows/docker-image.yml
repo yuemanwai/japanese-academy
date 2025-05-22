@@ -1,15 +1,13 @@
-name: Build & Push Docker Image
+name: Docker Image CI
 
 on:
   push:
-    branches:
-      - main
-      - wai
+    branches: ["main", "wai"]
   pull_request:
+    branches: ["main"]
 
 jobs:
   build:
-    needs: test
     runs-on: ubuntu-latest
 
     env:
