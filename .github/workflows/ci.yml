@@ -26,6 +26,7 @@ jobs:
 
       - name: Run Python tests with pytest
         run: |
+          pip install -r requirements.txt
           pytest --alluredir=allure-results
 
       - name: Extract Allure test results
