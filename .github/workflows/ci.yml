@@ -24,10 +24,6 @@ jobs:
         id: filename
         run: echo "report_name=${{ github.ref_name }}-branch-${{ env.date }}.txt" >> $GITHUB_ENV
 
-      - name: Install Allure and dependencies
-        run: |
-          chmod +x ./setup-allure.sh && sudo ./setup-allure.sh
-
       - name: Run Python tests with pytest
         run: |
           pytest --alluredir=allure-results
