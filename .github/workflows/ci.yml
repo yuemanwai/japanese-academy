@@ -1,0 +1,61 @@
+name: Test and Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+      - wai
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/devcontainers/base:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set current date as environment variable
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Generate test report filename
+        id: filename
+        run: echo "report_name=${{ github.ref_name }}-branch-${{ env.date }}.txt" >> $GITHUB_ENV
+
+      - name: Install Allure and dependencies
+        run: |
+          chmod +x ./setup-allure.sh && sudo ./setup-allure.sh
+
+      - name: Run Python tests with pytest
+        run: |
+          pytest --alluredir=allure-results
+
+      - name: Extract Allure test results
+        run: |
+          cat allure-results/*.json | jq -r 'select(.name and .status) | "\(.name): \(.status)"' > "${{ env.report_name }}"
+
+      - name: Upload test report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.report_name }}
+          path: ${{ env.report_name }}
+
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PAT: ${{ secrets.DOCKER_HUB_PAT }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker Hub login
+        run: echo "$DOCKER_HUB_PAT" | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $DOCKER_HUB_USERNAME/yuemanwai/fyp-jp:latest .
+          docker push $DOCKER_HUB_USERNAME/yuemanwai/fyp-jp:latest
