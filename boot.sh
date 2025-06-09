@@ -1,5 +1,7 @@
 #!/bin/sh
 # this script is used to boot a Docker container
+apt-get update
+apt-get install -y xvfb
 
 while true; do
     flask db upgrade
@@ -10,4 +12,4 @@ while true; do
     sleep 5
 done
 python test_data.py
-exec gunicorn -b :5000 --access-logfile - --error-logfile - myapp:app
+exec gunicorn -b :5000 --access-logfile - --error-logfile - app:app

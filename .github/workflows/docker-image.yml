@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main", "wai"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PAT: ${{ secrets.DOCKER_HUB_PAT }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker Hub login
+        run: echo "$DOCKER_HUB_PAT" | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $DOCKER_HUB_USERNAME/fyp-jp:latest .
+          docker push $DOCKER_HUB_USERNAME/fyp-jp:latest
