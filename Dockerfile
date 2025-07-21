@@ -1,6 +1,7 @@
 FROM python:3.11-alpine
 
-RUN adduser -D jp-academy
+RUN apk update && apk add xvfb
+# RUN adduser -D jp-academy
 WORKDIR /home/jp-academy
 
 COPY requirements.txt requirements.txt
@@ -26,7 +27,8 @@ ENV FLASK_APP=run.py
 ENV FLASK_RUN_HOST=0.0.0.0
 RUN chown -R jp-academy:jp-academy ./
 
-USER jp-academy
+# USER jp-academy
+USER root
 
 EXPOSE 80
 ENTRYPOINT ["./boot.sh"]
