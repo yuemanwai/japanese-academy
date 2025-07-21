@@ -28,5 +28,5 @@ RUN chown -R jp-academy:jp-academy ./
 
 USER jp-academy
 
-EXPOSE 5000
+EXPOSE 80
 ENTRYPOINT ["./boot.sh"]
