@@ -25,7 +25,7 @@ COPY jp-academy.py run.py boot.sh test_data.py ./
 RUN chmod +x boot.sh
 ENV FLASK_APP=run.py
 ENV FLASK_RUN_HOST=0.0.0.0
-RUN chown -R jp-academy:jp-academy ./
+# RUN chown -R jp-academy:jp-academy ./
 
 # USER jp-academy
 USER root
