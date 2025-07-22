@@ -53,7 +53,7 @@
       ]
     }
   },
-  "forwardPorts": [80, 5050, 8025],
+  "forwardPorts": [5000, 5050, 8025],
   "features": {
     "ghcr.io/devcontainers/features/docker-from-docker:1": {}
   }
