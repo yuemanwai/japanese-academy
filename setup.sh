@@ -10,4 +10,4 @@ sudo apt-get install -y xvfb
 python test_data.py
 
 # Start the Flask application in debug mode, accessible from any host
-flask --debug run --host=0.0.0.0 --port=80
+flask --debug run --host=0.0.0.0 --port=5000
