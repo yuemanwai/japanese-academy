@@ -1,8 +1,8 @@
 FROM python:3.11-alpine
 
 RUN apk update && apk add xvfb
-# RUN adduser -D jp-academy
-WORKDIR /home/jp-academy
+RUN adduser -D jp
+WORKDIR /home/jp
 
 COPY requirements.txt requirements.txt
 # RUN pip3 --disable-pip-version-check --no-cache-dir install -r requirements.txt
@@ -25,10 +25,10 @@ COPY jp-academy.py run.py boot.sh test_data.py ./
 RUN chmod +x boot.sh
 ENV FLASK_APP=run.py
 ENV FLASK_RUN_HOST=0.0.0.0
-# RUN chown -R jp-academy:jp-academy ./
+RUN chown -R jp:jp ./
 
-# USER jp-academy
-USER root
+USER jp
+# USER root
 
-EXPOSE 80
+EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
