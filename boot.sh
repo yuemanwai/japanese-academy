@@ -8,8 +8,8 @@ while true; do
     if [[ "$?" == "0" ]]; then
         break
     fi
-    echo Deploy command failed, retrying in 5 secs...
-    sleep 5
+    echo Deploy command failed, retrying in 15 secs...
+    sleep 15
 done
 python test_data.py
-exec gunicorn -b :80 --access-logfile - --error-logfile - app:app
+exec gunicorn -b :5000 --access-logfile - --error-logfile - app:app
