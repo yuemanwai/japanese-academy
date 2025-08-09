@@ -5,8 +5,18 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
+    
+    # PostgreSQL 連接參數
+    DB_HOST = os.environ.get("DB_HOST") or "postgresdb"
+    DB_PORT = os.environ.get("DB_PORT") or "5432"
+    DB_NAME = os.environ.get("DB_NAME") or "postgres"
+    DB_USER = os.environ.get("DB_USER") or "postgres"
+    DB_PASSWORD = os.environ.get("DB_PASSWORD") or "postgres"
+    
+    # 如果有完整的 DATABASE_URI，使用它；否則從分別的參數構建
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI") or \
-        'postgresql://postgres:postgres@postgresdb:5432/postgres'
+        f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or "mailhog"
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 1025)
