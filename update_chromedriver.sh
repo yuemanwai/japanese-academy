@@ -6,6 +6,10 @@
 set -e  # 遇到錯誤時停止執行
 
 echo "=== ChromeDriver 版本檢查與更新腳本 ==="
+echo ""
+echo "💡 如需查看可用的 Chrome 和 ChromeDriver 版本，請訪問："
+echo "   🔗 https://googlechromelabs.github.io/chrome-for-testing/"
+echo ""
 
 # 檢查 Google Chrome 是否已安裝
 if ! command -v google-chrome &> /dev/null; then
@@ -58,8 +62,17 @@ if ! curl -f -L -O "$DOWNLOAD_URL" 2>/dev/null; then
     echo "   2. 網路連線問題"
     echo "   3. 該版本的 ChromeDriver 尚未發布"
     echo ""
-    echo "請檢查以下網址是否存在對應版本："
-    echo "https://googlechromelabs.github.io/chrome-for-testing/"
+    echo "🔗 請前往以下網址查看可用的版本："
+    echo "   https://googlechromelabs.github.io/chrome-for-testing/"
+    echo ""
+    echo "💡 使用方法："
+    echo "   1. 開啟上述網址"
+    echo "   2. 搜尋您的 Chrome 版本: $CHROME_VERSION"
+    echo "   3. 確認是否有對應的 ChromeDriver 版本"
+    echo "   4. 如果沒有，請等待 Google 發布或使用相近版本"
+    echo ""
+    echo "🌐 或者在瀏覽器中直接檢查下載連結："
+    echo "   $DOWNLOAD_URL"
     exit 1
 fi
 
@@ -126,3 +139,7 @@ fi
 
 echo ""
 echo "✨ 完成！ChromeDriver 已成功更新"
+echo ""
+echo "📋 相關資源："
+echo "   🔗 Chrome 版本查詢: https://googlechromelabs.github.io/chrome-for-testing/"
+echo "   📖 使用說明: 如遇到版本問題，請前往上述網址查看可用版本"
