@@ -1,6 +1,0 @@
-sudo docker login
-sudo docker build -t yuemanwai/jp-academy:latest .
-sudo docker push yuemanwai/jp-academy:latest
-
-sudo docker images
-sudo docker rmi -f <IMAGES_NAME>

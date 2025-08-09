@@ -1,6 +1,6 @@
 {
   "workspaceFolder": "/workspaces/FYP_AI-powered_Interactive_Japanese_Academy",
-  "name": "Python 3 & PostgreSQL",
+  "name": "fyp",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "hostRequirements": {
@@ -10,7 +10,7 @@
   "postAttachCommand": "sudo chmod +x ./setup.sh && sudo ./setup.sh ",
   "portsAttributes": {
     "5000": {
-      "label": "Flask Apps",
+      "label": "Flask App",
       "protocol": "http",
       "onAutoForward": "openBrowser"
     },
@@ -20,6 +20,10 @@
     },
     "8025": {
       "label": "mailhog",
+      "onAutoForward": "openPreview"
+    },
+    "45293": {
+      "label": "Allure Report",
       "onAutoForward": "openPreview"
     }
   },
@@ -54,7 +58,7 @@
       ]
     }
   },
-  "forwardPorts": [5000, 5050, 8025],
+  "forwardPorts": [5000, 5050, 8025, 45293],
   "features": {
     "ghcr.io/devcontainers/features/docker-from-docker:1": {}
   }

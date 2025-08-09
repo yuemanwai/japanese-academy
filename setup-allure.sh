@@ -1,6 +1,6 @@
 # Install allure command line tool
 sudo apt update
-sudo apt install default-jre
+sudo apt install default-jre -y
 java -version
 sudo update-alternatives --config java
 
@@ -20,11 +20,11 @@ allure --version
 
 
 # 產生 Allure 測試結果
-# pytest --alluredir=allure-results        
+sudo pytest --alluredir=allure-results        
 
 # 產生 Allure 報告
-# allure generate allure-results --clean -o allure-report   
+sudo allure generate allure-results --clean -o allure-report   
 
 # 啟動本地伺服器瀏覽 Allure 報告
-# allure serve allure-results               
+sudo allure serve allure-results               
 
