@@ -9,7 +9,7 @@ services:
         VARIANT: "3"
         NODE_VERSION: "none"
     volumes:
-      - ..:/workspace:cached
+      - ..:/workspaces/FYP_AI-powered_Interactive_Japanese_Academy:cached
     command: sleep infinity
     networks:
       - flask_app
