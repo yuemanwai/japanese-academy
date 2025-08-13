@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Update the package list
-sudo apt-get update
+# sudo apt-get update
 
 # Install xvfb (X virtual framebuffer)
-sudo apt-get install -y xvfb
+# sudo apt-get install -y xvfb
 
 # Run the test_data.py script
 python test_data.py
