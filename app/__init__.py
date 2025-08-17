@@ -26,7 +26,8 @@ login.init_app(app)
 mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
-babel = Babel(app)
+babel = Babel()
+babel.init_app(app, locale_selector=lambda: session.get('lang', 'en'))
 
 
 if not app.debug:
@@ -56,11 +57,6 @@ if not app.debug:
     root.addHandler(file_handler)
     root.setLevel(logging.INFO)
     root.info('App startup')
-
-
-@babel.localeselector
-def get_locale():
-    return session.get('lang', 'en')
 
 # You must keep the routes at the end.
 from app import routes, errors

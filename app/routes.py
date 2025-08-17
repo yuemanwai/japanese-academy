@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app, Response
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.urls import url_parse
+from urllib.parse import urlparse
 from flask_babel import _, get_locale, refresh
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditForm, PostForm, \
@@ -63,7 +63,7 @@ def login():
         login_user(user, remember=form.remember_me.data,
                    duration=timedelta(days=365))
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
+        if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html.j2', title=_('Sign in'), form=form)
