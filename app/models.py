@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(100), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     created_on = db.Column(db.DateTime, default=datetime.utcnow)
     login_count = db.Column(db.Integer, default=0)
