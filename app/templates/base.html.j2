@@ -39,7 +39,7 @@
         <li><a href="{{ url_for('logout') }}" class="{% if request.endpoint == 'logout' %}active{% endif %}">{{_('Sign out')}}</a></li>
         {% endif %}
         <li class="language-dropdown">
-          <a href="#" class="dropdown-toggle">{{_('Language')}} ▼</a>
+          <a href="#" class="dropdown-toggle">{{_('Language')}} </a>
           <div class="dropdown-menu">
             <form method="post" action="{{ url_for('set_language') }}">
               <input type="hidden" name="language" value="en">
@@ -53,17 +53,6 @@
               <input type="hidden" name="language" value="ja">
               <button type="submit" class="dropdown-item">日本語</button>
             </form>
-          </div>
-        </li>
-        <li>
-          <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="theme-toggle">
-              <input type="checkbox" id="theme-toggle" />
-              <span class="slider">
-                <span class="slider-icon sun"><img src="{{ url_for('static', filename='image/icon-sun.png') }}" alt="Light Mode"></span>
-                <span class="slider-icon moon"><img src="{{ url_for('static', filename='image/icon-moon.png') }}" alt="Dark Mode"></span>
-              </span>
-            </label>
           </div>
         </li>
       </ul>
@@ -123,7 +112,6 @@
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
   crossorigin="anonymous"></script>
 <script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
-<script src="{{ url_for('static', filename='js/modern-theme.js') }}"></script>
 <script>
   // Hide flash messages after 5 seconds
   setTimeout(() => {
@@ -132,6 +120,29 @@
       alert.style.opacity = '0';
     });
   }, 5000);
+
+  // Add animated card functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.animated-card');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Add a staggered delay
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    cards.forEach(card => {
+      observer.observe(card);
+    });
+  });
 </script>
 {% endblock scripts %}
 

@@ -12,15 +12,6 @@
   --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-body.light-theme {
-  --bg-primary: #f4f7fc;
-  --bg-secondary: #ffffff;
-  --text-primary: #1b263b;
-  --text-secondary: #1b263b;
-  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
 body {
   font-family: "Noto Sans JP", "Noto Sans", sans-serif;
   margin: 0;
@@ -292,26 +283,6 @@ header nav ul li.dropdown a.dropdown-toggle:after {
   display: none !important;
 }
 
-/* Theme Switcher */
-.theme-switch-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  margin-left: 20px !important;
-}
-
-.theme-switch {
-  position: relative;
-  display: inline-block !important;
-  width: 50px;
-  height: 26px;
-}
-
-.theme-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
 /* Force horizontal layout for nav elements */
 header nav ul li {
   margin-left: 20px !important;
@@ -321,11 +292,6 @@ header nav ul li {
 
 header nav ul li.dropdown {
   display: inline-block !important;
-}
-
-header nav ul li .theme-switch-wrapper {
-  display: inline-flex !important;
-  vertical-align: middle;
 }
 
 /* Override any Bootstrap conflicts */
@@ -344,6 +310,24 @@ header nav ul li .theme-switch-wrapper {
   float: none !important;
   display: flex !important;
   align-items: center !important;
+}
+
+/* Slider Container */
+.nav-slider {
+  margin-left: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
@@ -387,17 +371,9 @@ header nav ul li .theme-switch-wrapper {
   opacity: 0;
 }
 
-body.light-theme .slider-icon.sun {
-  opacity: 1;
-}
-
 .slider-icon.moon {
   right: 6px;
   opacity: 1;
-}
-
-body.light-theme .slider-icon.moon {
-  opacity: 0;
 }
 
 input:checked + .slider {
@@ -658,25 +634,6 @@ button[type="submit"]:hover,
   text-decoration: none !important;
 }
 
-/* 確保在淺色主題下也有良好的對比度 */
-body.light-theme .btn[type="submit"],
-body.light-theme input[type="submit"],
-body.light-theme button[type="submit"],
-body.light-theme .btn-primary {
-  background-color: var(--accent-blue) !important;
-  color: #ffffff !important;
-  border-color: var(--accent-blue) !important;
-}
-
-body.light-theme .btn[type="submit"]:hover,
-body.light-theme input[type="submit"]:hover,
-body.light-theme button[type="submit"]:hover,
-body.light-theme .btn-primary:hover {
-  background-color: #ffffff !important;
-  color: var(--accent-blue) !important;
-  border-color: var(--accent-blue) !important;
-}
-
 /* Animations */
 .animated-card {
   opacity: 0;
@@ -722,10 +679,6 @@ body.light-theme .btn-primary:hover {
   border-top: 1px solid #415a77;
   transition: background-color 0.3s ease, color 0.3s ease;
   z-index: 1000;
-}
-
-body.light-theme .footer {
-  border-top: 1px solid #dee2e6;
 }
 
 /* Form styles */
@@ -777,10 +730,6 @@ body.light-theme .footer {
   transition: background-color 0.3s ease, color 0.3s ease;
   z-index: 1000;
   font-size: 1.5rem; /* 調整底部導航字體大小到至少1.5rem */
-}
-
-body.light-theme .footer {
-  border-top: 1px solid #dee2e6;
 }
 
 /* Responsive Design */
@@ -890,11 +839,6 @@ body.light-theme .footer {
 
   .navbar-nav {
     text-align: center;
-  }
-
-  .theme-switch-wrapper {
-    justify-content: center;
-    margin: 1rem 0;
   }
 
   .btn {
