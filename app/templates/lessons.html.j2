@@ -152,12 +152,6 @@
         <div class="kana-grid" id="hiraganaGrid">
           <!-- JavaScript will populate this -->
         </div>
-        <button class="glass-button" onclick="playSound(this)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 2v20M2 12h20"/>
-          </svg>
-          Listen to Pronunciation
-        </button>
       </div>
 
       <div class="objective">
@@ -336,18 +330,6 @@ initializeCanvas();
 // Text-to-Speech functionality
 function playCharacterSound(character) {
   const utterance = new SpeechSynthesisUtterance(character);
-  utterance.lang = 'ja-JP';
-  speechSynthesis.speak(utterance);
-}
-
-function playSound(btn) {
-  gsap.to(btn, {
-    scale: 0.95,
-    duration: 0.1,
-    yoyo: true,
-    repeat: 1
-  });
-  const utterance = new SpeechSynthesisUtterance('こんにちは');
   utterance.lang = 'ja-JP';
   speechSynthesis.speak(utterance);
 }
