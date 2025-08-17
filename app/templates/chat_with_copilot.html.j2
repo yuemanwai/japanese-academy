@@ -1,33 +1,221 @@
 {% extends 'base.html.j2' %}
 
 {% block app_content %}
-<div id="chat-container">
-    <div id="control-panel">
-        <form id="control-form" method="post" action="{{ url_for('chat_with_copilot') }}">
-            {% if current_user.is_authenticated and current_user.is_admin %}
-            <label for="debug">{{ _('Debug') }}</label>
-            <input type="checkbox" id="debug" name="debug" {% if chat_settings and chat_settings.debug %}checked{% endif %}>
-            {% endif %}
-            
-            <label for="word-limit">{{ _('Word Limit') }}</label>
-            <input type="number" id="word-limit" name="word-limit" value="{{ chat_settings.word_limit if chat_settings else '50' }}" min="10">
-            
-            <label for="condition">{{ _('Condition') }}</label>
-            <textarea id="condition" name="condition" rows="6">{{ chat_settings.condition if chat_settings else '' }}</textarea>
-            
-            <button type="submit">{{ _('Apply') }}</button>
-        </form>
-    </div>
-    <div id="chat-box-container">
-        <div id="chat-box">
-            <!-- Chat messages will be displayed here -->
+<div class="chat-container">
+  <div class="section-title">
+    <h1>{{ _('Chat with Copilot') }}</h1>
+  </div>
+  
+  <div class="chat-content">
+    <div class="control-panel glass-panel">
+      <h3>{{ _('Settings') }}</h3>
+      <form id="control-form" method="post" action="{{ url_for('chat_with_copilot') }}">
+        {% if current_user.is_authenticated and current_user.is_admin %}
+        <div class="form-group">
+          <label for="debug">{{ _('Debug') }}</label>
+          <input type="checkbox" id="debug" name="debug" {% if chat_settings and chat_settings.debug %}checked{% endif %}>
         </div>
-        <form id="chat-form" method="post">
-            <input type="text" id="user-input" name="message" placeholder="{{ _('Type your message here...') }}" required>
-            <button type="submit">{{ _('Send') }}</button>
-        </form>
+        {% endif %}
+        
+        <div class="form-group">
+          <label for="word-limit">{{ _('Word Limit') }}</label>
+          <input type="number" id="word-limit" name="word-limit" value="{{ chat_settings.word_limit if chat_settings else '50' }}" min="10" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="condition">{{ _('Condition') }}</label>
+          <textarea id="condition" name="condition" rows="6" class="form-control">{{ chat_settings.condition if chat_settings else '' }}</textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">{{ _('Apply') }}</button>
+      </form>
     </div>
+    
+    <div class="chat-box-container glass-panel">
+      <div id="chat-box" class="chat-messages">
+        <!-- Chat messages will be displayed here -->
+      </div>
+      <form id="chat-form" method="post" class="chat-input-form">
+        <div class="chat-input-group">
+          <input type="text" id="user-input" name="message" placeholder="{{ _('Type your message here...') }}" required class="chat-input">
+          <button type="submit" class="btn btn-primary chat-send-btn">
+            <i class="fa fa-paper-plane"></i>
+            {{ _('Send') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<style>
+  .chat-container {
+    padding: 2rem 0;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .chat-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin: 2rem 0;
+    min-height: 70vh;
+  }
+
+  .control-panel {
+    padding: 2rem;
+    height: fit-content;
+  }
+
+  .control-panel h3 {
+    color: var(--accent-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 2px solid var(--accent-blue);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 110, 0.25);
+  }
+
+  input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+
+  .chat-box-container {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    border-bottom: 2px solid var(--accent-blue);
+    background-color: var(--bg-primary);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .chat-input-form {
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0 0 10px 10px;
+  }
+
+  .chat-input-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 2px solid var(--accent-blue);
+    border-radius: 25px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+  }
+
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 110, 0.25);
+  }
+
+  .chat-send-btn {
+    border-radius: 25px;
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+  }
+
+  .chat-send-btn i {
+    margin-right: 0.5rem;
+  }
+
+  /* Chat message styles */
+  .user-message {
+    text-align: right;
+    margin: 1rem 0;
+  }
+
+  .user-message .message-content {
+    display: inline-block;
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 20px 20px 5px 20px;
+    max-width: 80%;
+    font-size: 1.1rem;
+  }
+
+  .copilot-message {
+    text-align: left;
+    margin: 1rem 0;
+  }
+
+  .copilot-message .message-content {
+    display: inline-block;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    border-radius: 20px 20px 20px 5px;
+    max-width: 80%;
+    border: 2px solid var(--accent-pink);
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .chat-content {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .chat-box-container {
+      height: 60vh;
+    }
+    
+    .chat-input-group {
+      flex-direction: column;
+    }
+    
+    .chat-input,
+    .chat-send-btn {
+      width: 100%;
+    }
+  }
+</style>
 
 <script>
     document.getElementById('chat-form').addEventListener('submit', function(event) {

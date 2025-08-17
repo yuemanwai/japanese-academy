@@ -3,232 +3,23 @@
 {% block head %}
 {{super()}}
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary: #ff4081;
-  --secondary: #B6F5F8;
-  --dark: #1a1a1a;
-  --light: #ffffff;
-  --font-family: "Comic Neue", "Noto Sans", sans-serif;
-  --font-size: 19px;
-  --text-color: whitesmoke;
-  --background-color: black;
-  --alert-border-color: lightgoldenrodyellow;
-  --alert-text-color: goldenrod;
-}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modern-style.css') }}">
 
-* {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  color: var(--text-color);
-}
-
-body {
-  background-color: var(--background-color);
-}
-
-.navbar-brand {
-  font-size: 27px;
-  font-weight: bold;
-}
-
-.footer {
-  width: 100%;
-  background-color: var(--background-color);
-  text-align: center;
-  padding: 1rem 0;
-  position: fixed; /* 將 footer 設定為固定定位 */
-  bottom: 0;      /* 將 footer 固定在屏幕底部 */
-  left: 0;        /* 確保 footer 從屏幕左邊開始 */
-  /* 如果你的 body 有 padding-bottom，可能需要調整這裡的 bottom 值 */
-
-}
-
-.footer a {
-  margin: 0 10px;
-  font-size: smaller;
-  color: var(--text-color);
-}
-
-.footer a:hover {
-  color: var(--text-color);
-}
-
-.navbar-nav .nav-link {
-  padding: 10px;
-  margin: 8px;
-  text-decoration: none;
-}
-
-.navbar-nav .nav-item.active .nav-link {
-  background-color: var(--background-color);
-  color: var(--text-color) !important;
-  font-weight: bold;
-  border-bottom: 2px solid var(--text-color);
-}
-
-.navbar-nav .nav-item {
-  margin-top: 8px;
-  margin-right: 10px;
-}
-
-.nav-item.dropdown .dropdown-menu {
-  background-color: var(--background-color);
-  border: 1px solid var(--text-color);
-  margin-top: 20px;
-  min-width: auto;
-  text-align: center;
-
-}
-
-.nav-item.dropdown .dropdown-item {
-  color: var(--text-color);
-  background-color: var(--background-color);
-  border: 1px solid var(--background-color);
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px 15px;
-}
-
-.nav-item.dropdown .dropdown-item:hover {
-  background-color: grey;
-  text-decoration: underline;
-}
-
-.nav-item.dropdown .dropdown-item:active {
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
-.nav-item.dropdown .dropdown-toggle {
-  background-color: var(--background-color);
-  border: 1px solid var(--background-color);
-}
-
-.nav-item.dropdown .dropdown-toggle:focus {
-  background-color: var(--background-color);
-  border: 1px solid var(--background-color);
-  color: var(--text-color);
-}
-
-#submit {
-  {# font-size: 18px;
-  font-weight: bold;
-  width: 200px;
-  background-color: var(--secondary);
-  color: var(--dark);
-  border: 1px solid var(--secondary);
-  margin-top: 15px; #}
-}
-
-.control-label{
-
-}
-
-
-.form-control {
-  margin-top: 4px;
-  background-color: var(--light);
-  border: 1px solid var(--text-color);
-  color: var(--dark);
-}
-
-.btn {
-  display: inline-block; /* 設置為行內塊元素 */
-  {# padding: 24px 32px; /* 內邊距 */ #}
-  border: 0; /* 無邊框 */
-  text-decoration: none; /* 無文字裝飾 */
-  border-radius: 15px; /* 邊框圓角 */
-  background-color: rgba(255, 255, 255, 0.1); /* 背景顏色 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
-  backdrop-filter: blur(30px); /* 背景模糊效果 */
-  color: rgba(255, 255, 255, 0.8); /* 文字顏色 */
-  font-size: 14px; /* 字體大小 */
-  letter-spacing: 2px; /* 字母間距 */
-  cursor: pointer; /* 鼠標指針樣式 */
-  text-transform: uppercase; /* 文字轉為大寫 */
-}
-
-.search-icon {
-  margin-top: 4px;
-}
-
-.alert {
-  background-color: var(--background-color);
-  border: 1px solid var(--alert-border-color);
-  color: var(--alert-text-color);
-  opacity: 1;
-  transition: opacity 5s ease-out;
-  text-align: center;
-}
-
-.nav-item a {
-  color: var(--text-color);
-}
-
-.nav-item a:hover {
-  color: var(--text-color);
-  border-bottom: 2px solid var(--text-color);
-}
-
-/* Glass panel styles */
-.glass-panel {
-  color: #fff; /* 文字顏色 */
-  margin: 40px auto; /* 外邊距 */
-  background-color: rgba(255, 255, 255, 0.06); /* 背景顏色 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
-  width: 100%; /* 寬度 */
-  border-radius: 15px; /* 邊框圓角 */
-  padding: 32px; /* 內邊距 */
-  backdrop-filter: blur(10px); /* 背景模糊效果 */
-  text-align: center;
-}
-
-.glass-panel:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: var(--whitesmoke);
-}
-
-a.glass-panel:hover {
-  text-decoration: none; /* 移除底線 */
-}
-
-/* Glass button styles */
-.glass-button {
-  display: inline-block; /* 設置為行內塊元素 */
-  padding: 24px 32px; /* 內邊距 */
-  border: 0; /* 無邊框 */
-  text-decoration: none; /* 無文字裝飾 */
-  border-radius: 15px; /* 邊框圓角 */
-  background-color: rgba(255, 255, 255, 0.1); /* 背景顏色 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 邊框顏色 */
-  backdrop-filter: blur(30px); /* 背景模糊效果 */
-  color: rgba(255, 255, 255, 0.8); /* 文字顏色 */
-  font-size: 14px; /* 字體大小 */
-  letter-spacing: 2px; /* 字母間距 */
-  cursor: pointer; /* 鼠標指針樣式 */
-  text-transform: uppercase; /* 文字轉為大寫 */
-}
-
-.glass-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: var(--whitesmoke);
-}
-
-</style>
 {% endblock head %}
 
 {% block title %} {{ site_name }} {% endblock title %}
 
 {% block navbar %}
-<div class="container-fluid">
-  <nav class="navbar navbar-dark navbar-fullwidth" style="padding: 0 30px;">
-    {# Fixed Elements #}
-    <div class="navbar-header">
+<header>
+  <div class="container">
+    <h1><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
+    <nav>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -236,79 +27,58 @@ a.glass-panel:hover {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">{{ site_name }}</span>
-    </div>
-
-    {# Left Side of Navbar #}
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+      <ul class="navbar-nav collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">{{_('Home')}}</a></li>
+        <li><a href="{{ url_for('lessons') }}" class="{% if request.endpoint == 'lessons' %}active{% endif %}">{{ _('Lessons') }}</a></li>
+        <li><a href="{{ url_for('practice') }}" class="{% if request.endpoint == 'practice' %}active{% endif %}">{{ _('Practice') }}</a></li>
+        {% if current_user.is_anonymous %}
+        <li><a href="{{ url_for('register') }}" class="{% if request.endpoint == 'register' %}active{% endif %}">{{ _('Sign up') }}</a></li>
+        <li><a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">{{ _('Sign in') }}</a></li>
+        {% else %}
+        <li><a href="{{ url_for('user', username=current_user.username) }}" class="{% if request.endpoint == 'user' %}active{% endif %}">{{_('Profile')}}</a></li>
+        <li><a href="{{ url_for('logout') }}" class="{% if request.endpoint == 'logout' %}active{% endif %}">{{_('Sign out')}}</a></li>
+        {% endif %}
+        <li class="language-dropdown">
+          <a href="#" class="dropdown-toggle">{{_('Language')}} ▼</a>
+          <div class="dropdown-menu">
+            <form method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="en">
+              <button type="submit" class="dropdown-item">English</button>
+            </form>
+            <form method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="zh">
+              <button type="submit" class="dropdown-item">中文</button>
+            </form>
+            <form method="post" action="{{ url_for('set_language') }}">
+              <input type="hidden" name="language" value="ja">
+              <button type="submit" class="dropdown-item">日本語</button>
+            </form>
+          </div>
+        </li>
         <li>
-          <form class="d-flex" action="{{ url_for('search') }}" method="post" style="display: inline-flex;width: 350px;padding: 8px 0px;">
-            {{ g.search_form.hidden_tag() }}
-            {{ g.search_form.keyword(class="form-control", placeholder=_('Search...'), aria_label="Search") }}
-            <button type="submit" class="btn btn-outline-success" style="display: none;">{{ _('Search') }}</button>
-          </form>
+          <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="theme-toggle">
+              <input type="checkbox" id="theme-toggle" />
+              <span class="slider">
+                <span class="slider-icon sun"><img src="{{ url_for('static', filename='image/icon-sun.png') }}" alt="Light Mode"></span>
+                <span class="slider-icon moon"><img src="{{ url_for('static', filename='image/icon-moon.png') }}" alt="Dark Mode"></span>
+              </span>
+            </label>
+          </div>
         </li>
       </ul>
-
-      {# Right Side of Navbar #}
-      <ul class="nav navbar-nav navbar-right">
-        <div style="display: flex; margin-top: 8px; align-items: center;">
-          <li class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('index') }}">{{_('Home')}} <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item {% if request.endpoint == 'lessons' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('lessons') }}">{{ _('Lessons') }}</a>
-          </li>
-          <li class="nav-item {% if request.endpoint == 'practice' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('practice') }}">{{ _('Practice') }}</a>
-          </li>
-          {# <li class="nav-item {% if request.endpoint == 'dictionary' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('dictionary') }}">{{ _('Dictionary') }}</a>
-          </li> #}
-          {% if current_user.is_anonymous %}
-          <li class="nav-item {% if request.endpoint == 'register' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('register') }}">{{ _('Sign up') }}</a>
-          </li>
-          <li class="nav-item {% if request.endpoint == 'login' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
-          </li>
-          {% else %}
-          <li class="nav-item {% if request.endpoint == 'user' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">
-              {{_('Profile')}}
-            </a>
-          </li>
-          <li class="nav-item {% if request.endpoint == 'logout' %}active{% endif %}">
-            <a class="nav-link" href="{{ url_for('logout') }}">
-              {{_('Sign out')}}
-            </a>
-          </li>
-          {% endif %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa-solid fa-earth-americas"></i>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="languageDropdown">
-              <form id="language-form-en" method="post" action="{{ url_for('set_language') }}">
-                <input type="hidden" name="language" value="en">
-                <button type="submit" class="dropdown-item">English</button>
-              </form>
-              <form id="language-form-zh" method="post" action="{{ url_for('set_language') }}">
-                <input type="hidden" name="language" value="zh">
-                <button type="submit" class="dropdown-item">中文</button>
-              </form>
-              <form id="language-form-ja" method="post" action="{{ url_for('set_language') }}">
-                <input type="hidden" name="language" value="ja">
-                <button type="submit" class="dropdown-item">日本語</button>
-              </form>
-            </div>
-          </li>
-        </div>
-      </ul>
-    </div>
-  </nav>
-</div>
+      
+      {# Search form moved to a separate section or removed #}
+      <div class="search-section" style="display: none;">
+        <form class="d-flex" action="{{ url_for('search') }}" method="post">
+          {{ g.search_form.hidden_tag() }}
+          {{ g.search_form.keyword(class="form-control", placeholder=_('Search...'), aria_label="Search") }}
+          <button type="submit" class="btn btn-outline-success">{{ _('Search') }}</button>
+        </form>
+      </div>
+    </nav>
+  </div>
+</header>
 {% endblock navbar %}
 
 {% block content %}
@@ -353,6 +123,7 @@ a.glass-panel:hover {
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
   crossorigin="anonymous"></script>
 <script defer src="https://use.fontawesome.com/releases/v6.5.0/js/all.js"></script>
+<script src="{{ url_for('static', filename='js/modern-theme.js') }}"></script>
 <script>
   // Hide flash messages after 5 seconds
   setTimeout(() => {

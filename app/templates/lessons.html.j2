@@ -6,27 +6,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
   .lesson-container {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://images.unsplash.com/photo-1549693578-d683be217e58?w=1600') center/cover fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     overflow: hidden;
-    border-radius: 15px; /* 邊框圓角 */
+    border-radius: 15px;
   }
   
 .lesson-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 15px;
   padding: 2rem;
   margin: 2rem 0;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  color: var(--text-primary);
 }
 
 .lesson-card:hover {
   transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .lesson-title {
@@ -34,6 +35,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  font-size: 1.5rem; /* 調整課程標題大小 */
+  font-weight: 600;
 }
 
 .feature-box {
@@ -44,10 +47,11 @@
 }
 
 .objective {
-  border-left: 4px solid var(--secondary);
+  border-left: 4px solid var(--accent-blue);
   padding-left: 1rem;
   margin: 1rem 0;
   text-align: left;
+  font-size: 1rem; /* 調整目標文字大小 */
 }
 
 .practice-areas-container {
@@ -62,8 +66,7 @@
 }
 
 .practice-area {
-  background: white;
-  border: 2px dashed var(--secondary);
+  background: var(--bg-secondary);
   border-radius: 8px;
   padding: 2rem;
   margin: 1rem 0;
@@ -71,22 +74,47 @@
 }
 
 #targetWord {
-  font-size: 10rem; /* Increase font size */
-  color: var(--dark); /* Set color to dark */
+  font-size: 6rem; /* 調整目標文字大小 */
+  color: var(--text-primary) !important;
+  font-weight: 500;
+  background: var(--bg-primary) !important;
+  border: 3px solid var(--accent-blue) !important;
+  border-radius: 8px !important;
+  padding: 2rem !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 300px !important; /* 與 canvas container 相同高度 */
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  cursor: default !important;
+  user-select: none !important;
+  font-family: 'Noto Sans JP', sans-serif !important;
+  box-sizing: border-box !important;
+}
+
+#targetWord:hover {
+  background: var(--bg-primary) !important;
+  transform: none !important;
+  border-color: var(--accent-blue) !important;
+  color: var(--text-primary) !important;
 }
 
 .btn {
-  background: var(--secondary);
-  color: var(--dark);
+  background: var(--accent-blue);
+  color: var(--text-secondary);
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
+  padding: 0.7rem 1.2rem; /* 調整按鈕大小 */
+  border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease;
+  font-size: 0.9rem; /* 調整按鈕字體大小 */
+  font-weight: 500;
 }
 
 .btn:hover {
-  background: var(--secondary);
+  background: var(--accent-pink);
 }
 
 .kana-grid {
@@ -96,10 +124,48 @@
   margin: 2rem 0;
 }
 
+.kana-grid .btn {
+  font-size: 1.2rem; /* 調整假名格子字體大小 */
+  padding: 1rem;
+  min-height: 60px;
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--accent-blue) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+}
+
+.kana-grid .btn:hover {
+  background: var(--accent-blue) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  border-color: var(--accent-pink) !important;
+}
+
+.kana-grid .btn:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
 .canvas-container {
   width: 100%;
-  height: 100%;
+  height: 300px; /* 設定固定高度 */
   margin: 0 auto;
+  border: 2px solid var(--accent-blue);
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+#handwritingPad {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  display: block;
+  background-color: #ffffff;
 }
 
 #responseBlock {
@@ -111,13 +177,103 @@
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
+  font-size: 1rem; /* 調整玻璃按鈕字體大小 */
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--accent-blue) !important;
+  box-shadow: var(--card-shadow) !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
 }
+
+.glass-button:hover {
+  background: var(--accent-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-blue) !important;
+  box-shadow: var(--card-shadow-hover) !important;
+  transform: translateY(-2px) !important;
+}
+
 .glass-panel h3{
   text-align: left;
+  font-size: 1.3rem; /* 調整課程卡片標題大小 */
+  font-weight: 600;
+}
+
+.glass-panel p {
+  font-size: 1rem; /* 調整課程卡片段落大小 */
+  line-height: 1.6;
 }
 
 .glass-panel:hover {
   background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* 響應式設計 - 課程頁面 */
+@media (max-width: 900px) {
+  .lesson-title {
+    font-size: 1.3rem;
+  }
+  
+  #targetWord {
+    font-size: 5rem;
+    padding: 1.5rem !important;
+    height: 250px !important; /* 中等螢幕調整高度 */
+  }
+  
+  .canvas-container {
+    height: 250px !important;
+  }
+  
+  .glass-panel h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lesson-title {
+    font-size: 1.2rem;
+  }
+  
+  #targetWord {
+    font-size: 4rem;
+    padding: 1rem !important;
+    height: 200px !important; /* 小螢幕調整高度 */
+  }
+  
+  .canvas-container {
+    height: 200px !important;
+  }
+  
+  .glass-panel h3 {
+    font-size: 1.1rem;
+  }
+  
+  .glass-panel p {
+    font-size: 0.9rem;
+  }
+  
+  .kana-grid .btn {
+    font-size: 1rem;
+    padding: 0.8rem;
+    min-height: 50px;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--accent-blue) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+  }
+  
+  .kana-grid .btn:hover {
+    background: var(--accent-blue) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+    border-color: var(--accent-pink) !important;
+  }
 }
 
 
@@ -285,8 +441,26 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 
+// Set canvas dimensions to match display size
+function setupCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  
+  // Set the internal size (resolution)
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  
+  // Scale the context for high DPI displays
+  ctx.scale(dpr, dpr);
+  
+  // Set CSS size (display size)
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+}
+
 // Initialize canvas with white background
 function initializeCanvas() {
+  setupCanvas(); // Set up canvas dimensions first
   ctx.fillStyle = '#FFFFFF'; // Set background to white
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = '#000000'; // Set stroke color to black
@@ -306,18 +480,60 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
+// Add touch support for mobile devices
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchmove', handleTouchMove);
+canvas.addEventListener('touchend', stopDrawing);
+
+function handleTouchStart(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  isDrawing = true;
+  [lastX, lastY] = [x, y];
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  if (!isDrawing) return;
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  [lastX, lastY] = [x, y];
+}
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  setTimeout(initializeCanvas, 100);
+});
+
 function startDrawing(e) {
   isDrawing = true;
-  [lastX, lastY] = [e.offsetX, e.offsetY];
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  [lastX, lastY] = [x, y];
 }
 
 function draw(e) {
   if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
   ctx.beginPath();
   ctx.moveTo(lastX, lastY);
-  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.lineTo(x, y);
   ctx.stroke();
-  [lastX, lastY] = [e.offsetX, e.offsetY];
+  [lastX, lastY] = [x, y];
 }
 
 function stopDrawing() {
@@ -325,7 +541,9 @@ function stopDrawing() {
 }
 
 // Initialize canvas on page load
-initializeCanvas();
+window.addEventListener('load', () => {
+  setTimeout(initializeCanvas, 100); // Small delay to ensure canvas is rendered
+});
 
 // Text-to-Speech functionality
 function playCharacterSound(character) {

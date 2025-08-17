@@ -1,0 +1,908 @@
+:root {
+  /* Color Palette */
+  --accent-blue: #3a86ff;
+  --accent-pink: #ff006e;
+
+  /* Theme Variables (Default to Dark) */
+  --bg-primary: #0d1b2a;
+  --bg-secondary: #1b263b;
+  --text-primary: #e0e1dd;
+  --text-secondary: #ffffff;
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme {
+  --bg-primary: #f4f7fc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1b263b;
+  --text-secondary: #1b263b;
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  font-family: "Noto Sans JP", "Noto Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-bottom: 80px; /* Space for footer */
+  font-size: 18px; /* 增加基礎字體大小 */
+}
+
+.container {
+  max-width: 1400px; /* 增加最大寬度以適應螢幕 */
+  margin: 0 auto;
+  padding: 0 10px; /* 減少左右間距 */
+}
+
+/* Header */
+header {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+  overflow: visible; /* 確保 dropdown 可以顯示在外面 */
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* 為 dropdown 提供定位上下文 */
+}
+
+header h1 {
+  margin: 0;
+}
+
+header h1 a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 1.8rem;
+  transition: color 0.3s ease;
+}
+
+header h1 a:hover {
+  color: var(--accent-blue);
+}
+
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  height: auto; /* 固定高度以防止移位 */
+  position: relative;
+}
+
+header nav ul li {
+  margin-left: 20px !important;
+  position: relative;
+  display: inline-block !important;
+  flex-shrink: 0;
+  height: auto; /* 固定高度 */
+  vertical-align: top; /* 確保垂直對齊 */
+}
+
+header nav ul li a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 1.6rem; /* 恢復可見的字體大小 */
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap;
+  display: block;
+  line-height: 1.5; /* 固定行高 */
+}
+
+header nav ul li a:hover {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+  text-decoration: none;
+}
+
+header nav ul li a.active {
+  color: var(--accent-blue);
+  font-weight: bold;
+  border-bottom-color: var(--accent-blue);
+}
+
+/* Dropdown specific styles */
+header nav ul li.dropdown {
+  position: relative;
+}
+
+header nav ul li.dropdown a.dropdown-toggle {
+  cursor: pointer;
+}
+
+header nav ul li.dropdown a.dropdown-toggle:after {
+  content: " ▼";
+  font-size: 1.5rem; /* 調整下拉箭頭到至少1.5rem */
+  margin-left: 5px;
+}
+
+/* Mobile navbar toggle */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  padding: 4px;
+}
+
+.icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text-secondary);
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Hide navigation on small screens */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: flex;
+  }
+
+  header nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-secondary);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  header nav ul.show {
+    display: flex;
+  }
+
+  header nav ul li {
+    margin: 10px 0;
+  }
+
+  header .container {
+    flex-wrap: wrap;
+  }
+}
+
+/* Language Dropdown - 完全重新設計 */
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.language-dropdown .dropdown-toggle {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 1.5rem; /* 恢復可見的字體大小 */
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap;
+  display: block;
+  cursor: pointer;
+}
+
+.language-dropdown .dropdown-toggle:hover {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.language-dropdown .dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px); /* 減少間距，讓滑鼠更容易移到選項 */
+  right: 0;
+  z-index: 9999;
+  display: none;
+  min-width: 120px;
+  padding: 8px 0;
+  margin: 0;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+/* 改善交互 - 當滑鼠在整個 dropdown 區域時保持顯示 */
+.language-dropdown:hover .dropdown-menu,
+.language-dropdown .dropdown-menu:hover {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 添加一個隱形的橋接區域，防止菜單消失 */
+.language-dropdown::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 5px; /* 橋接區域高度 */
+  z-index: 9998;
+}
+
+.language-dropdown .dropdown-menu form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.language-dropdown .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  font-weight: 400;
+  color: var(--text-primary);
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1.5rem;
+}
+
+.language-dropdown .dropdown-item:hover {
+  background-color: var(--accent-blue);
+  color: white;
+  text-decoration: none;
+}
+
+.language-dropdown .dropdown-item:focus {
+  outline: none;
+  background-color: var(--accent-blue);
+  color: white;
+}
+
+/* Legacy navbar styles override */
+.navbar {
+  display: none !important;
+}
+
+.navbar-dark {
+  display: none !important;
+}
+
+.navbar-fullwidth {
+  display: none !important;
+}
+
+/* Theme Switcher */
+.theme-switch-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  margin-left: 20px !important;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block !important;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Force horizontal layout for nav elements */
+header nav ul li {
+  margin-left: 20px !important;
+  position: relative;
+  display: inline-block !important;
+}
+
+header nav ul li.dropdown {
+  display: inline-block !important;
+}
+
+header nav ul li .theme-switch-wrapper {
+  display: inline-flex !important;
+  vertical-align: middle;
+}
+
+/* Override any Bootstrap conflicts */
+.nav-item {
+  display: inline-block !important;
+  float: none !important;
+  width: auto !important;
+}
+
+.navbar-nav > li {
+  float: none !important;
+  display: inline-block !important;
+}
+
+.navbar-right {
+  float: none !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #4a4a4a;
+  transition: 0.4s;
+  border-radius: 26px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.slider-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.slider-icon img {
+  width: 14px;
+  height: 14px;
+}
+
+.slider-icon.sun {
+  left: 6px;
+  opacity: 0;
+}
+
+body.light-theme .slider-icon.sun {
+  opacity: 1;
+}
+
+.slider-icon.moon {
+  right: 6px;
+  opacity: 1;
+}
+
+body.light-theme .slider-icon.moon {
+  opacity: 0;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-blue);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* General Section Title */
+.section-title {
+  text-align: center;
+  font-size: 2.2rem; /* 調整為更合理的標題大小 */
+  margin-bottom: 3rem;
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 1rem;
+  font-weight: 600; /* 調整字體粗細 */
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px; /* 調整下劃線寬度 */
+  height: 4px; /* 調整下劃線厚度 */
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 2px;
+}
+
+/* Hero Section */
+#hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("../image/hero-background.png");
+  background-size: cover;
+  background-position: center;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 6rem 0;
+  animation: fadeIn 1s ease-in-out;
+}
+
+#hero h2 {
+  font-size: 2.8rem; /* 調整英雄標題字體大小 */
+  margin-bottom: 1rem;
+  animation: slideInUp 0.8s ease-out;
+  font-weight: 600; /* 調整字體粗細 */
+}
+
+#hero p {
+  font-size: 1.4rem; /* 增加英雄段落字體大小 */
+  max-width: 650px; /* 調整最大寬度 */
+  margin: 0 auto 2rem auto;
+  animation: slideInUp 0.8s ease-out 0.2s;
+  animation-fill-mode: backwards;
+  line-height: 1.6;
+}
+
+#hero .btn {
+  animation: slideInUp 0.8s ease-out 0.4s;
+  animation-fill-mode: backwards;
+}
+
+/* Panel and Feature Cards */
+.panel {
+  display: grid;
+  background-color: var(--bg-primary);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(320px, 1fr)
+  ); /* 增加最小寬度 */
+  gap: 2rem;
+  padding: 4rem 1rem; /* 減少左右 padding */
+  margin: 2rem 0;
+  max-width: 100%; /* 確保適應螢幕寬度 */
+}
+
+.glass-panel {
+  background: var(--bg-secondary);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: var(--card-shadow);
+  border-top: 4px solid var(--accent-blue);
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  min-height: 420px; /* 增加最小高度 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.glass-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
+  text-decoration: none;
+  color: inherit;
+}
+
+.glass-panel img {
+  max-width: 90px; /* 增加圖片大小 */
+  max-height: 90px;
+  border-radius: 15px;
+  display: block;
+  margin: 0 auto 1.5rem;
+  object-fit: contain;
+}
+
+.glass-panel h3 {
+  color: var(--text-primary);
+  margin: 1rem 0;
+  font-size: 1.5rem; /* 調整標題字體大小到至少1.5rem */
+  font-weight: 600;
+}
+
+.glass-panel p {
+  color: var(--text-primary);
+  margin: 1rem 0;
+  flex-grow: 1;
+  font-size: 1.2rem; /* 增加段落字體大小 */
+  line-height: 1.6;
+}
+
+/* Learning Paths Grid */
+.learning-paths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.path-card {
+  background: var(--bg-secondary);
+  border-radius: 15px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  border-top: 4px solid var(--accent-pink);
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.path-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.path-card h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem; /* 調整路徑卡片標題字體大小到至少1.5rem */
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.path-card p {
+  color: var(--text-primary);
+  font-size: 1.1rem; /* 增加路徑卡片段落字體大小 */
+  line-height: 1.6;
+  flex-grow: 1;
+  margin: 1rem 0 2rem;
+}
+
+.path-icon {
+  font-size: 2.5rem; /* 調整圖標大小 */
+  margin-bottom: 1rem;
+  display: block;
+}
+.centered-title {
+  text-align: center;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.centered-title h1 {
+  font-size: 2.5rem; /* 調整中央標題字體大小 */
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 1rem;
+  font-weight: 600;
+}
+
+.centered-title h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 2px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 24px; /* 調整按鈕內距 */
+  text-decoration: none;
+  border-radius: 6px; /* 調整圓角 */
+  margin-top: 1rem;
+  font-weight: 600; /* 調整字體粗細 */
+  font-size: 1.1rem; /* 增加按鈕字體大小 */
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-transform: none;
+  cursor: pointer;
+}
+
+/* 移除舊的 .btn-primary 樣式，使用新的表單按鈕樣式 */
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--accent-pink);
+  border: 2px solid var(--accent-pink);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-pink);
+  color: var(--text-secondary);
+}
+
+/* Form Submit Buttons - 確保登入註冊按鈕可見性 */
+.btn[type="submit"],
+input[type="submit"],
+button[type="submit"],
+.btn-primary {
+  background-color: var(--accent-blue) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--accent-blue) !important;
+  padding: 12px 24px !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  cursor: pointer !important;
+  margin-top: 1rem !important;
+}
+
+.btn[type="submit"]:hover,
+input[type="submit"]:hover,
+button[type="submit"]:hover,
+.btn-primary:hover {
+  background-color: transparent !important;
+  color: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+  text-decoration: none !important;
+}
+
+/* 確保在淺色主題下也有良好的對比度 */
+body.light-theme .btn[type="submit"],
+body.light-theme input[type="submit"],
+body.light-theme button[type="submit"],
+body.light-theme .btn-primary {
+  background-color: var(--accent-blue) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-blue) !important;
+}
+
+body.light-theme .btn[type="submit"]:hover,
+body.light-theme input[type="submit"]:hover,
+body.light-theme button[type="submit"]:hover,
+body.light-theme .btn-primary:hover {
+  background-color: #ffffff !important;
+  color: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+}
+
+/* Animations */
+.animated-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animated-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Footer */
+.footer {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: center;
+  padding: 1.5rem 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #415a77;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 1000;
+}
+
+body.light-theme .footer {
+  border-top: 1px solid #dee2e6;
+}
+
+/* Form styles */
+.form-control {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  font-size: 1.1rem; /* 增加表單字體大小 */
+  padding: 0.75rem; /* 調整表單內距 */
+}
+
+.form-control:focus {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-pink);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 110, 0.25);
+}
+
+/* Alert styles */
+.alert {
+  border: 1px solid var(--accent-blue);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 1.1rem; /* 增加警告框字體大小 */
+}
+
+.alert-info {
+  border-color: var(--accent-blue);
+  background-color: rgba(58, 134, 255, 0.1);
+}
+
+.alert-warning {
+  border-color: var(--accent-pink);
+  background-color: rgba(255, 0, 110, 0.1);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: center;
+  padding: 1.5rem 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #415a77;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 1000;
+  font-size: 1.5rem; /* 調整底部導航字體大小到至少1.5rem */
+}
+
+body.light-theme .footer {
+  border-top: 1px solid #dee2e6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 8px; /* 減少左右間距 */
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    font-size: 18px; /* 保持基礎字體大小 */
+  }
+
+  .panel {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 3rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .learning-paths-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .centered-title h1,
+  .section-title {
+    font-size: 2rem; /* 調整中等螢幕標題大小 */
+  }
+
+  #hero h2 {
+    font-size: 2.2rem; /* 調整英雄標題 */
+  }
+
+  #hero p {
+    font-size: 1.5rem; /* 增加英雄段落到至少1.5rem */
+  }
+
+  .glass-panel h3 {
+    font-size: 1.5rem; /* 調整卡片標題到至少1.5rem */
+  }
+
+  .glass-panel p {
+    font-size: 1.5rem; /* 增加卡片段落到至少1.5rem */
+  }
+
+  .path-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .path-card p {
+    font-size: 1.5rem; /* 增加路徑卡片段落到至少1.5rem */
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 18px; /* 保持基礎字體大小 */
+  }
+
+  .panel,
+  .learning-paths-grid {
+    grid-template-columns: 1fr;
+    padding: 2rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .glass-panel,
+  .path-card {
+    padding: 1.5rem 1rem; /* 調整內距 */
+    min-height: auto;
+  }
+
+  .centered-title h1,
+  .section-title {
+    font-size: 1.8rem; /* 調整小螢幕標題大小 */
+  }
+
+  #hero h2 {
+    font-size: 2rem; /* 調整英雄標題 */
+  }
+
+  #hero p {
+    font-size: 1.5rem; /* 增加英雄段落到至少1.5rem */
+  }
+
+  #hero {
+    padding: 3rem 0; /* 調整內距 */
+  }
+
+  .glass-panel h3 {
+    font-size: 1.5rem; /* 調整卡片標題到至少1.5rem */
+  }
+
+  .glass-panel p {
+    font-size: 1.5rem; /* 增加卡片段落到至少1.5rem */
+  }
+
+  .path-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .path-card p {
+    font-size: 1.5rem; /* 增加路徑卡片段落到至少1.5rem */
+  }
+
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .theme-switch-wrapper {
+    justify-content: center;
+    margin: 1rem 0;
+  }
+
+  .btn {
+    padding: 10px 20px; /* 調整按鈕大小 */
+    font-size: 1.5rem; /* 增加按鈕字體到至少1.5rem */
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem !important; /* 調整小螢幕品牌字體到至少1.5rem */
+  }
+}

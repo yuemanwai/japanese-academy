@@ -2,82 +2,80 @@
 
 {% block head %}
 {{ super() }}
-<style>
-/* Feature card styles */
-.panel {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65') center/cover fixed;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 每行顯示3個 */
-  gap: 2rem;
-  padding: 4rem 2rem;
-  border-radius: 15px; /* 邊框圓角 */
-}
-
-.glass-panel img {
-  max-width: 100%;
-  max-height: 70%;
-  border-radius: 15px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.glass-panel {
-  margin: 20px;
-  height: 400px;
-  padding: 2rem;
-}
-
-.centered-title {
-  text-align: center; /* 置中標題 */
-  width: 100%; /* 佔全行 */
-}
-
-
-@media (max-width: 900px) {
-  .panel {
-    grid-template-columns: repeat(2, 1fr); /* 每行顯示2個 */
-  }
-}
-
-@media (max-width: 600px) {
-  .panel {
-    grid-template-columns: 1fr; /* 每行顯示1個 */
-  }
-}
-
-</style>
 {% endblock head %}
 
 {% block app_content %}
-<!-- Panel -->
-<div class="centered-title"><h1>{{_('Master Japanese with AI')}}</h1></div>
+<!-- Hero Section -->
+<section id="hero">
+  <div class="container">
+    <h2>{{_('AI 驅動，革新您的日文學習體驗')}}</h2>
+    <p>{{_('JP Academy 結合尖端 AI 技術，為您量身打造個人化學習路徑，讓學習更高效、更有趣。')}}</p>
+    <a href="{{ url_for('lessons') }}" class="btn btn-primary">{{_('立即開始')}}</a>
+  </div>
+</section>
 
-<section class="panel">
-  <a href="{{ url_for('chat_with_copilot') }}" class="glass-panel">
-    <img src="../static/image/copilot.png" alt="Image not found">
-    <h3>{{ _('AI Conversation Practice') }}</h3>
-    <p>{{ _('Practice speaking Japanese with Copilot anytime, anywhere') }}</p>
-  </a>
+<!-- AI Features Section -->
+<section class="container">
+  <div class="centered-title">
+    <h1 class="section-title">{{_('AI 助教，您的專屬日文老師')}}</h1>
+  </div>
 
-  <a href="{{ url_for('lessons') }}#lesson1" class="glass-panel">
-    <img src="../static/image/a.png" alt="Image not found">
-    <h3>{{ _('Smart Learning Path') }}</h3>
-    <p>{{ _('Personalized curriculum that adapts to your learning style and progress') }}</p>
-  </a>
-  
-  <a href="{{ url_for('lessons') }}#lesson2" class="glass-panel">
-    <img src="../static/image/jp.jpeg" alt="Image not found">
-    <h3>{{ _('Real-time Feedback') }}</h3>
-    <p>{{ _('Get instant corrections and suggestions to improve your Japanese skills') }}</p>
-  </a>
+  <div class="panel">
+    <a href="{{ url_for('chat_with_copilot') }}" class="glass-panel animated-card">
+      <img src="{{ url_for('static', filename='image/icon-conversation.png') }}" alt="AI Conversation">
+      <h3>{{ _('互動式口說練習') }}</h3>
+      <p>{{ _('與我們的 AI 進行真實情境對話，獲得即時的發音和文法反饋，勇敢開口說日文。') }}</p>
+    </a>
 
-  <a href="{{ url_for('record') }}" class="glass-panel">
-    <img src="../static/image/video_icon.png" alt="Image not found">
-    <h3>{{ _('Video evaluation') }}</h3>
-    <p>{{ _('Japanese Video Evaluation Powered by Gemini') }}</p>
-  </a>
-  
+    <a href="{{ url_for('lessons') }}#lesson1" class="glass-panel animated-card">
+      <img src="{{ url_for('static', filename='image/icon-personalized.png') }}" alt="Personalized Learning">
+      <h3>{{ _('個人化學習路徑') }}</h3>
+      <p>{{ _('AI 會分析您的學習進度和強弱項，動態調整課程內容，讓您專注於最需要加強的部分。') }}</p>
+    </a>
+    
+    <a href="{{ url_for('lessons') }}#lesson2" class="glass-panel animated-card">
+      <img src="{{ url_for('static', filename='image/icon-flashcards.png') }}" alt="Smart Flashcards">
+      <h3>{{ _('智慧單字卡系統') }}</h3>
+      <p>{{ _('採用 AI 驅動的間隔重複演算法，幫助您以最有效率的方式記憶單字和漢字。') }}</p>
+    </a>
+
+    <a href="{{ url_for('record') }}" class="glass-panel animated-card">
+      <img src="{{ url_for('static', filename='image/video_icon.png') }}" alt="Video Evaluation">
+      <h3>{{ _('Video evaluation') }}</h3>
+      <p>{{ _('Japanese Video Evaluation Powered by Gemini') }}</p>
+    </a>
+  </div>
+</section>
+
+<!-- Learning Paths Section -->
+<section class="container">
+  <h2 class="section-title">{{_('探索我們的學習內容')}}</h2>
+  <div class="learning-paths-grid">
+    <div class="path-card animated-card">
+      <div class="path-icon">📚</div>
+      <h3>{{_('互動課程')}}</h3>
+      <p>{{_('從基礎五十音到進階文法，系統性的課程設計讓您循序漸進地掌握日文。包含平假名、片假名、漢字學習與實用文法教學。')}}</p>
+      <a href="{{ url_for('lessons') }}" class="btn btn-secondary">{{_('開始課程')}}</a>
+    </div>
+    <div class="path-card animated-card">
+      <div class="path-icon">💪</div>
+      <h3>{{_('練習中心')}}</h3>
+      <p>{{_('多元化的練習模式，包含聽力、閱讀、寫作和口說練習。透過不斷的練習來鞏固您所學的知識。')}}</p>
+      <a href="{{ url_for('practice') }}" class="btn btn-secondary">{{_('開始練習')}}</a>
+    </div>
+    <div class="path-card animated-card">
+      <div class="path-icon">🎯</div>
+      <h3>{{_('AI 對話練習')}}</h3>
+      <p>{{_('與 AI 助教進行即時對話練習，提升口說能力和聽力理解。獲得即時反饋，讓您的日文更加流利自然。')}}</p>
+      <a href="{{ url_for('chat_with_copilot') }}" class="btn btn-secondary">{{_('開始對話')}}</a>
+    </div>
+    <div class="path-card animated-card">
+      <div class="path-icon">📊</div>
+      <h3>{{_('學習統計')}}</h3>
+      <p>{{_('追蹤您的學習進度，查看詳細的學習統計和成績分析。了解自己的強項和需要改進的地方。')}}</p>
+      <a href="{{ url_for('user', username=current_user.username if current_user.is_authenticated else 'guest') }}" class="btn btn-secondary">{{_('查看統計')}}</a>
+    </div>
+  </div>
 </section>
 {% endblock app_content %}
 

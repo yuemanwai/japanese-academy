@@ -2,19 +2,94 @@
 {% extends 'base.html.j2' %}
 
 {% block app_content %}
-<h1>{{ _('Community') }}</h1>
-<p>{{ _('This is the Community page.') }}</p>
-<ul></ul>
-    <li>{{ _('討論區 (Discussion Forums)') }}</li>
-    <li>{{ _('活動日曆 (Event Calendar)') }}</li>
-    <li>{{ _('用戶故事 (User Stories)') }}</li>
-</ul>
+<div class="community-container">
+  <div class="section-title">
+    <h1>{{ _('Community') }}</h1>
+  </div>
+  
+  <div class="community-content">
+    <div class="glass-panel">
+      <div class="community-intro">
+        <p>{{ _('This is the Community page.') }}</p>
+      </div>
+      
+      <div class="panel">
+        <div class="glass-panel">
+          <h3>{{ _('討論區 (Discussion Forums)') }}</h3>
+          <p>{{ _('與其他學習者交流心得和經驗') }}</p>
+          <a href="#" class="btn btn-primary">{{ _('進入討論區') }}</a>
+        </div>
+        
+        <div class="glass-panel">
+          <h3>{{ _('活動日曆 (Event Calendar)') }}</h3>
+          <p>{{ _('查看即將舉行的學習活動和聚會') }}</p>
+          <a href="#" class="btn btn-primary">{{ _('查看活動') }}</a>
+        </div>
+        
+        <div class="glass-panel">
+          <h3>{{ _('用戶故事 (User Stories)') }}</h3>
+          <p>{{ _('閱讀其他學習者的成功故事和經歷') }}</p>
+          <a href="#" class="btn btn-primary">{{ _('閱讀故事') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .community-container {
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .community-content {
+    margin: 2rem 0;
+  }
+
+  .community-intro {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .community-intro p {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+
+  .glass-panel h3 {
+    color: var(--accent-blue);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .glass-panel p {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .panel {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
 {% endblock %}
 
 {% block title %}
 {{ _('Community') }}
-{% endblock %}
-
-{% block head %}
-{{ super() }}
 {% endblock %}

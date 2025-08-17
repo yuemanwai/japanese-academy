@@ -3,35 +3,29 @@
 {% block head %}
 {{ super() }}
 <style>
-
-  .practice-container * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
   .practice-container {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-                url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600') center/cover fixed;
-    position: relative;
-    overflow: hidden;
-    height: 85vh;
-    border-radius: 15px; /* 邊框圓角 */
+    min-height: 80vh;
+    padding: 2rem 0;
     display: flex;
-    justify-content: center; /* 水平置中子元素 */
-    align-items: center;    /* 垂直置中子元素 */
-
+    justify-content: center;
+    align-items: center;
   }
 
-  .glass-panel {
-    max-width: 1000px;
+  .practice-content {
+    background: var(--bg-secondary);
+    border-radius: 15px;
     padding: 3rem;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.3s ease;
+    color: var(--text-primary);
+    max-width: 1200px; /* 增加最大寬度 */
+    width: 95%; /* 增加寬度百分比 */
     position: relative;
     overflow: hidden;
   }
 
-  .glass-panel:hover {
-    background-color: rgba(255, 255, 255, 0.06);
+  .practice-content:hover {
+    box-shadow: var(--card-shadow-hover);
   }
 
   .character {
@@ -45,35 +39,6 @@
     width: 100%;
     height: 100%;
     animation: float 3s ease-in-out infinite;
-  }
-
-  /* Cherry blossom animation */
-  .cherry-blossoms {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .petal {
-    position: absolute;
-    background: #ffd7e6;
-    border-radius: 150% 0 150% 0;
-    animation: falling linear infinite;
-  }
-
-  @keyframes falling {
-    0% {
-      transform: translate(0, -10px) rotate(0deg);
-      opacity: 1;
-    }
-    100% {
-      transform: translate(100px, 100vh) rotate(360deg);
-      opacity: 0;
-    }
   }
 
   @keyframes float {
@@ -103,7 +68,7 @@
 
   .options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-top: 2rem;
   }
@@ -158,10 +123,7 @@
 
 {% block app_content %}
 <div class="practice-container">
-  <div class="cherry-blossoms" id="cherryBlossoms"></div>    
-
-    <div class="glass-panel">
-        <div class="cherry-blossoms"></div>
+    <div class="practice-content">
         <div class="score glass-button">Score: <span id="scoreValue">0</span></div>
       <div class="character">
         <svg class="character-svg" viewBox="0 0 100 100">
@@ -194,42 +156,6 @@
 {% block scripts %}
 {{ super() }}
 <script>
-  // Create cherry blossom petals
-  function createPetals(container, petalCount = 30) {
-    for (let i = 0; i < petalCount; i++) {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.width = Math.random() * 15 + 5 + 'px';
-      petal.style.height = Math.random() * 15 + 5 + 'px';
-      petal.style.animationDuration = Math.random() * 3 + 2 + 's';
-      petal.style.opacity = Math.random() * 0.5 + 0.5;
-      container.appendChild(petal);
-    }
-  }
-
-  function initializePetals() {
-    const globalContainer = document.getElementById('cherryBlossoms');
-    const gameContainer = document.querySelector('.glass-panel .cherry-blossoms');
-    const practiceContainer = document.querySelector('.practice-container .cherry-blossoms');
-
-    createPetals(globalContainer);
-    createPetals(gameContainer, 15);
-    createPetals(practiceContainer);
-
-    // Recreate petals when animation ends
-    setInterval(() => {
-      globalContainer.innerHTML = '';
-      gameContainer.innerHTML = '';
-      practiceContainer.innerHTML = '';
-      createPetals(globalContainer);
-      createPetals(gameContainer, 15);
-      createPetals(practiceContainer);
-    }, 5000);
-  }
-
-  initializePetals();
-
   const questions = [
     {
       question: 'What does "おはよう" (ohayou) mean?',

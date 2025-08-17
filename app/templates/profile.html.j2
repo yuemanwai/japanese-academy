@@ -1,33 +1,157 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block head %}
-{{ super() }}
-<style>
-  .custom-container {
-    border: 2px solid rgb(194, 189, 189);
-    padding: 10px;
-    text-align: center;
-  }
-</style>
-{% endblock head %}
+
 {% block app_content %}
-<div class="container-fluid">
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#profile"> {{ _('Profile') }}</a></li>
-    <li><a data-toggle="tab" href="#edit">{{ _('Edit') }}</a></li>
-  </ul>
-  <div class="tab-content">
-    <div id="profile" class="tab-pane fade in active">
-      <br />
-      <i class="fa-solid fa-envelope" style="font-size: 20px; "></i>
-      {{_('Email: ')}} <b>{{user.email}}</b>
+<div class="profile-container">
+  <div class="profile-box glass-panel">
+    <div class="section-title">
+      <h1>{{ _('Profile') }}</h1>
     </div>
-    {% if image_path %}
-    <img src="{{ image_path }}" alt="" height="55px" />
-    {% endif %}
-    <div id="edit" class="tab-pane fade">
-      <div class="col-md-6">{{ wtf.quick_form(form) }}</div>
+    
+    <ul class="profile-nav">
+      <li class="active"><a data-toggle="tab" href="#profile">{{ _('Profile') }}</a></li>
+      <li><a data-toggle="tab" href="#edit">{{ _('Edit') }}</a></li>
+    </ul>
+    
+    <div class="tab-content">
+      <div id="profile" class="tab-pane fade in active">
+        <div class="profile-info">
+          {% if image_path %}
+          <div class="profile-image">
+            <img src="{{ image_path }}" alt="Profile Image" />
+          </div>
+          {% endif %}
+          <div class="profile-details">
+            <div class="profile-item">
+              <i class="fa-solid fa-envelope"></i>
+              <span>{{_('Email: ')}} <strong>{{user.email}}</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="edit" class="tab-pane fade">
+        <div class="edit-form">
+          {{ wtf.quick_form(form) }}
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 2rem 0;
+  }
+
+  .profile-box {
+    max-width: 800px;
+    width: 90%;
+    padding: 2.5rem;
+    border-radius: 15px;
+    background: var(--bg-secondary);
+    box-shadow: var(--card-shadow);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .profile-box:hover {
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .profile-nav {
+    list-style: none;
+    margin: 0 0 2rem 0;
+    padding: 0;
+    display: flex;
+    border-bottom: 2px solid var(--accent-blue);
+  }
+
+  .profile-nav li {
+    margin-right: 2rem;
+  }
+
+  .profile-nav li a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .profile-nav li a:hover,
+  .profile-nav li.active a {
+    color: var(--accent-blue);
+    background-color: rgba(58, 134, 255, 0.1);
+  }
+
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .profile-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-blue);
+  }
+
+  .profile-details {
+    flex: 1;
+  }
+
+  .profile-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
+
+  .profile-item i {
+    color: var(--accent-blue);
+    font-size: 1.3rem;
+  }
+
+  .edit-form {
+    padding: 1rem 0;
+  }
+
+  .edit-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .edit-form label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .profile-info {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .profile-nav {
+      flex-direction: column;
+    }
+    
+    .profile-nav li {
+      margin: 0.5rem 0;
+    }
+  }
+</style>
 {% endblock app_content %}

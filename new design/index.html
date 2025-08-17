@@ -1,0 +1,102 @@
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP Academy - Learn Japanese</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="/">JP Academy</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">首頁</a></li>
+                    <li><a href="#learning-paths">課程</a></li>
+                    <li><a href="#practice">練習</a></li>
+                    <li><a href="#signup">註冊</a></li>
+                    <li><a href="#login">登入</a></li>
+                    <li><a href="#language">語言</a></li>
+                    <li>
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="theme-toggle">
+                                <input type="checkbox" id="theme-toggle" />
+                                <span class="slider">
+                                    <span class="slider-icon sun"><img src="icon-sun.png" alt="Light Mode"></span>
+                                    <span class="slider-icon moon"><img src="icon-moon.png" alt="Dark Mode"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h2>AI 驅動，革新您的日文學習體驗</h2>
+                <p>JP Academy 結合尖端 AI 技術，為您量身打造個人化學習路徑，讓學習更高效、更有趣。</p>
+                <a href="#learning-paths" class="btn btn-primary">立即開始</a>
+            </div>
+        </section>
+
+        <section id="ai-features" class="container">
+            <h2 class="section-title">AI 助教，您的專屬日文老師</h2>
+            <div class="features-grid">
+                <div class="feature-card animated-card">
+                    <img src="icon-personalized.png" alt="Personalized Learning Icon" class="feature-icon">
+                    <h3>個人化學習路徑</h3>
+                    <p>AI 會分析您的學習進度和強弱項，動態調整課程內容，讓您專注於最需要加強的部分。</p>
+                </div>
+                <div class="feature-card animated-card">
+                    <img src="icon-conversation.png" alt="Conversation Practice Icon" class="feature-icon">
+                    <h3>互動式口說練習</h3>
+                    <p>與我們的 AI 進行真實情境對話，獲得即時的發音和文法反饋，勇敢開口說日文。</p>
+                </div>
+                <div class="feature-card animated-card">
+                    <img src="icon-flashcards.png" alt="Smart Flashcards Icon" class="feature-icon">
+                    <h3>智慧單字卡系統</h3>
+                    <p>採用 AI 驅動的間隔重複演算法，幫助您以最有效率的方式記憶單字和漢字。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="learning-paths" class="container">
+            <h2 class="section-title">選擇您的起點，讓 AI 引導您前行</h2>
+            <div class="path-card animated-card" id="hiragana">
+                <h3>平假名 (Hiragana)</h3>
+                <p>日文的基礎字母之一，用於原生詞彙和文法助詞。學習清音、濁音、半濁音和拗音。</p>
+                <a href="#" class="btn btn-secondary">開始學習</a>
+            </div>
+            <div class="path-card animated-card" id="katakana">
+                <h3>片假名 (Katakana)</h3>
+                <p>日文的另一套基礎字母，主要用於外來語、擬聲詞和強調。筆劃較為方正。</p>
+                <a href="#" class="btn btn-secondary">開始學習</a>
+            </div>
+            <div class="path-card animated-card" id="kanji">
+                <h3>漢字 (Kanji)</h3>
+                <p>源自中文的表意文字。學習常用漢字的讀音（音讀、訓讀）和寫法。</p>
+                <a href="#" class="btn btn-secondary">開始學習</a>
+            </div>
+            <div class="path-card animated-card" id="grammar">
+                <h3>文法 (Grammar)</h3>
+                <p>掌握日文的句子結構、助詞用法、動詞變化等，讓您能說出自然流利的句子。</p>
+                <a href="#" class="btn btn-secondary">開始學習</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 JP Academy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
