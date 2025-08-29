@@ -31,14 +31,16 @@ jobs:
           config: p/ci
         # 移除 continue-on-error，讓嚴重問題阻止流程
 
-      # --- 程式碼品質檢查 (CodeQL) - 阻止性檢查 ---
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: python, javascript
+      # --- 程式碼品質檢查 (CodeQL) - 需要啟用 GitHub Code Scanning ---
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: python, javascript
+      #   continue-on-error: true
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
+      #   continue-on-error: true
 
       # --- Python 依賴性漏洞掃描 - 在建置前檢查 ---
       - name: Set up Python
@@ -113,6 +115,7 @@ jobs:
         if: always() && hashFiles('trivy-results.sarif') != ''
         with:
           sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
 
       - name: Run Trivy critical vulnerability check
         uses: aquasecurity/trivy-action@0.28.0
