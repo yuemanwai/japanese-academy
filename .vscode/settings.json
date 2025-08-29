@@ -1,10 +1,4 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "[jinja-html]": {
-    "editor.defaultFormatter": "monosans.djlint"
-  },
-  "djlint.showInstallError": false,
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true
