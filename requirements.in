@@ -1,0 +1,45 @@
+# ===== CORE WEB FRAMEWORK =====
+Flask>=3.1.2
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+Flask-Mail
+Flask-Migrate
+Flask-Babel
+Flask-Moment
+Flask-Session
+Flask-Bootstrap
+
+# ===== DATABASE =====
+alembic
+psycopg2-binary
+
+# ===== AUTHENTICATION & VALIDATION =====
+email-validator
+dnspython
+PyJWT
+
+# ===== AI & GOOGLE SERVICES =====
+google-genai
+
+# ===== TESTING =====
+pytest
+allure-pytest
+
+# ===== DEVELOPMENT =====
+python-dotenv
+
+# ===== WEB AUTOMATION =====
+selenium
+PyVirtualDisplay
+
+# ===== HTTP & REQUESTS =====
+requests
+
+# ===== DATA & VISUALIZATION =====
+matplotlib
+numpy
+pydantic
+
+# ===== PRODUCTION SERVER =====
+gunicorn

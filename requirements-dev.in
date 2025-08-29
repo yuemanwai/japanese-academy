@@ -1,0 +1,23 @@
+# Development dependencies only
+# Compile with: pip-compile requirements-dev.in
+
+-r requirements.in
+
+# Code formatting
+black
+isort
+flake8
+
+# Type checking
+mypy
+
+# Development server (if not using gunicorn)
+flask-debugtoolbar
+
+# Testing utilities
+pytest-cov
+pytest-mock
+
+# Documentation
+sphinx
+sphinx-rtd-theme
