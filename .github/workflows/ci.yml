@@ -33,18 +33,18 @@ jobs:
       - name: Run dependency vulnerability scan
         run: |
           pip install safety
-          # 使用舊版 check 命令避免互動式登入問題
-          safety check --file requirements.txt --output text || exit 1
+          # 使用舊版 check 命令，應該通過因為我們已修復 Flask 漏洞
+          safety check --file requirements.txt --output text
 
-      # 秘密掃描
+      # 秘密掃描 (只在 PR 時執行)
       - name: Run secret detection
+        if: github.event_name == 'pull_request'
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: main
-          head: HEAD
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
           extra_args: --only-verified
-        continue-on-error: true
 
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -52,8 +52,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
-      packages: write
       security-events: write
+      actions: read
+      id-token: write
 
     env:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -87,21 +88,14 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Docker 映像安全掃描
+      # Docker 映像安全掃描 (表格輸出)
       - name: Run Trivy vulnerability scan
         if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PAT != ''
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: 'table'
           scanners: 'vuln'
-
-      - name: Upload Trivy scan results
-        if: always() && hashFiles('trivy-results.sarif') != ''
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
 
       # 阻止部署如果有嚴重漏洞
       - name: Check for critical vulnerabilities
