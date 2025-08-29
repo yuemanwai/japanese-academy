@@ -33,7 +33,7 @@ jobs:
       - name: Run dependency vulnerability scan
         run: |
           pip install safety
-          # 使用舊版 check 命令，應該通過因為我們已修復 Flask 漏洞
+          # 掃描 requirements.txt 中的依賴漏洞
           safety check --file requirements.txt --output text
 
       # 秘密掃描 (只在 PR 時執行)
