@@ -14,6 +14,7 @@ jobs:
       contents: read
       packages: write
       security-events: write
+      actions: read
 
     env:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -83,21 +84,45 @@ jobs:
           cache-to: type=gha,mode=max
 
       # --- 合併的 Trivy 安全掃描 ---
-      - name: Run Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@master
+      - name: Run Trivy vulnerability scan for SARIF report
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
-          exit-code: '1'
-          severity: 'HIGH,CRITICAL'
-          ignore-unfixed: true
+          scanners: 'vuln'
+        continue-on-error: true
+
+      - name: Fallback Trivy SARIF scan (if action fails)
+        if: hashFiles('trivy-results.sarif') == ''
+        run: |
+          # Install Trivy
+          sudo apt-get update
+          sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy -y
+          
+          # Run Trivy scan
+          trivy image --format sarif --output trivy-results.sarif --scanners vuln ${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest || echo "Trivy scan completed with issues"
+        continue-on-error: true
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('trivy-results.sarif') != ''
         with:
           sarif_file: 'trivy-results.sarif'
+
+      - name: Run Trivy critical vulnerability check
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
+          format: 'table'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          scanners: 'vuln'
 
       # --- 秘密資訊掃描 - 警告性檢查 ---
       - name: Run secret detection
