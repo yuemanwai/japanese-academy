@@ -1,0 +1,30 @@
+# Semgrep ignore patterns
+
+# Development container specific ignores  
+.devcontainer/
+
+# Dockerfile in main directory uses 0.0.0.0 for container networking
+Dockerfile
+
+# Static files and dependencies
+node_modules/
+dist/
+build/
+
+# Minified files
+*.min.js
+*.min.css
+
+# Test files that might have intentional vulnerabilities
+tests/
+test_*
+
+# Large binary files
+*.pdf
+*.mp4
+*.avi
+*.mov
+*.png
+*.jpg
+*.jpeg
+*.gif
