@@ -1,0 +1,110 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+
+    env:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_PAT: ${{ secrets.DOCKER_HUB_PAT }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --- SAST 程式碼掃描 (Semgrep) - 阻止性檢查 ---
+      - name: Run Semgrep SAST scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/ci
+        # 移除 continue-on-error，讓嚴重問題阻止流程
+
+      # --- 程式碼品質檢查 (CodeQL) - 阻止性檢查 ---
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      # --- Python 依賴性漏洞掃描 - 在建置前檢查 ---
+      - name: Set up Python
+        if: hashFiles('requirements.txt') != ''
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run dependency vulnerability scan
+        if: hashFiles('requirements.txt') != ''
+        run: |
+          pip install safety
+          safety check --file requirements.txt --output json --save-json safety-report.json
+
+      - name: Upload dependency scan results
+        if: always() && hashFiles('safety-report.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-scan-results
+          path: safety-report.json
+
+      # --- Docker 建置設定 ---
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_HUB_USERNAME }}
+          password: ${{ env.DOCKER_HUB_PAT }}
+
+      # --- 建置並推送 Docker 映像檔 ---
+      - name: Build and push Docker image
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest
+            ${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # --- 合併的 Trivy 安全掃描 ---
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '1'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      # --- 秘密資訊掃描 - 警告性檢查 ---
+      - name: Run secret detection
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+        continue-on-error: true
