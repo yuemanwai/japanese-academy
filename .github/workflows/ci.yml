@@ -33,7 +33,8 @@ jobs:
       - name: Run dependency vulnerability scan
         run: |
           pip install safety
-          safety scan --file requirements.txt
+          # 使用舊版 check 命令避免互動式登入問題
+          safety check --file requirements.txt --output text || exit 1
 
       # 秘密掃描
       - name: Run secret detection
