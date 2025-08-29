@@ -8,13 +8,51 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build-and-scan:
+  security-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 程式碼安全掃描
+      - name: Run Semgrep SAST scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/ci
+
+      # Python 依賴漏洞掃描
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run dependency vulnerability scan
+        run: |
+          pip install safety
+          safety scan --file requirements.txt
+
+      # 秘密掃描
+      - name: Run secret detection
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --only-verified
+        continue-on-error: true
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: security-scan
+    if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
       packages: write
       security-events: write
-      actions: read
 
     env:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -24,51 +62,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- SAST 程式碼掃描 (Semgrep) - 阻止性檢查 ---
-      - name: Run Semgrep SAST scan
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: p/ci
-        # 移除 continue-on-error，讓嚴重問題阻止流程
-
-      # --- 程式碼品質檢查 (CodeQL) - 需要啟用 GitHub Code Scanning ---
-      # - name: Initialize CodeQL
-      #   uses: github/codeql-action/init@v3
-      #   with:
-      #     languages: python, javascript
-      #   continue-on-error: true
-
-      # - name: Perform CodeQL Analysis
-      #   uses: github/codeql-action/analyze@v3
-      #   continue-on-error: true
-
-      # --- Python 依賴性漏洞掃描 - 在建置前檢查 ---
-      - name: Set up Python
-        if: hashFiles('requirements.txt') != ''
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Run dependency vulnerability scan
-        if: hashFiles('requirements.txt') != ''
-        run: |
-          pip install safety
-          safety scan --file requirements.txt || echo "Found vulnerabilities in dependencies"
-        continue-on-error: true
-
-      # --- Docker 建置設定 ---
+      # Docker 建置設定
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
+        if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PAT != ''
         uses: docker/login-action@v3
         with:
           username: ${{ env.DOCKER_HUB_USERNAME }}
           password: ${{ env.DOCKER_HUB_PAT }}
 
-      # --- 建置並推送 Docker 映像檔 ---
+      # 建置並推送 Docker 映像
       - name: Build and push Docker image
-        id: docker_build
+        if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PAT != ''
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -79,39 +86,25 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # --- 合併的 Trivy 安全掃描 ---
-      - name: Run Trivy vulnerability scan for SARIF report
+      # Docker 映像安全掃描
+      - name: Run Trivy vulnerability scan
+        if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PAT != ''
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
           scanners: 'vuln'
-        continue-on-error: true
 
-      - name: Fallback Trivy SARIF scan (if action fails)
-        if: hashFiles('trivy-results.sarif') == ''
-        run: |
-          # Install Trivy
-          sudo apt-get update
-          sudo apt-get install wget apt-transport-https gnupg lsb-release -y
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install trivy -y
-          
-          # Run Trivy scan
-          trivy image --format sarif --output trivy-results.sarif --scanners vuln ${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest || echo "Trivy scan completed with issues"
-        continue-on-error: true
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload Trivy scan results
         if: always() && hashFiles('trivy-results.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
-        continue-on-error: true
 
-      - name: Run Trivy critical vulnerability check
+      # 阻止部署如果有嚴重漏洞
+      - name: Check for critical vulnerabilities
+        if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PAT != ''
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: '${{ env.DOCKER_HUB_USERNAME }}/fyp-jp:latest'
@@ -120,13 +113,3 @@ jobs:
           severity: 'HIGH,CRITICAL'
           ignore-unfixed: true
           scanners: 'vuln'
-
-      # --- 秘密資訊掃描 - 警告性檢查 ---
-      - name: Run secret detection
-        uses: trufflesecurity/trufflehog@main
-        with:
-          path: ./
-          base: main
-          head: HEAD
-          extra_args: --debug --only-verified
-        continue-on-error: true
