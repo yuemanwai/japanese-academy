@@ -9,6 +9,6 @@ RUN apt --fix-broken install -y
 RUN apt install ./google-chrome-stable_current_amd64.deb -y
 RUN rm google-chrome-stable_current_amd64.deb
 
-COPY requirements.txt /tmp/pip-tmp/
-RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
+COPY requirements-dev.txt /tmp/pip-tmp/
+RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements-dev.txt \
    && rm -rf /tmp/pip-tmp

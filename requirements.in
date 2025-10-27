@@ -22,10 +22,6 @@ PyJWT
 # ===== AI & GOOGLE SERVICES =====
 google-genai
 
-# ===== TESTING =====
-pytest
-allure-pytest
-
 # ===== DEVELOPMENT =====
 python-dotenv
 
