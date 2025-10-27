@@ -438,7 +438,7 @@ def video_evaluation():
         flash('Error saving video')
         return jsonify({'success': False, 'message': 'Error saving video'})
 
-    gemini_client = GeminiClient()
+    gemini_client = GeminiClient(api_key=current_app.config['GEMINI_API_KEY'])
     try:
         evaluation_response = gemini_client.evaluate_video(video.filename)
         current_app.logger.info(f'Evaluation response: {evaluation_response}')
@@ -545,7 +545,7 @@ def check_character():
             f.write(base64.b64decode(handwriting_image.split(",")[1]))
 
         # Use GeminiClient to compare handwriting with the target character
-        gemini_client = GeminiClient()
+        gemini_client = GeminiClient(api_key=current_app.config['GEMINI_API_KEY'])
         response_data = gemini_client.compare_handwriting('handwriting.png', target_character)
         
         if response_data:

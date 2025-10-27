@@ -28,3 +28,6 @@ class Config(object):
     LANGUAGES = ['en', 'es', 'zh']
     RECAPTCHA_PUBLIC_KEY='no-key'
     RECAPTCHA_PRIVATE_KEY='no-key'
+    
+    # API Keys
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")

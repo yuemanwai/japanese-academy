@@ -2,17 +2,19 @@ from google import genai
 from google.genai import types
 import time
 import os
-from dotenv import load_dotenv
 import json
 import re
 
 
-# Load environment variables from .env file
-load_dotenv()
-
 class GeminiClient:
-    def __init__(self, sys_instruct=None, model="gemini-2.0-flash", config=None):
-        """初始化 GeminiClient 並設置 API 密鑰和系統指令"""
+    def __init__(self, sys_instruct=None, model="gemini-2.0-flash", config=None, api_key=None):
+        """初始化 GeminiClient 並設置 API 密鑰和系統指令
+        
+        :param sys_instruct: 系統指令
+        :param model: 使用的模型名稱
+        :param config: 生成內容的配置
+        :param api_key: Gemini API 密鑰（如果為 None，將從環境變數讀取）
+        """
         self.sys_instruct = sys_instruct
         self.model = model
         self.config = config or types.GenerateContentConfig(
@@ -20,8 +22,11 @@ class GeminiClient:
             max_output_tokens=100,
             temperature=0.1
         )
-        api_key = os.getenv("GEMINI_API_KEY")
-        self.client = genai.Client(api_key=api_key)
+        # 優先使用傳入的 api_key，否則從環境變數讀取
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY")
+        if not self.api_key:
+            raise ValueError("GEMINI_API_KEY is not set. Please provide it via parameter or environment variable.")
+        self.client = genai.Client(api_key=self.api_key)
 
     def generate_content(self, contents):
         """
