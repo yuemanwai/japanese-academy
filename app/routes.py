@@ -593,3 +593,63 @@ def save_handwriting():
         return jsonify({'similarity_score': similarity_score, 'feedback': feedback}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# ===== Kubernetes Health Check Endpoints =====
+
+@app.route('/healthz', methods=['GET'])
+@app.route('/health', methods=['GET'])
+def health_check():
+    """
+    Liveness Probe - Checks if the application is running
+    Returns 200 if the app is alive
+    """
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.utcnow().isoformat(),
+        'service': 'jp-academy'
+    }), 200
+
+
+@app.route('/readyz', methods=['GET'])
+@app.route('/ready', methods=['GET'])
+def readiness_check():
+    """
+    Readiness Probe - Checks if the application is ready to serve traffic
+    Checks database connection and other critical dependencies
+    """
+    checks = {
+        'database': False,
+        'application': True
+    }
+    
+    # Check database connection
+    try:
+        # Simple query to check if database is accessible
+        db.session.execute('SELECT 1')
+        checks['database'] = True
+    except Exception as e:
+        current_app.logger.error(f"Database readiness check failed: {str(e)}")
+        checks['database'] = False
+    
+    # Determine overall readiness
+    is_ready = all(checks.values())
+    status_code = 200 if is_ready else 503
+    
+    return jsonify({
+        'status': 'ready' if is_ready else 'not ready',
+        'timestamp': datetime.utcnow().isoformat(),
+        'checks': checks,
+        'service': 'jp-academy'
+    }), status_code
+
+
+@app.route('/startup', methods=['GET'])
+def startup_check():
+    """
+    Startup Probe - Checks if the application has started successfully
+    Used for slow-starting containers
+    """
+    # Add any startup-specific checks here
+    # For now, return the same as readiness
+    return readiness_check()
