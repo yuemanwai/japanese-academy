@@ -18,6 +18,11 @@ class Config(object):
         f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # === 新增：解決 flask-session 與 PostgreSQL 系統命名衝突 ===
+    # 將 Session Table 名稱從默認的 'sessions' 改為一個獨特且安全的名稱。
+    SESSION_SQLALCHEMY_TABLE = 'flask_sessions_data' 
+
+
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or "mailhog"
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 1025)
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
