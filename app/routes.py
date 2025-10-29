@@ -628,7 +628,7 @@ def readiness_check():
         # Use SQLAlchemy's text() for raw SQL queries
         from sqlalchemy import text
         db.session.execute(text('SELECT 1'))
-        db.session.commit()
+        # db.session.commit()
         checks['database'] = True
     except Exception as e:
         current_app.logger.error(f"Database readiness check failed: {str(e)}")
@@ -636,8 +636,8 @@ def readiness_check():
         # Rollback in case of error
         try:
             db.session.rollback()
-        except:
-            pass
+        except Exception as rollback_e:
+            current_app.logger.warning(f"Failed to rollback session: {rollback_e}")
     
     # Determine overall readiness
     is_ready = all(checks.values())
