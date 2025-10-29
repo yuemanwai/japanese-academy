@@ -22,7 +22,7 @@ python test_data.py
 # Start the application
 echo "🎉 Starting Gunicorn..."
 exec gunicorn app:app -b 0.0.0.0:5000 \
-    --workers 5 \
+    --workers 2 \
     --threads 3 \
     --timeout 30 \
     --log-level info \
