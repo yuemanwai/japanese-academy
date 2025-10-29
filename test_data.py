@@ -184,21 +184,3 @@ else:
 
 print("\n✅ Database initialization completed!\n")
 app_context.pop()
-
-]
-
-for lesson in lessons:
-    db.session.add(Lesson(name=lesson["name"], level_id=lesson["level_id"], description=lesson["description"]))
-db.session.commit()
-
-# Mock chat settings
-chat_settings = ChatSettings(
-    debug=False,
-    headless=True,
-    word_limit=100,
-    condition="answer using only text and in simple japanese(and explain what you mean in short eng)"
-)
-db.session.add(chat_settings)
-db.session.commit()
-
-app_context.pop()
