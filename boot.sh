@@ -21,4 +21,10 @@ python test_data.py
 
 # Start the application
 echo "🎉 Starting Gunicorn..."
-exec gunicorn -b :5000 --access-logfile - --error-logfile - app:app
+exec gunicorn app:app -b 0.0.0.0:5000 \
+    --workers 5 \
+    --threads 3 \
+    --timeout 30 \
+    --log-level info \
+    --access-logfile - \
+    --error-logfile -
