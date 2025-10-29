@@ -1,75 +1,132 @@
+"""
+Seed test data into database.
+This script only inserts data, does NOT create tables.
+Tables should be created by check_db.py first.
+"""
 from app import db, app
 from app.models import User, Post, Level, Lesson, ChatSettings
 
 app_context = app.app_context()
 app_context.push()
-db.drop_all()
-db.create_all()
+
+print("🌱 Seeding database with initial data...")
 
 # Mock Admin account
-admin = User(username='admin', email='admin@example.com', is_admin=True)
-admin.set_password("a")
-db.session.add(admin)
-db.session.commit()
+admin = User.query.filter_by(username='admin').first()
+if not admin:
+    admin = User(username='admin', email='admin@example.com', is_admin=True)
+    admin.set_password("admin")
+    db.session.add(admin)
+    db.session.commit()
+    print("✅ Admin user created")
+else:
+    print("ℹ️  Admin user already exists")
 
 # Mock users Account
-u1 = User(username='u1', email='u1@example.com')
-u2 = User(username='u2', email='u2@example.com')
-u3 = User(username='u3', email='u3@example.com')
-u4 = User(username='alice', email='alice@example.com')
-u5 = User(username='bob', email='bob@example.com')
-u6 = User(username='charlie', email='charlie@example.com')
-u7 = User(username='david', email='david@example.com')
-u8 = User(username='eve', email='eve@example.com')
-u9 = User(username='frank', email='frank@example.com')
-u10 = User(username='grace', email='grace@example.com')
-u1.set_password("1")
-u2.set_password("2")
-u3.set_password("3")
-u4.set_password("4")
-u5.set_password("5")
-u6.set_password("6")
-u7.set_password("7")
-u8.set_password("8")
-u9.set_password("9")
-u10.set_password("10")
-db.session.add_all([u1, u2, u3, u4, u5, u6, u7, u8, u9, u10])
-db.session.commit()
+users_data = [
+    ('u1', 'u1@example.com', '1'),
+    ('u2', 'u2@example.com', '2'),
+    ('u3', 'u3@example.com', '3'),
+    ('alice', 'alice@example.com', '4'),
+    ('bob', 'bob@example.com', '5'),
+    ('charlie', 'charlie@example.com', '6'),
+    ('david', 'david@example.com', '7'),
+    ('eve', 'eve@example.com', '8'),
+    ('frank', 'frank@example.com', '9'),
+    ('grace', 'grace@example.com', '10'),
+]
+
+created_users = []
+for username, email, password in users_data:
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        user = User(username=username, email=email)
+        user.set_password(password)
+        db.session.add(user)
+        created_users.append(user)
+
+if created_users:
+    db.session.commit()
+    print(f"✅ Created {len(created_users)} users")
+else:
+    print("ℹ️  Users already exist")
+
+# Get users for later use (whether newly created or existing)
+u1 = User.query.filter_by(username='u1').first()
+u2 = User.query.filter_by(username='u2').first()
+u3 = User.query.filter_by(username='u3').first()
+u4 = User.query.filter_by(username='alice').first()
+u5 = User.query.filter_by(username='bob').first()
+u6 = User.query.filter_by(username='charlie').first()
+u7 = User.query.filter_by(username='david').first()
+u8 = User.query.filter_by(username='eve').first()
+u9 = User.query.filter_by(username='frank').first()
+u10 = User.query.filter_by(username='grace').first()
 
 # Mock levels
-l1 = Level(name='Beginner')
-l2 = Level(name='Intermediate')
-l3 = Level(name='Advanced')
-db.session.add_all([l1, l2, l3])
-db.session.commit()
+levels_data = [
+    ('Beginner', 'l1'),
+    ('Intermediate', 'l2'),
+    ('Advanced', 'l3')
+]
+
+level_objects = {}
+for level_name, var_name in levels_data:
+    level = Level.query.filter_by(name=level_name).first()
+    if not level:
+        level = Level(name=level_name)
+        db.session.add(level)
+        db.session.flush()  # Get the ID without committing
+    level_objects[var_name] = level
+
+if any(level.id is None for level in level_objects.values()):
+    db.session.commit()
+    print("✅ Created levels")
+else:
+    print("ℹ️  Levels already exist")
+
+l1 = level_objects['l1']
+l2 = level_objects['l2']
+l3 = level_objects['l3']
 
 # Mock posts
-p1 = Post(title='My first post', body='This is the body of my first post', user_id=u1.id)
-p2 = Post(title='A day in the life', body='Today I went to the park and had a great time.', user_id=u2.id)
-p3 = Post(title='Learning Python', body='Python is a versatile programming language.', user_id=u3.id)
-p4 = Post(title='Traveling to Japan', body='Japan is a beautiful country with rich culture.', user_id=u4.id)
-p5 = Post(title='My favorite recipes', body='I love cooking and trying out new recipes.', user_id=u5.id)
-p6 = Post(title='Fitness journey', body='Staying fit and healthy is important.', user_id=u6.id)
-p7 = Post(title='Book recommendations', body='Here are some books I recommend reading.', user_id=u7.id)
-p8 = Post(title='Photography tips', body='Photography is a great hobby to capture moments.', user_id=u8.id)
-p9 = Post(title='Gardening 101', body='Gardening is a relaxing and rewarding activity.', user_id=u9.id)
-p10 = Post(title='Tech trends', body='Keeping up with the latest in technology.', user_id=u10.id)
-p11 = Post(title='Music I love', body='Sharing my favorite music tracks.', user_id=u1.id)
-p12 = Post(title='Movie reviews', body='My thoughts on the latest movies.', user_id=u2.id)
-p13 = Post(title='DIY projects', body='Do-it-yourself projects are fun and creative.', user_id=u3.id)
-p14 = Post(title='Mindfulness and meditation', body='Practicing mindfulness for a better life.', user_id=u4.id)
-p15 = Post(title='Career advice', body='Tips and advice for advancing your career.', user_id=u5.id)
-p16 = Post(title='Learning new languages', body='The benefits of learning new languages.', user_id=u6.id)
-p17 = Post(title='Home decor ideas', body='Ideas to decorate your home beautifully.', user_id=u7.id)
-p18 = Post(title='Pet care tips', body='Taking care of your pets.', user_id=u8.id)
-p19 = Post(title='Outdoor adventures', body='Exploring the great outdoors.', user_id=u9.id)
-p20 = Post(title='Healthy eating', body='Tips for maintaining a healthy diet.', user_id=u10.id)
-p21 = Post(title='Personal finance', body='Managing your personal finances effectively.', user_id=u1.id)
-p22 = Post(title='Hiking trails', body='Best hiking trails to explore.', user_id=u2.id)
-p23 = Post(title='Yoga for beginners', body='Starting your yoga journey.', user_id=u3.id)
+posts_data = [
+    ('My first post', 'This is the body of my first post', 'u1'),
+    ('A day in the life', 'Today I went to the park and had a great time.', 'u2'),
+    ('Learning Python', 'Python is a versatile programming language.', 'u3'),
+    ('Traveling to Japan', 'Japan is a beautiful country with rich culture.', 'alice'),
+    ('My favorite recipes', 'I love cooking and trying out new recipes.', 'bob'),
+    ('Fitness journey', 'Staying fit and healthy is important.', 'charlie'),
+    ('Book recommendations', 'Here are some books I recommend reading.', 'david'),
+    ('Photography tips', 'Photography is a great hobby to capture moments.', 'eve'),
+    ('Gardening 101', 'Gardening is a relaxing and rewarding activity.', 'frank'),
+    ('Tech trends', 'Keeping up with the latest in technology.', 'grace'),
+    ('Music I love', 'Sharing my favorite music tracks.', 'u1'),
+    ('Movie reviews', 'My thoughts on the latest movies.', 'u2'),
+    ('DIY projects', 'Do-it-yourself projects are fun and creative.', 'u3'),
+    ('Mindfulness and meditation', 'Practicing mindfulness for a better life.', 'alice'),
+    ('Career advice', 'Tips and advice for advancing your career.', 'bob'),
+    ('Learning new languages', 'The benefits of learning new languages.', 'charlie'),
+    ('Home decor ideas', 'Ideas to decorate your home beautifully.', 'david'),
+    ('Pet care tips', 'Taking care of your pets.', 'eve'),
+    ('Outdoor adventures', 'Exploring the great outdoors.', 'frank'),
+    ('Healthy eating', 'Tips for maintaining a healthy diet.', 'grace'),
+    ('Personal finance', 'Managing your personal finances effectively.', 'u1'),
+    ('Hiking trails', 'Best hiking trails to explore.', 'u2'),
+    ('Yoga for beginners', 'Starting your yoga journey.', 'u3'),
+]
 
-db.session.add_all([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23])
-db.session.commit()
+# Only create posts if none exist
+if Post.query.count() == 0:
+    for title, body, username in posts_data:
+        user = User.query.filter_by(username=username).first()
+        if user:
+            post = Post(title=title, body=body, user_id=user.id)
+            db.session.add(post)
+    db.session.commit()
+    print(f"✅ Created {len(posts_data)} posts")
+else:
+    print("ℹ️  Posts already exist")
 
 # Mock lessons
 lessons = [
@@ -95,7 +152,39 @@ lessons = [
     {"name": "模擬場景對話練習", "level_id": l3.id, "description": "在模擬場景中進行對話練習，提升實戰能力。"},
     {"name": "節日與習俗", "level_id": l3.id, "description": "了解日本的節日和習俗，增強文化知識。"},
     {"name": "飲食文化", "level_id": l3.id, "description": "學習日本的飲食文化，增強文化理解。"},
-    {"name": "日常生活與社交禮儀", "level_id": l3.id, "description": "了解日本的日常生活和社交禮儀，提升文化素養。"}
+        {"name": "日常生活與社交禮儀", "level_id": l3.id, "description": "了解日本的日常生活和社交禮儀，提升文化素養。"}
+]
+
+created_lessons = 0
+for lesson in lessons:
+    if not Lesson.query.filter_by(name=lesson["name"]).first():
+        db.session.add(Lesson(name=lesson["name"], level_id=lesson["level_id"], description=lesson["description"]))
+        created_lessons += 1
+
+if created_lessons > 0:
+    db.session.commit()
+    print(f"✅ Created {created_lessons} lessons")
+else:
+    print("ℹ️  Lessons already exist")
+
+# Mock chat settings
+chat_settings = ChatSettings.query.first()
+if not chat_settings:
+    chat_settings = ChatSettings(
+        debug=False,
+        headless=True,
+        word_limit=100,
+        condition="answer using only text and in simple japanese(and explain what you mean in short eng)"
+    )
+    db.session.add(chat_settings)
+    db.session.commit()
+    print("✅ Chat settings created")
+else:
+    print("ℹ️  Chat settings already exist")
+
+print("\n✅ Database initialization completed!\n")
+app_context.pop()
+
 ]
 
 for lesson in lessons:

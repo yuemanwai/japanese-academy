@@ -23,15 +23,10 @@ COPY --chown=jp:jp ./app ./app
 COPY --chown=jp:jp ./migrations ./migrations
 COPY --chown=jp:jp ./chromedriver-linux64 ./chromedriver-linux64
 COPY --chown=jp:jp ./config.py ./config.py
-COPY --chown=jp:jp ./jp-academy.py ./run.py ./boot.sh ./test_data.py ./
+COPY --chown=jp:jp ./jp-academy.py ./run.py ./boot.sh ./test_data.py ./init_db.py ./
 
 # 授予 boot.sh 執行權限
 RUN chmod +x boot.sh
-
-# 設定環境變數
-ENV FLASK_APP=run.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=development
 
 # 切換到非 root 用戶，以確保容器安全
 USER jp

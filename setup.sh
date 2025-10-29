@@ -6,8 +6,17 @@
 # Install xvfb (X virtual framebuffer)
 # sudo apt-get install -y xvfb
 
-# Run the test_data.py script
+echo "🚀 Setting up development environment..."
+
+# Initialize database (check connection + create tables)
+echo "📊 Initializing database..."
+python init_db.py
+
+# Seed test data
+echo "🌱 Seeding test data..."
 python test_data.py
 
 # Echo the Flask run command
-echo "flask --debug run --host=0.0.0.0 --port=5000"
+echo ""
+echo "✅ Setup complete! Run the following command to start the app:"
+flask --debug run --host=0.0.0.0 --port=5000
