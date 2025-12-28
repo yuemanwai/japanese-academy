@@ -57,7 +57,12 @@ def get_database_uri():
             if not all(k in secret for k in required_keys):
                 raise KeyError(f"Secret JSON is missing one of the required keys: {required_keys}")
 
-            return f"postgresql://{secret['username']}:{secret['password']}@{secret['host']}:5432/{secret['dbname']}"
+            # 使用 secret 中的端口，如果沒有指定則預設為 5432
+            port = secret.get('port', 5432)
+            return f"postgresql://{secret['username']}:{secret['password']}@{secret['host']}:{port}/{secret['dbname']}"
+        else:
+            # 處理 SecretBinary 情況（雖然不太可能）
+            raise ValueError("Secret must be in SecretString format, not SecretBinary")
 
     except (NoCredentialsError, ClientError) as e:
         # 捕捉 AWS 相關的錯誤 (例如 IRSA 失敗，或者 Secret Name 錯誤)
@@ -70,7 +75,14 @@ def get_database_uri():
 
 
 class Config(object):
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    if not SECRET_KEY:
+        import sys
+        print("[CRITICAL] SECRET_KEY environment variable is not set. This is required for production security.")
+        print("[INFO] For development, set a random SECRET_KEY. Example: export SECRET_KEY=$(python -c 'import secrets; print(secrets.token_hex(32))')")
+        if os.environ.get("FLASK_ENV") == "production":
+            raise ValueError("[CRITICAL] SECRET_KEY must be set in production environment")
+        # For development, we can proceed with a warning, but never use hardcoded default
     
     # 優先從環境變數或 AWS Secrets Manager 取得資料庫連線字串
     SQLALCHEMY_DATABASE_URI = get_database_uri()

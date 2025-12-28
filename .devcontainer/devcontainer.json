@@ -6,8 +6,9 @@
   "hostRequirements": {
     "cpus": 2
   },
-  "waitFor": "onCreateCommand",
+  "onCreateCommand": "bash -c 'echo waiting for postgres... && for i in {1..30}; do pg_isready -h postgresdb -U postgres && break || sleep 1; done'",
   "postAttachCommand": "sudo chmod +x ./setup.sh && sudo ./setup.sh ",
+  "waitFor": "onCreateCommand",
   "portsAttributes": {
     "5000": {
       "label": "Flask App",
