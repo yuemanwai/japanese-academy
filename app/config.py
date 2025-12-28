@@ -6,6 +6,8 @@ from urllib.parse import quote_plus
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+# boto3 AWS Secrets Manager 參考文件
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/secretsmanager/client/get_secret_value.html
 
 def get_database_uri():
     """
