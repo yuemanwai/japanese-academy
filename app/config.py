@@ -2,6 +2,7 @@ import os
 import json
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
+from urllib.parse import quote_plus
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,6 +27,23 @@ def get_database_uri():
     # 獲取必要的 AWS 配置
     secret_name = os.environ.get("AWS_SECRET_NAME")
     region_name = os.environ.get("AWS_REGION")
+    
+    # 從環境變數取得資料庫 Host / DB 名稱與 Port（Port 預設 5432）
+    def _get_env(names, default=None):
+        for n in names:
+            v = os.environ.get(n)
+            if v:
+                return v
+        return default
+
+    env_host = _get_env(["DB_HOST", "POSTGRES_HOST", "PGHOST"])  # Host 由環境取得
+    env_dbname = _get_env(["DB_NAME", "POSTGRES_DB"])             # DB 名稱由環境取得
+    env_port = _get_env(["DB_PORT", "POSTGRES_PORT", "PGPORT"], 5432)  # Port 先由 env 取得，沒有就預設 5432
+    try:
+        env_port = int(env_port) if env_port is not None else 5432
+    except ValueError:
+        print(f"[WARN] Invalid DB port value '{env_port}' in env. Falling back to 5432.")
+        env_port = 5432
 
     # === 3. Validation (防呆檢查) ===
     # 檢查是否缺少必要的環境變數，如果有缺，立即報錯
@@ -34,6 +52,10 @@ def get_database_uri():
         missing_vars.append("AWS_SECRET_NAME")
     if not region_name:
         missing_vars.append("AWS_REGION")
+    if not env_host:
+        missing_vars.append("DB_HOST/POSTGRES_HOST/PGHOST")
+    if not env_dbname:
+        missing_vars.append("DB_NAME/POSTGRES_DB")
 
     if missing_vars:
         # 這裡會直接拋出錯誤，阻止 App 啟動
@@ -52,14 +74,19 @@ def get_database_uri():
         if 'SecretString' in response:
             secret = json.loads(response['SecretString'])
 
-            # 必需鍵檢查
-            required_keys = ['username', 'password', 'host', 'dbname']
+            # 必需鍵檢查（使用者名稱與密碼由 Secret 取得；host/dbname 由環境取得）
+            required_keys = ['username', 'password']
             if not all(k in secret for k in required_keys):
                 raise KeyError(f"Secret JSON is missing one of the required keys: {required_keys}")
 
-            # 使用 secret 中的端口，如果沒有指定則預設為 5432
-            port = secret.get('port', 5432)
-            return f"postgresql://{secret['username']}:{secret['password']}@{secret['host']}:{port}/{secret['dbname']}"
+            # Port 優先由環境變數取得，若無則預設 5432
+            port = env_port
+            # 將憑證與 dbname 使用 URL 安全編碼，避免特殊字元造成解析問題
+            quoted_username = quote_plus(str(secret['username']))
+            quoted_password = quote_plus(str(secret['password']))
+            quoted_dbname = quote_plus(str(env_dbname))
+            # 組合最終連線字串：username/password 來自 Secret；host/dbname 來自環境；port 來自環境或 5432
+            return f"postgresql://{quoted_username}:{quoted_password}@{env_host}:{port}/{quoted_dbname}"
         else:
             # 處理 SecretBinary 情況（雖然不太可能）
             raise ValueError("Secret must be in SecretString format, not SecretBinary")
