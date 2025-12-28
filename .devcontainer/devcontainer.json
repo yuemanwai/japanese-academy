@@ -6,8 +6,8 @@
   "hostRequirements": {
     "cpus": 2
   },
-  "onCreateCommand": "bash -c 'echo waiting for postgres... && for i in {1..30}; do pg_isready -h postgresdb -U postgres && break || sleep 1; done'",
-  "postAttachCommand": "sudo chmod +x ./setup.sh && sudo ./setup.sh ",
+  "onCreateCommand": "bash -c 'echo waiting for postgres... && for i in {1..30}; do timeout 1 bash -c \"</dev/tcp/postgresdb/5432\" 2>/dev/null && break || sleep 1; done && echo postgres is ready'",
+  "postAttachCommand": "sudo chmod +x ./setup.sh && SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@postgresdb:5432/postgres FLASK_ENV=development sudo ./setup.sh ",
   "waitFor": "onCreateCommand",
   "portsAttributes": {
     "5000": {

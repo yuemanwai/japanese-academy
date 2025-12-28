@@ -77,12 +77,14 @@ def get_database_uri():
 class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY")
     if not SECRET_KEY:
-        import sys
-        print("[CRITICAL] SECRET_KEY environment variable is not set. This is required for production security.")
-        print("[INFO] For development, set a random SECRET_KEY. Example: export SECRET_KEY=$(python -c 'import secrets; print(secrets.token_hex(32))')")
+        # 在開發環境中允許沒有 SECRET_KEY（會產生警告），但在生產環境中強制要求
         if os.environ.get("FLASK_ENV") == "production":
             raise ValueError("[CRITICAL] SECRET_KEY must be set in production environment")
-        # For development, we can proceed with a warning, but never use hardcoded default
+        else:
+            # 開發環境：使用臨時的 secret key，並發出警告
+            import secrets
+            SECRET_KEY = secrets.token_hex(32)
+            print("[WARN] SECRET_KEY not set in development. Using temporary key. Set SECRET_KEY env var for persistence.")
     
     # 優先從環境變數或 AWS Secrets Manager 取得資料庫連線字串
     SQLALCHEMY_DATABASE_URI = get_database_uri()
