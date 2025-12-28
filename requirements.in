@@ -2,7 +2,8 @@
 Flask>=3.1.2
 Flask-SQLAlchemy
 Flask-Login
-Flask-WTF
+Flask-WTF>=1.2.2
+werkzeug>=3.1.4
 Flask-Mail
 Flask-Migrate
 Flask-Babel
@@ -31,9 +32,11 @@ PyVirtualDisplay
 
 # ===== HTTP & REQUESTS =====
 requests
+urllib3>=2.6.0
 
 # ===== DATA & VISUALIZATION =====
 matplotlib
+fonttools>=4.60.0
 numpy
 pydantic
 
