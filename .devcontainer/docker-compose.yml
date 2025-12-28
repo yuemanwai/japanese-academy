@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -8,6 +8,10 @@ services:
       args:
         VARIANT: "3"
         NODE_VERSION: "none"
+    environment:
+      # Force local DB usage inside devcontainer so Config skips AWS secrets.
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres@postgresdb:5432/postgres
+      FLASK_ENV: development
     volumes:
       - ..:/workspaces/FYP_AI-powered_Interactive_Japanese_Academy:cached
     command: sleep infinity
@@ -40,7 +44,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_PROXY_X_HOST_COUNT: 1
       PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT: 1
     volumes:
@@ -54,7 +58,7 @@ services:
   mailhog:
     image: mailhog/mailhog
     logging:
-      driver: 'none' # disable saving logs
+      driver: "none" # disable saving logs
     ports:
       - 1025:1025 # smtp server
       - 8025:8025 # web ui
