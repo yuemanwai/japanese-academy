@@ -39,3 +39,6 @@ pydantic
 
 # ===== PRODUCTION SERVER =====
 gunicorn
+
+# ===== AWS INTEGRATION =====
+boto3
