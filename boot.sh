@@ -11,8 +11,8 @@ while true; do
         echo "✅ Database is ready"
         break
     fi
-    echo "⚠️  Database not ready, retrying in 15 secs..."
-    sleep 15
+    echo "⚠️  Database not ready, retrying in 30 secs..."
+    sleep 30
 done
 
 # Seed data
@@ -22,9 +22,9 @@ python test_data.py
 # Start the application
 echo "🎉 Starting Gunicorn..."
 exec gunicorn app:app -b 0.0.0.0:5000 \
-    --workers 2 \
-    --threads 3 \
-    --timeout 30 \
+    --workers 1 \
+    --threads 4 \
+    --timeout 60 \
     --log-level info \
     --access-logfile - \
     --error-logfile -
