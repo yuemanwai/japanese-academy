@@ -16,8 +16,8 @@ while true; do
 done
 
 # Seed data
-# echo "🌱 Seeding data..."
-# python test_data.py
+echo "🌱 Seeding data..."
+python test_data.py
 
 # Start the application
 echo "🎉 Starting Gunicorn..."
