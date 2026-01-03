@@ -11,8 +11,8 @@ while true; do
         echo "✅ Database is ready"
         break
     fi
-    echo "⚠️  Database not ready, retrying in 30 secs..."
-    sleep 30
+    echo "⚠️  Database not ready, retrying in 10 secs..."
+    sleep 10
 done
 
 # Seed data
