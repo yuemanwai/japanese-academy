@@ -25,6 +25,7 @@ exec gunicorn app:app -b 0.0.0.0:5000 \
     --workers 1 \
     --threads 4 \
     --timeout 60 \
+    --graceful-timeout 25 \
     --log-level info \
     --access-logfile - \
-    --error-logfile -
+    --error-logfile - 
