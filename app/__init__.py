@@ -47,14 +47,24 @@ if not app.debug:
         mail_handler.setLevel(logging.ERROR)
         root.addHandler(mail_handler)
 
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/App.log', maxBytes=10240,
-                                       backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_handler.setLevel(logging.INFO)
-    root.addHandler(file_handler)
+    # 修改部分開始: 將 Log 輸出到 stdout
+    if app.config.get('LOG_TO_STDOUT') or os.environ.get('LOG_TO_STDOUT'):
+        stream_handler = logging.StreamHandler(sys.stdout)
+        stream_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        stream_handler.setLevel(logging.INFO)
+        root.addHandler(stream_handler)
+    else:
+        # 這裡保留舊邏輯作為 fallback，或者你可以直接刪除 RotatingFileHandler
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/App.log', maxBytes=10240,
+                                           backupCount=10)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.INFO)
+        root.addHandler(file_handler)
+
     root.setLevel(logging.INFO)
     root.info('App startup')
 
