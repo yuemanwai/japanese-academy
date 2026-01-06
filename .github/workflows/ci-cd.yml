@@ -1,0 +1,148 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # ====================================================
+  # 階段一：安全掃描 (Fail Fast)
+  # ====================================================
+  security-scan:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # 用於上傳 SARIF 報告 (如需要)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. 程式碼靜態分析 (SAST)
+      - name: Run Semgrep SAST scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/ci
+
+      # 2. Python 依賴掃描 (SCA)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run dependency vulnerability scan
+        run: |
+          pip install safety
+          safety check --file requirements.txt --output text
+
+      # 3. 秘密掃描 (Secret Scanning) - 移除 if，確保 Push 同 PR 都檢查
+      - name: Run secret detection
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.before }} # 優化：只掃描新增的 Commits
+          head: ${{ github.sha }}
+          extra_args: --only-verified
+
+  # ====================================================
+  # 階段二：構建與部署 (只在 Push to Main 時執行)
+  # ====================================================
+  build-and-deploy:
+    name: Build & Update Manifest
+    runs-on: ubuntu-latest
+    needs: security-scan
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      # 移除 id-token: write，因為你用 PAT 登入 DockerHub
+
+    env:
+      # 定義全局變數，方便下面引用
+      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/fyp-jp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set short SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      # Docker 設定
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PAT }}
+
+      # Build & Push
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # 這裡加 docker.io 前綴，保持與 K8s yaml 一致
+          tags: docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Image Scan (只做一次，直接 Fail HIGH/CRITICAL)
+      # 為了 FYP 展示效果，我們可以分兩步：先 show table，再 check error
+      - name: Trivy Scan (Report)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}'
+          format: 'table'
+          scanners: 'vuln'
+          exit-code: '0' # 這裡不 Fail，只為了出報告給你看
+
+      - name: Trivy Scan (Blocker)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}'
+          format: 'table'
+          exit-code: '1' # 有問題就 Fail
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          scanners: 'vuln'
+
+      # GitOps 更新 Manifest
+      - name: Checkout Manifest Repo
+        uses: actions/checkout@v4
+        with:
+          repository: yuemanwai/argocd-local
+          token: ${{ secrets.MANIFEST_REPO_PAT }}
+          path: manifest-repo
+
+      - name: Update Image Tag using yq
+        run: |
+          # 下載 yq
+          wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
+          chmod +x ./yq
+          
+          echo "Updating deployment to version: ${{ env.SHORT_SHA }}"
+          
+          # 使用 ./yq (本地執行，不需要 sudo)
+          # ⚠️ 請確保 deployment.yaml 路徑正確
+          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./workloads/app/deployment.yaml
+
+      - name: Commit and Push changes
+        run: |
+          cd manifest-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "CI: Update image tag to ${{ env.SHORT_SHA }}"
+            git push
+          else
+            echo "No changes to commit"
+          fi
