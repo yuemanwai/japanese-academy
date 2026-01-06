@@ -127,11 +127,14 @@ jobs:
           wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
           chmod +x ./yq
           
+          echo "Current directory:"
+          ls -F # 俾你睇下而家個目錄有咩 (Debug用)
+          
           echo "Updating deployment to version: ${{ env.SHORT_SHA }}"
           
           # 使用 ./yq (本地執行，不需要 sudo)
           # ⚠️ 請確保 deployment.yaml 路徑正確
-          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./workloads/app/deployment.yaml
+          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./manifest-repo/workloads/app/deployment.yaml
 
       - name: Commit and Push changes
         run: |
