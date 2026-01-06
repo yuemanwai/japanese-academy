@@ -32,6 +32,11 @@ babel.init_app(app, locale_selector=lambda: session.get('lang', 'en'))
 
 if not app.debug:
     root = logging.getLogger()
+    
+    # 獲取 log level，優先使用環境變數，否則使用 config，默認為 INFO
+    log_level_name = os.environ.get('LOG_LEVEL') or app.config.get('LOG_LEVEL', 'INFO')
+    log_level = getattr(logging, log_level_name.upper(), logging.INFO)
+    
     if app.config["MAIL_SERVER"]:
         auth = None
         if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
@@ -48,11 +53,15 @@ if not app.debug:
         root.addHandler(mail_handler)
 
     # 修改部分開始: 將 Log 輸出到 stdout
-    if app.config.get('LOG_TO_STDOUT') or os.environ.get('LOG_TO_STDOUT'):
+    # 判斷是否開啟 STDOUT (避免環境變數字串 "false" 被誤判為 True)
+    to_stdout = os.environ.get('LOG_TO_STDOUT', '').lower() in ['true', '1', 'on'] \
+                or app.config.get('LOG_TO_STDOUT') is True
+    
+    if to_stdout:
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        stream_handler.setLevel(logging.INFO)
+        stream_handler.setLevel(log_level)
         root.addHandler(stream_handler)
     else:
         # 這裡保留舊邏輯作為 fallback，或者你可以直接刪除 RotatingFileHandler
@@ -62,10 +71,10 @@ if not app.debug:
                                            backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
+        file_handler.setLevel(log_level)
         root.addHandler(file_handler)
 
-    root.setLevel(logging.INFO)
+    root.setLevel(log_level)
     root.info('App startup')
 
 # You must keep the routes at the end.
