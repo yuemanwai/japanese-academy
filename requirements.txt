@@ -75,6 +75,7 @@ flask==3.1.2
     #   flask-session
     #   flask-sqlalchemy
     #   flask-wtf
+    #   prometheus-flask-exporter
 flask-babel==4.0.0
     # via -r requirements.in
 flask-bootstrap==3.3.7.1
@@ -165,6 +166,10 @@ packaging==25.0
     #   matplotlib
 pillow==12.0.0
     # via matplotlib
+prometheus-client==0.23.1
+    # via prometheus-flask-exporter
+prometheus-flask-exporter==0.23.2
+    # via -r requirements.in
 psycopg2-binary==2.9.11
     # via -r requirements.in
 pyasn1==0.6.1

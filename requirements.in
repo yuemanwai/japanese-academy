@@ -11,6 +11,9 @@ Flask-Moment
 Flask-Session
 Flask-Bootstrap
 
+# ===== MONITORING =====
+prometheus-flask-exporter
+
 # ===== DATABASE =====
 alembic
 psycopg2-binary

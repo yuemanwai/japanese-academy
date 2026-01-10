@@ -12,8 +12,10 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel
 from flask_session import Session
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)  # 初始化，自動幫你開一個 /metrics endpoint
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 app.config['SESSION_TYPE'] = 'sqlalchemy'
