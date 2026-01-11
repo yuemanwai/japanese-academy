@@ -627,7 +627,10 @@ def readiness_check():
     try:
         # Use SQLAlchemy's text() for raw SQL queries
         from sqlalchemy import text
-        db.session.execute(text('SELECT 1'))
+        db.session.execute(
+            text('SELECT 1'), 
+            execution_options={"timeout": 2.0} # 2秒內 DB 唔應機就當 Fail
+        )
         # db.session.commit()
         checks['database'] = True
     except Exception as e:
