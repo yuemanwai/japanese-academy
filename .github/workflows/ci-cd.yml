@@ -133,8 +133,15 @@ jobs:
           echo "Updating deployment to version: ${{ env.SHORT_SHA }}"
           
           # 使用 ./yq (本地執行，不需要 sudo)
-          # ⚠️ 請確保 deployment.yaml 路徑正確
+          # ⚠️ 請確保 deployment.yaml / job.yaml 路徑正確
           ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./manifest-repo/workloads/app/deployment.yaml
+          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./manifest-repo/workloads/app/job.yaml
+          
+          # Debug: 顯示改完之後係點，確保改啱左 (Optional)
+          echo "--- Checked Deployment YAML ---"
+          cat ./manifest-repo/workloads/app/deployment.yaml | grep "image:"
+          echo "--- Checked Job YAML ---"
+          cat ./manifest-repo/workloads/app/job.yaml | grep "image:"
 
       - name: Commit and Push changes
         run: |
