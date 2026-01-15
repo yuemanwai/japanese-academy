@@ -1,5 +1,5 @@
 # 1. 使用 uv 官方 Alpine (最輕量)
-FROM ghcr.io/astral-sh/uv:python3.11-alpine
+FROM ghcr.io/astral-sh/uv:python3.13-alpine
 
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_SYSTEM_PYTHON=1
