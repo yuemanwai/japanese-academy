@@ -32,7 +32,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Run dependency vulnerability scan
         run: |
@@ -98,20 +98,20 @@ jobs:
       - name: Trivy Scan (Report)
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}'
-          format: 'table'
-          scanners: 'vuln'
-          exit-code: '0' # 這裡不 Fail，只為了出報告給你看
+          image-ref: "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
+          format: "table"
+          scanners: "vuln"
+          exit-code: "0" # 這裡不 Fail，只為了出報告給你看
 
       - name: Trivy Scan (Blocker)
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: 'docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}'
-          format: 'table'
-          exit-code: '1' # 有問題就 Fail
-          severity: 'HIGH,CRITICAL'
+          image-ref: "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
+          format: "table"
+          exit-code: "1" # 有問題就 Fail
+          severity: "HIGH,CRITICAL"
           ignore-unfixed: true
-          scanners: 'vuln'
+          scanners: "vuln"
 
       # GitOps 更新 Manifest
       - name: Checkout Manifest Repo
@@ -126,29 +126,26 @@ jobs:
           # 下載 yq
           wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
           chmod +x ./yq
-          
+
           echo "Current directory:"
           ls -F # 俾你睇下而家個目錄有咩 (Debug用)
-          
-          echo "Updating deployment to version: ${{ env.SHORT_SHA }}"
-          
-          # 使用 ./yq (本地執行，不需要 sudo)
-          # ⚠️ 請確保 deployment.yaml / job.yaml 路徑正確
-          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./manifest-repo/workloads/app/deployment.yaml
-          ./yq -i '.spec.template.spec.containers[0].image = "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"' ./manifest-repo/workloads/app/job.yaml
-          
-          # Debug: 顯示改完之後係點，確保改啱左 (Optional)
-          echo "--- Checked Deployment YAML ---"
-          cat ./manifest-repo/workloads/app/deployment.yaml | grep "image:"
-          echo "--- Checked Job YAML ---"
-          cat ./manifest-repo/workloads/app/job.yaml | grep "image:"
+
+          echo "Updating Helm chart to version: ${{ env.SHORT_SHA }}"
+
+          # 使用 ./yq (本地執行,不需要 sudo)
+          # 更新 Helm chart values.yaml 的 image tag
+          ./yq -i '.image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/charts/jp/values.yaml
+
+          # Debug: 顯示改完之後係點,確保改啱左 (Optional)
+          echo "--- Checked values.yaml ---"
+          cat ./manifest-repo/charts/jp/values.yaml | grep -A 2 "image:"
 
       - name: Commit and Push changes
         run: |
           cd manifest-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "CI: Update image tag to ${{ env.SHORT_SHA }}"
