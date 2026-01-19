@@ -15,7 +15,10 @@ from flask_session import Session
 from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)  # 初始化，自動幫你開一個 /metrics endpoint
+metrics = PrometheusMetrics(app, 
+    group_by='endpoint',
+    excluded_paths=['/healthz', '/health', '/readyz', '/ready', '/metrics', '/startup']
+)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 app.config['SESSION_TYPE'] = 'sqlalchemy'
@@ -30,12 +33,6 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 babel = Babel()
 babel.init_app(app, locale_selector=lambda: session.get('lang', 'en'))
-
-metrics = PrometheusMetrics(app, 
-    group_by='endpoint',
-    excluded_paths=['/healthz', '/health', '/readyz', '/ready', '/metrics', '/startup']
-)
-
 
 if not app.debug:
     root = logging.getLogger()
