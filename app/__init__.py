@@ -31,6 +31,16 @@ moment = Moment(app)
 babel = Babel()
 babel.init_app(app, locale_selector=lambda: session.get('lang', 'en'))
 
+metrics = PrometheusMetrics(app, group_by='endpoint')
+metrics.register_endpoint(
+    '/healthz',
+    '/health',
+    '/readyz',
+    '/ready',
+    '/metrics',
+    '/startup'
+)
+
 
 if not app.debug:
     root = logging.getLogger()
