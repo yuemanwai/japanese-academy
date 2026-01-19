@@ -228,7 +228,7 @@ prometheus-flask-exporter==0.23.2
     # via -r requirements.in
 psycopg2-binary==2.9.11
     # via -r requirements.in
-pyasn1==0.6.1
+pyasn1==0.6.2
     # via
     #   pyasn1-modules
     #   rsa
