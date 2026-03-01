@@ -39,6 +39,7 @@ urllib3>=2.6.3
 
 # ===== DATA & VISUALIZATION =====
 matplotlib
+pillow>=12.1.1
 fonttools>=4.60.0
 numpy
 pydantic
