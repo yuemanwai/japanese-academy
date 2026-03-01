@@ -146,11 +146,11 @@ jobs:
 
           # 使用 ./yq (本地執行,不需要 sudo)
           # 更新 Helm chart values.yaml 的 image tag
-          ./yq -i '.image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/charts/jp/values.yaml
+          ./yq -i '.image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/gitops/apps/jp/values.yaml
 
           # Debug: 顯示改完之後係點,確保改啱左 (Optional)
           echo "--- Checked values.yaml ---"
-          cat ./manifest-repo/charts/jp/values.yaml | grep -A 2 "image:"
+          cat ./manifest-repo/gitops/apps/jp/values.yaml | grep -A 2 "image:"
 
       - name: Commit and Push changes
         run: |
