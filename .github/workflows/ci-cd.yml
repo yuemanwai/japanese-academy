@@ -95,17 +95,29 @@ jobs:
 
       # Image Scan (只做一次，直接 Fail HIGH/CRITICAL)
       # 為了 FYP 展示效果，我們可以分兩步：先 show table，再 check error
+      - name: Install Trivy CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+          trivy --version
+
       - name: Trivy Scan (Report)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
+          skip-setup-trivy: true
           image-ref: "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
           format: "table"
           scanners: "vuln"
           exit-code: "0" # 這裡不 Fail，只為了出報告給你看
 
       - name: Trivy Scan (Blocker)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
+          skip-setup-trivy: true
           image-ref: "docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
           format: "table"
           exit-code: "1" # 有問題就 Fail
