@@ -103,6 +103,28 @@ jobs:
           sudo apt-get install -y trivy
           trivy --version
 
+      - name: Set security report date
+        id: security_report_date
+        run: echo "value=$(date +'%d-%m-%Y')" >> "$GITHUB_OUTPUT"
+
+      - name: Verify Trivy template files
+        run: |
+          test -f "$GITHUB_WORKSPACE/.github/trivy.tpl"
+          test -f "$GITHUB_WORKSPACE/.trivyignore"
+          echo "Using template: $GITHUB_WORKSPACE/.github/trivy.tpl"
+          echo "Using ignore file: $GITHUB_WORKSPACE/.trivyignore"
+
+      - name: Generate Trivy HTML report
+        run: |
+          trivy image "${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}" \
+            --scanners vuln \
+            --ignorefile "$GITHUB_WORKSPACE/.trivyignore" \
+            --format template \
+            --template "@$GITHUB_WORKSPACE/.github/trivy.tpl" \
+            --output "trivy-security-report-${{ steps.security_report_date.outputs.value }}.html" \
+            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL \
+            --exit-code 0
+
       - name: Trivy Scan (Report)
         uses: aquasecurity/trivy-action@0.35.0
         with:
@@ -122,6 +144,14 @@ jobs:
           severity: "HIGH,CRITICAL"
           ignore-unfixed: true
           scanners: "vuln"
+
+      - name: Upload Trivy HTML artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-security-report-${{ steps.security_report_date.outputs.value }}
+          path: trivy-security-report-${{ steps.security_report_date.outputs.value }}.html
+          retention-days: 60
 
   # ====================================================
   # Production version, kept here as comment only for demo
