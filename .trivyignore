@@ -3,7 +3,7 @@
 # These vulnerabilities are in the base Python installation, not our application code
 
 # CVE-2024-6345: Remote code execution via download functions in setuptools
-CVE-2024-6345
+<!-- CVE-2024-6345 -->
 
-# CVE-2025-47273: Path Traversal Vulnerability in setuptools PackageIndex  
-CVE-2025-47273
+# CVE-2025-47273: Path Traversal Vulnerability in setuptools PackageIndex
+<!-- CVE-2025-47273 -->

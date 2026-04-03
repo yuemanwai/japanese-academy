@@ -19,7 +19,7 @@ RUN apk update && \
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/uv \
     apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
-    python -m pip install --upgrade pip && \
+    python -m pip install --upgrade pip setuptools wheel && \
     uv pip install -r requirements.txt && \
     apk del .build-deps
 
