@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true
         run: |
           pip install safety
-          safety scan --output text
+          safety scan --output screen
 
       # 3. 秘密掃描 (Secret Scanning) - 移除 if，確保 Push 同 PR 都檢查
       - name: Run secret detection
