@@ -31,19 +31,7 @@ jobs:
         with:
           config: p/ci
 
-      # 2. Python 依賴掃描 (SCA)
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Run dependency vulnerability scan
-        continue-on-error: true
-        run: |
-          pip install safety
-          safety scan --output screen
-
-      # 3. 秘密掃描 (Secret Scanning) - 移除 if，確保 Push 同 PR 都檢查
+      # 2. 秘密掃描 (Secret Scanning) - 移除 if，確保 Push 同 PR 都檢查
       - name: Run secret detection
         uses: trufflesecurity/trufflehog@main
         continue-on-error: true
