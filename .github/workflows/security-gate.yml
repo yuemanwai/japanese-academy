@@ -1,8 +1,8 @@
 name: Security Gate Pipeline
 
 on:
-  push:
-    # branches: ["main"] # 為了 Demo，保留 Push 觸發，但不限制分支
+  workflow_dispatch:
+  push: {}
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]
