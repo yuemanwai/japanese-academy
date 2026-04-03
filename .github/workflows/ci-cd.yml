@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["main"]
+    # branches: ["main"] # 為了 Demo，保留 Push 觸發，但不限制分支
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]
