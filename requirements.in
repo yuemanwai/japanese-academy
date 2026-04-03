@@ -23,8 +23,8 @@ email-validator
 dnspython
 pyasn1>=0.6.3
 
-# for demo (PyJWT>=2.12.0)
-PyJWT
+# Keep PyJWT as-is for demo.
+PyJWT==2.10.1
 
 # ===== AI & GOOGLE SERVICES =====
 google-genai

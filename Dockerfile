@@ -10,7 +10,8 @@ WORKDIR /home/jp
 # 2) Install only required PostgreSQL runtime libs.
 # Fewer packages = smaller image and lower attack surface.
 RUN apk update && \
-    apk add --no-cache postgresql-libs && \
+    apk upgrade --no-cache && \
+    apk add --no-cache postgresql-libs zlib && \
     rm -rf /var/cache/apk/*
 
 # 3) Install Python deps with cache for faster rebuilds.
@@ -29,7 +30,7 @@ RUN adduser -D jp
 COPY --chown=jp:jp ./app ./app
 COPY --chown=jp:jp ./migrations ./migrations
 # Keep chromedriver for compatibility/debug; not started by default.
-COPY --chown=jp:jp ./chromedriver-linux64 ./chromedriver-linux64 
+COPY --chown=jp:jp ./chromedriver-linux64 ./chromedriver-linux64
 COPY --chown=jp:jp ./config.py ./config.py
 COPY --chown=jp:jp ./jp-academy.py ./run.py ./boot.sh ./test_data.py ./init_db.py ./
 
