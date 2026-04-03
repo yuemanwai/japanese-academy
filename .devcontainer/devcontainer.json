@@ -1,5 +1,5 @@
 {
-  "workspaceFolder": "/workspaces/FYP_AI-powered_Interactive_Japanese_Academy",
+  "workspaceFolder": "/workspaces/japanese-academy",
   "name": "fyp",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
@@ -26,7 +26,9 @@
   },
   "customizations": {
     "codespaces": {
-      "openFiles": ["templates/index.html"]
+      "openFiles": [
+        "templates/index.html"
+      ]
     },
     "vscode": {
       "settings": {
@@ -55,7 +57,12 @@
       ]
     }
   },
-  "forwardPorts": [5000, 5050, 8025, 45293],
+  "forwardPorts": [
+    5000,
+    5050,
+    8025,
+    45293
+  ],
   "features": {
     "ghcr.io/devcontainers/features/docker-from-docker:1": {}
   }
