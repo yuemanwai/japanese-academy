@@ -31,14 +31,26 @@ jobs:
         with:
           config: p/ci
 
-      # 2. 秘密掃描 (Secret Scanning) - 移除 if，確保 Push 同 PR 都檢查
-      - name: Run secret detection
+      # 2. 秘密掃描 (Push)
+      - name: Run secret detection (push)
         uses: trufflesecurity/trufflehog@main
+        if: github.event_name == 'push'
         continue-on-error: true
         with:
           path: ./
           base: ${{ github.event.before }} # 優化：只掃描新增的 Commits
           head: ${{ github.sha }}
+          extra_args: --only-verified
+
+      # 3. 秘密掃描 (PR)
+      - name: Run secret detection (pull_request)
+        uses: trufflesecurity/trufflehog@main
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        with:
+          path: ./
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
           extra_args: --only-verified
 
   # ====================================================
