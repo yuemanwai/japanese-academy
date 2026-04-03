@@ -4,7 +4,7 @@
 -r requirements.in
 
 # Code formatting
-black>=25.11.0
+black==25.11.0
 isort
 flake8
 
@@ -24,4 +24,3 @@ pytest-mock
 sphinx
 sphinx-rtd-theme
 Pygments>=2.20.0
-

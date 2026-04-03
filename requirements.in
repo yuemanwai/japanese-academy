@@ -21,6 +21,7 @@ psycopg2-binary
 # ===== AUTHENTICATION & VALIDATION =====
 email-validator
 dnspython
+pyasn1>=0.6.3
 PyJWT
 
 # ===== AI & GOOGLE SERVICES =====
