@@ -65,7 +65,7 @@ jobs:
       contents: read
 
     env:
-      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/fyp-jp
+      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME || secrets.DOCKERHUB_USERNAME }}/fyp-jp
 
     steps:
       - name: Checkout repository
@@ -124,8 +124,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PAT }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME || secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PAT || secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push multi-arch images to Docker Hub
         uses: docker/build-push-action@v5
