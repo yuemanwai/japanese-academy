@@ -73,7 +73,9 @@ jobs:
 
       - name: Set temporary image tag
         id: vars
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: |
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       # Docker 設定
       - name: Set up Docker Buildx
@@ -85,7 +87,7 @@ jobs:
           context: .
           push: false
           load: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -103,7 +105,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         with:
           skip-setup-trivy: true
-          image-ref: "${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
+          image-ref: "${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}"
           format: "table"
           scanners: "vuln"
           exit-code: "0"
@@ -112,7 +114,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         with:
           skip-setup-trivy: true
-          image-ref: "${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
+          image-ref: "${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}"
           format: "table"
           exit-code: "1"
           severity: "HIGH,CRITICAL"
@@ -125,12 +127,15 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
-      - name: Push Docker image to Docker Hub
+      - name: Build and push multi-arch images to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          tags: |
+            docker.io/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}
+            docker.io/${{ env.IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -145,7 +150,7 @@ jobs:
         run: |
           wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
           chmod +x ./yq
-          ./yq -i '.image.repository = "docker.io/${{ env.IMAGE_NAME }}" | .image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/gitops/apps/jp/values.yaml
+          ./yq -i '.image.repository = "docker.io/${{ env.IMAGE_NAME }}" | .image.tag = "${{ steps.vars.outputs.short_sha }}"' ./manifest-repo/gitops/apps/jp/values.yaml
 
       - name: Commit and Push Manifest changes
         run: |
@@ -154,7 +159,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ -n "$(git status --porcelain)" ]; then
             git add .
-            git commit -m "CI: Update image tag to ${{ env.SHORT_SHA }}"
+            git commit -m "CI: Update image tag to ${{ steps.vars.outputs.short_sha }}"
             git push
           else
             echo "No manifest changes to commit"
