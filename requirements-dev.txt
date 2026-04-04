@@ -113,6 +113,8 @@ google-auth==2.45.0
     # via google-genai
 google-genai==1.56.0
     # via -r requirements.in
+greenlet==3.3.2
+    # via sqlalchemy
 gunicorn==23.0.0
     # via -r requirements.in
 h11==0.16.0
@@ -221,7 +223,7 @@ pytest==9.0.2
     #   allure-pytest
     #   pytest-cov
     #   pytest-mock
-pytest-cov==7.0.0
+pytest-cov==7.1.0
     # via -r requirements-dev.in
 pytest-mock==3.15.1
     # via -r requirements-dev.in
@@ -279,7 +281,7 @@ sqlalchemy==2.0.45
     #   flask-sqlalchemy
 tenacity==9.1.2
     # via google-genai
-tomli==2.3.0
+tomli==2.4.1
     # via
     #   alembic
     #   coverage
