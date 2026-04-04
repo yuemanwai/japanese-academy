@@ -54,10 +54,10 @@ jobs:
           extra_args: --only-verified
 
   # ====================================================
-  # 階段二：本機映像掃描 (Demo 用，不推送、不更新 Manifest)
+  # 階段二：Production Build + Security Gate + Push
   # ====================================================
-  build-and-scan:
-    name: Build & Scan Local Image
+  build-and-deploy:
+    name: Build, Scan and Push Image
     runs-on: ubuntu-latest
     needs: security-scan
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -65,8 +65,7 @@ jobs:
       contents: read
 
     env:
-      # 定義全局變數，方便下面引用
-      IMAGE_NAME: demo-security/jp-academy
+      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/fyp-jp
 
     steps:
       - name: Checkout repository
@@ -80,7 +79,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build local image only
       - name: Build local Docker image
         uses: docker/build-push-action@v5
         with:
@@ -91,8 +89,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Image Scan (只做一次，直接 Fail HIGH/CRITICAL)
-      # 為了 FYP 展示效果，我們可以分兩步：先 show table，再 check error
       - name: Install Trivy CLI
         run: |
           sudo apt-get update
@@ -110,7 +106,7 @@ jobs:
           image-ref: "${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
           format: "table"
           scanners: "vuln"
-          exit-code: "0" # 這裡不 Fail，只為了出報告給你看
+          exit-code: "0"
 
       - name: Trivy Scan (Blocker)
         uses: aquasecurity/trivy-action@0.35.0
@@ -118,71 +114,48 @@ jobs:
           skip-setup-trivy: true
           image-ref: "${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}"
           format: "table"
-          exit-code: "1" # 有問題就 Fail
+          exit-code: "1"
           severity: "HIGH,CRITICAL"
           ignore-unfixed: true
           scanners: "vuln"
 
-  # ====================================================
-  # Production version, kept here as comment only for demo
-  # ====================================================
-  # build-and-deploy:
-  #   name: Build & Update Manifest
-  #   runs-on: ubuntu-latest
-  #   needs: security-scan
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #   permissions:
-  #     contents: read
-  #
-  #   env:
-  #     IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/fyp-jp
-  #
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Set short SHA
-  #       id: vars
-  #       run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
-  #
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
-  #
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v3
-  #       with:
-  #         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-  #         password: ${{ secrets.DOCKER_HUB_PAT }}
-  #
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: .
-  #         push: true
-  #         tags: docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
-  #         cache-from: type=gha
-  #         cache-to: type=gha,mode=max
-  #
-  #     - name: Checkout Manifest Repo
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: yuemanwai/argocd-local
-  #         token: ${{ secrets.MANIFEST_REPO_PAT }}
-  #         path: manifest-repo
-  #
-  #     - name: Update Image Tag using yq
-  #       run: |
-  #         wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
-  #         chmod +x ./yq
-  #         ./yq -i '.image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/gitops/apps/jp/values.yaml
-  #
-  #     - name: Commit and Push changes
-  #       run: |
-  #         cd manifest-repo
-  #         git config user.name "github-actions[bot]"
-  #         git config user.email "github-actions[bot]@users.noreply.github.com"
-  #         if [ -n "$(git status --porcelain)" ]; then
-  #           git add .
-  #           git commit -m "CI: Update image tag to ${{ env.SHORT_SHA }}"
-  #           git push
-  #         fi
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PAT }}
+
+      - name: Push Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: docker.io/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Checkout Manifest Repo
+        uses: actions/checkout@v4
+        with:
+          repository: yuemanwai/argocd-local
+          token: ${{ secrets.MANIFEST_REPO_PAT }}
+          path: manifest-repo
+
+      - name: Update Image Tag using yq
+        run: |
+          wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O ./yq
+          chmod +x ./yq
+          ./yq -i '.image.repository = "docker.io/${{ env.IMAGE_NAME }}" | .image.tag = "${{ env.SHORT_SHA }}"' ./manifest-repo/gitops/apps/jp/values.yaml
+
+      - name: Commit and Push Manifest changes
+        run: |
+          cd manifest-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "CI: Update image tag to ${{ env.SHORT_SHA }}"
+            git push
+          else
+            echo "No manifest changes to commit"
+          fi
