@@ -7,6 +7,9 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
+    manifest-files:
+      - "requirements.in"
+      - "requirements-dev.in"
     schedule:
       interval: "weekly"
       day: "monday"
