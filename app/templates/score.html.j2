@@ -26,11 +26,21 @@
   .score-card p {
     font-size: 2rem;
   }
+    .score-empty {
+      width: 80%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #d1d5db;
+    }
 </style>
 {% endblock head %}
 
 {% block app_content %}
 <div class="score-container">
+    {% if evaluations %}
   {% for evaluation in evaluations %}
   <div class="score-card">
     <h2>Evaluation {{ loop.index }}</h2>
@@ -48,6 +58,27 @@
     <p><strong>Feedback and Recommendations:</strong> {{ evaluation.feedback_and_recommendations }}</p>
   </div>
   {% endfor %}
+  {% elif fallback_evaluation %}
+  <div class="score-card">
+    <h2>Latest Evaluation</h2>
+    <p><strong>Pronunciation Accuracy:</strong> {{ fallback_evaluation.pronunciation_accuracy }}</p>
+    <p><strong>Grammar Usage:</strong> {{ fallback_evaluation.grammar_usage }}</p>
+    <p><strong>Vocabulary Usage:</strong> {{ fallback_evaluation.vocabulary_usage }}</p>
+    <p><strong>Fluency:</strong> {{ fallback_evaluation.fluency }}</p>
+    <p><strong>Comprehension:</strong> {{ fallback_evaluation.comprehension }}</p>
+    <p><strong>JLPT Level:</strong> {{ fallback_evaluation.jlpt_level }}</p>
+    <p><strong>Passing Probability N1:</strong> {{ fallback_evaluation.passing_probability_n1 }}</p>
+    <p><strong>Passing Probability N2:</strong> {{ fallback_evaluation.passing_probability_n2 }}</p>
+    <p><strong>Passing Probability N3:</strong> {{ fallback_evaluation.passing_probability_n3 }}</p>
+    <p><strong>Passing Probability N4:</strong> {{ fallback_evaluation.passing_probability_n4 }}</p>
+    <p><strong>Passing Probability N5:</strong> {{ fallback_evaluation.passing_probability_n5 }}</p>
+    <p><strong>Feedback and Recommendations:</strong> {{ fallback_evaluation.feedback_and_recommendations }}</p>
+  </div>
+  {% else %}
+  <div class="score-empty">
+    <p>No evaluation data yet. Please upload or record a video first.</p>
+  </div>
+  {% endif %}
 </div>
 {% endblock app_content %}
 

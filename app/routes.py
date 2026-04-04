@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app, Response
+from flask import render_template, flash, redirect, url_for, request, g, make_response, session, jsonify, current_app, Response, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from urllib.parse import urlparse
 from flask_babel import _, get_locale, refresh
@@ -10,18 +10,15 @@ from app.models import User, Post, Image, Donor, Payment, IP, Leave_message, Les
 from app.email_service import send_password_reset_email
 import os
 import time
-import random 
+import random
 import subprocess
 from app.copilot import CopilotChat
 from werkzeug.utils import secure_filename
 from mimetypes import guess_type
-from app.gemini import GeminiClient  
+from app.gemini import GeminiClient
 from urllib.parse import quote
 import json
-import re  
-import matplotlib.pyplot as plt
-import numpy as np
-import io
+import re
 import base64
 
 
@@ -169,7 +166,7 @@ def user():
 
 
 @app.route('/edit', methods=['GET', 'POST'])
-def edit(): 
+def edit():
     title = request.args.get('title')
     if title is None:
         print("No title provided")
@@ -224,7 +221,7 @@ def get_random_post():
     posts = Post.query.all()
     if not posts:
         return render_template('random_post.html.j2', title=None)
-    
+
     post = random.choice(posts)
     user = post.user if post.user_id else None
     return render_template('random_post.html.j2', title=post.title, posts=[post], user=user)
@@ -363,15 +360,15 @@ def chat_with_copilot():
                 word_limit = 50  # 預設值
         else:
             word_limit = 50  # 預設值
-        
+
         condition = request.form.get('condition')
         debug = request.form.get('debug', 'false').lower() == 'true'
-        
+
         # Log values to console for debugging
         # print('Debug:', debug)
         # print('Word Limit:', word_limit)
         # print('Condition:', condition)
-        
+
         # Update the single ChatSettings record
         chat_settings = ChatSettings.query.first()
         if chat_settings is None:
@@ -383,7 +380,7 @@ def chat_with_copilot():
             chat_settings.condition = condition
             chat_settings.timestamp = datetime.utcnow()
         db.session.commit()
-        
+
         if 'message' in request.form:
             input_text = request.form.get('message')
             chrome_driver_path = "./chromedriver-linux64/chromedriver"
@@ -395,7 +392,7 @@ def chat_with_copilot():
         else:
             flash(_('Settings updated successfully.'))
             return redirect(url_for('chat_with_copilot'))
-    
+
     # Get the latest settings
     chat_settings = ChatSettings.query.first()
     return render_template('chat_with_copilot.html.j2', chat_settings=chat_settings)
@@ -415,6 +412,7 @@ def record():
     return render_template('record.html.j2', evaluation=evaluation)
 
 @app.route('/video_evaluation', methods=['POST'])
+@login_required
 def video_evaluation():
     if 'video' not in request.files:
         flash('No video file provided')
@@ -446,6 +444,23 @@ def video_evaluation():
             evaluation_data = evaluation_response  # 已由 GeminiClient 處理格式
             current_app.logger.info(f'Evaluation data: {evaluation_data}')
 
+            # Keep a one-time fallback copy in session to avoid blank page
+            # when the score page is requested before query results are visible.
+            session['latest_evaluation'] = {
+                'pronunciation_accuracy': evaluation_data['evaluation_criteria']['pronunciation_accuracy']['score'],
+                'grammar_usage': evaluation_data['evaluation_criteria']['grammar_usage']['score'],
+                'vocabulary_usage': evaluation_data['evaluation_criteria']['vocabulary_usage']['score'],
+                'fluency': evaluation_data['evaluation_criteria']['fluency']['score'],
+                'comprehension': evaluation_data['evaluation_criteria']['comprehension']['score'],
+                'jlpt_level': evaluation_data['evaluation_criteria']['jlpt_level']['score'],
+                'passing_probability_n1': evaluation_data['summary']['passing_probability']['N1'],
+                'passing_probability_n2': evaluation_data['summary']['passing_probability']['N2'],
+                'passing_probability_n3': evaluation_data['summary']['passing_probability']['N3'],
+                'passing_probability_n4': evaluation_data['summary']['passing_probability']['N4'],
+                'passing_probability_n5': evaluation_data['summary']['passing_probability']['N5'],
+                'feedback_and_recommendations': evaluation_data['summary']['feedback_and_recommendations']
+            }
+
             # Save evaluation data to the database
             evaluation = Evaluation(
                 user_id=current_user.id,
@@ -465,7 +480,7 @@ def video_evaluation():
             db.session.add(evaluation)
             db.session.commit()
             user_id = current_user.id
-            return jsonify({'success': True, 'user_id': user_id})
+            return jsonify({'success': True, 'user_id': user_id, 'evaluation_id': evaluation.id})
         else:
             current_app.logger.error('No valid JSON found in the response')
             return jsonify({'success': False, 'message': 'No valid JSON found in the response'})
@@ -479,53 +494,30 @@ def video_evaluation():
 @app.route('/score/<int:user_id>', methods=['GET'])
 @login_required
 def score(user_id):
+    if user_id != current_user.id:
+        abort(403)
+
     evaluations = Evaluation.query.filter_by(user_id=user_id).order_by(Evaluation.id.desc()).all()
     current_app.logger.info(f'Evaluations retrieved from database: {evaluations}')
-    return render_template('score.html.j2', evaluations=evaluations)
+    fallback_evaluation = None if evaluations else session.pop('latest_evaluation', None)
+    return render_template('score.html.j2', evaluations=evaluations, fallback_evaluation=fallback_evaluation)
 
 @app.route('/charts')
 def charts():
-    # 定義數據
-    labels = ['A', 'B', 'C', 'D', 'E']
-    values1 = [4, 3, 5, 2, 4]  # 第一組數據
-    values2 = [3, 4, 2, 5, 3]  # 第二組數據
-    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
-    values1 += values1[:1]
-    angles += angles[:1]
-
-    # 繪製雷達圖和長條圖
-    fig, axes = plt.subplots(1, 2, figsize=(12, 6), subplot_kw={'polar': True})  # 第一子圖為極坐標
-
-    # 第一個子圖：雷達圖
-    ax_radar = axes[0]
-    ax_radar.plot(angles, values1, linewidth=2, linestyle='solid', color='blue', label='Group 1')
-    ax_radar.fill(angles, values1, color='blue', alpha=0.25)
-    ax_radar.set_thetagrids(np.degrees(angles[:-1]), labels)
-    ax_radar.set_facecolor('black')  # 背景顏色
-    ax_radar.tick_params(colors='white')  # 字體顏色
-    ax_radar.legend(labelcolor='white')
-
-    # 第二個子圖：長條圖 (非極坐標，所以不使用 'polar')
-    fig.delaxes(axes[1])  # 刪除默認的第二極坐標子圖
-    ax_bar = fig.add_subplot(1, 2, 2)  # 添加普通的笛卡爾坐標系
-    ax_bar.bar(labels, values2, color='palegreen')  # 繪製長條圖
-    ax_bar.set_facecolor('black')  # 背景顏色
-    ax_bar.tick_params(colors='white')  # 字體顏色
-    ax_bar.set_title('Bar Chart', color='white')  # 設置標題
-
-    # 設置圖紙背景顏色
-    fig.patch.set_facecolor('black')
-
-    # 保存圖表為圖片
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    chart_data = buf.getvalue()
-    buf.close()
-
-    # 將圖表數據傳遞給模板
-    chart_data_base64 = f"data:image/png;base64,{base64.b64encode(chart_data).decode('utf-8')}"
-    return render_template('charts.html.j2', chart_data=chart_data_base64)
+    chart_data = {
+        'labels': ['A', 'B', 'C', 'D', 'E'],
+        'barSeries': {
+            'label': 'Group 1',
+            'values': [4, 3, 5, 2, 4],
+            'color': '#6EE7B7'
+        },
+        'lineSeries': {
+            'label': 'Group 2',
+            'values': [3, 4, 2, 5, 3],
+            'color': '#60A5FA'
+        }
+    }
+    return render_template('charts.html.j2', chart_data=chart_data)
 
 @app.route('/check_character', methods=['POST'])
 def check_character():
@@ -535,7 +527,7 @@ def check_character():
 
     target_character = data['targetCharacter']
     handwriting_image = data['handwritingImage']
-    
+
     print(f"target_character: {target_character}")
 
     try:
@@ -547,7 +539,7 @@ def check_character():
         # Use GeminiClient to compare handwriting with the target character
         gemini_client = GeminiClient(api_key=current_app.config['GEMINI_API_KEY'])
         response_data = gemini_client.compare_handwriting('handwriting.png', target_character)
-        
+
         if response_data:
             # Extract score and feedback
             similarity_score = response_data.get("similarity_score", {}).get("score", "N/A")
@@ -622,13 +614,13 @@ def readiness_check():
         'database': False,
         'application': True
     }
-    
+
     # Check database connection with SQLAlchemy
     try:
         # Use SQLAlchemy's text() for raw SQL queries
         from sqlalchemy import text
         db.session.execute(
-            text('SELECT 1'), 
+            text('SELECT 1'),
             execution_options={"timeout": 2.0} # 2秒內 DB 唔應機就當 Fail
         )
         # db.session.commit()
@@ -641,11 +633,11 @@ def readiness_check():
             db.session.rollback()
         except Exception as rollback_e:
             current_app.logger.warning(f"Failed to rollback session: {rollback_e}")
-    
+
     # Determine overall readiness
     is_ready = all(checks.values())
     status_code = 200 if is_ready else 503
-    
+
     return jsonify({
         'status': 'ready' if is_ready else 'not ready',
         'timestamp': datetime.utcnow().isoformat(),

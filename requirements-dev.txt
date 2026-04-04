@@ -49,12 +49,8 @@ charset-normalizer==3.4.4
     # via requests
 click==8.3.1
     # via flask
-contourpy==1.3.2
-    # via matplotlib
 coverage==7.13.0
     # via pytest-cov
-cycler==0.12.1
-    # via matplotlib
 distro==1.9.0
     # via google-genai
 dnspython==2.8.0
@@ -113,10 +109,6 @@ flask-sqlalchemy==3.1.1
     #   flask-migrate
 flask-wtf==1.2.2
     # via -r requirements.in
-fonttools==4.61.1
-    # via
-    #   -r requirements.in
-    #   matplotlib
 google-auth==2.45.0
     # via google-genai
 google-genai==1.56.0
@@ -157,8 +149,6 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-kiwisolver==1.4.9
-    # via matplotlib
 librt==0.7.5
     # via mypy
 mako==1.3.10
@@ -170,8 +160,6 @@ markupsafe==3.0.3
     #   mako
     #   werkzeug
     #   wtforms
-matplotlib==3.10.8
-    # via -r requirements.in
 mccabe==0.7.0
     # via flake8
 msgspec==0.20.0
@@ -180,11 +168,6 @@ mypy==1.19.1
     # via -r requirements-dev.in
 mypy-extensions==1.1.0
     # via mypy
-numpy==2.2.6
-    # via
-    #   -r requirements.in
-    #   contourpy
-    #   matplotlib
 outcome==1.3.0.post0
     # via
     #   trio
@@ -193,15 +176,10 @@ packaging==25.0
     # via
     #   flask-moment
     #   gunicorn
-    #   matplotlib
     #   pytest
     #   sphinx
 pathspec==0.12.1
     # via mypy
-pillow==12.1.1
-    # via
-    #   -r requirements.in
-    #   matplotlib
 pluggy==1.6.0
     # via
     #   allure-python-commons
@@ -223,9 +201,7 @@ pyasn1-modules==0.4.2
 pycodestyle==2.14.0
     # via flake8
 pydantic==2.12.5
-    # via
-    #   -r requirements.in
-    #   google-genai
+    # via google-genai
 pydantic-core==2.41.5
     # via pydantic
 pyflakes==3.4.0
@@ -237,8 +213,6 @@ pygments==2.20.0
     #   sphinx
 pyjwt==2.10.1
     # via -r requirements.in
-pyparsing==3.3.1
-    # via matplotlib
 pysocks==1.7.1
     # via urllib3
 pytest==9.0.2
@@ -252,18 +226,13 @@ pytest-cov==7.0.0
 pytest-mock==3.15.1
     # via -r requirements-dev.in
 python-dateutil==2.9.0.post0
-    # via
-    #   botocore
-    #   matplotlib
-python-dotenv==1.2.1
-    # via -r requirements.in
+    # via botocore
 pytz==2025.2
     # via flask-babel
 pyvirtualdisplay==3.0
     # via -r requirements.in
 requests==2.33.1
     # via
-    #   -r requirements.in
     #   google-auth
     #   google-genai
     #   sphinx
@@ -339,7 +308,6 @@ typing-inspection==0.4.2
     # via pydantic
 urllib3==2.6.3
     # via
-    #   -r requirements.in
     #   botocore
     #   requests
     #   selenium

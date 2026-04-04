@@ -30,23 +30,9 @@ PyJWT==2.10.1
 # ===== AI & GOOGLE SERVICES =====
 google-genai
 
-# ===== DEVELOPMENT =====
-python-dotenv
-
 # ===== WEB AUTOMATION =====
 selenium
 PyVirtualDisplay
-
-# ===== HTTP & REQUESTS =====
-requests>=2.33.1
-urllib3>=2.6.3
-
-# ===== DATA & VISUALIZATION =====
-matplotlib
-pillow>=12.1.1
-fonttools>=4.60.0
-numpy
-pydantic
 
 # ===== PRODUCTION SERVER =====
 gunicorn

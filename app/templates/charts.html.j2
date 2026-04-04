@@ -2,17 +2,295 @@
 {% block head %}
 {{ super() }}
 <style>
+    .charts-page {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1rem 0 2rem;
+    }
+
+    .charts-hero {
+        display: grid;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .charts-hero h1 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        letter-spacing: -0.03em;
+    }
+
+    .charts-hero p {
+        margin: 0;
+        max-width: 62ch;
+        opacity: 0.8;
+    }
+
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .chart-card {
+        border-radius: 20px;
+        padding: 1.25rem;
+        background: linear-gradient(180deg, rgba(12, 18, 32, 0.92), rgba(8, 11, 18, 0.96));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .chart-card h2 {
+        margin: 0 0 0.4rem;
+        font-size: 1.05rem;
+    }
+
+    .chart-card .chart-subtitle {
+        margin: 0 0 1rem;
+        font-size: 0.92rem;
+        opacity: 0.75;
+    }
+
+    .bar-chart {
+        display: grid;
+        gap: 0.8rem;
+    }
+
+    .bar-chart__axis {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+        align-items: end;
+        min-height: 260px;
+    }
+
+    .bar-chart__ticks {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 240px;
+        font-size: 0.78rem;
+        opacity: 0.6;
+        padding-top: 0.2rem;
+    }
+
+    .bar-chart__bars {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: end;
+        gap: 0.75rem;
+        height: 240px;
+    }
+
+    .bar-chart__group {
+        display: grid;
+        justify-items: center;
+        gap: 0.5rem;
+        height: 100%;
+    }
+
+    .bar-chart__bar-wrap {
+        display: flex;
+        align-items: end;
+        width: 100%;
+        height: 100%;
+        min-height: 180px;
+    }
+
+    .bar-chart__bar {
+        width: 100%;
+        min-height: 8px;
+        border-radius: 14px 14px 6px 6px;
+        background: linear-gradient(180deg, rgba(110, 231, 183, 0.95), rgba(34, 197, 94, 0.85));
+        box-shadow: 0 10px 20px rgba(34, 197, 94, 0.18);
+        position: relative;
+        transition: transform 160ms ease, filter 160ms ease;
+    }
+
+    .bar-chart__bar:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.07);
+    }
+
+    .bar-chart__label {
+        font-size: 0.85rem;
+        opacity: 0.8;
+    }
+
+    .line-chart {
+        width: 100%;
+        height: 300px;
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    .line-chart svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: visible;
+    }
+
+    .line-chart__grid line {
+        stroke: rgba(255, 255, 255, 0.08);
+        stroke-width: 1;
+    }
+
+    .line-chart__path {
+        fill: none;
+        stroke-width: 3.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .line-chart__points circle {
+        stroke: rgba(8, 11, 18, 0.95);
+        stroke-width: 3;
+    }
+
+    .chart-legend {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        font-size: 0.88rem;
+        opacity: 0.9;
+    }
+
+    .chart-legend__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .chart-legend__swatch {
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 999px;
+        display: inline-block;
+    }
 </style>
 {% endblock head %}
 
 {% block app_content %}
-<div class="radar-chart-container">
-    <img src="{{ chart_data }}" alt="Radar Chart">
+<div class="charts-page">
+    <div class="charts-hero">
+        <h1>Simple Charts</h1>
+        <p>These charts are rendered with Jinja data and a small amount of vanilla JavaScript, so there is no Python plotting dependency for this page.</p>
+    </div>
+
+    <div class="chart-grid">
+        <section class="chart-card">
+            <h2>{{ chart_data.barSeries.label }}</h2>
+            <p class="chart-subtitle">Bar chart for quick comparison.</p>
+            <div class="bar-chart" id="bar-chart"></div>
+            <div class="chart-legend">
+                <span class="chart-legend__item">
+                    <span class="chart-legend__swatch" style="background: {{ chart_data.barSeries.color }}"></span>
+                    {{ chart_data.barSeries.label }}
+                </span>
+            </div>
+        </section>
+
+        <section class="chart-card">
+            <h2>{{ chart_data.lineSeries.label }}</h2>
+            <p class="chart-subtitle">Line chart for trend shape.</p>
+            <div class="line-chart" id="line-chart"></div>
+            <div class="chart-legend">
+                <span class="chart-legend__item">
+                    <span class="chart-legend__swatch" style="background: {{ chart_data.lineSeries.color }}"></span>
+                    {{ chart_data.lineSeries.label }}
+                </span>
+            </div>
+        </section>
+    </div>
 </div>
 {% endblock app_content %}
 
 {% block scripts %}
 {{ super() }}
 <script>
+    const chartData = {{ chart_data | tojson }};
+
+    function renderBarChart(target, labels, values, color) {
+        const maxValue = Math.max(...values, 1);
+        const ticks = [maxValue, Math.ceil(maxValue * 0.75), Math.ceil(maxValue * 0.5), Math.ceil(maxValue * 0.25), 0];
+
+        target.innerHTML = `
+            <div class="bar-chart__axis">
+                <div class="bar-chart__ticks">
+                    ${ticks.map((tick) => `<span>${tick}</span>`).join("")}
+                </div>
+                <div class="bar-chart__bars">
+                    ${values.map((value, index) => {
+                        const height = Math.max((value / maxValue) * 100, 8);
+                        return `
+                            <div class="bar-chart__group">
+                                <div class="bar-chart__bar-wrap">
+                                    <div class="bar-chart__bar" style="height:${height}%; background:${color};" title="${labels[index]}: ${value}"></div>
+                                </div>
+                                <div class="bar-chart__label">${labels[index]}</div>
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderLineChart(target, labels, values, color) {
+        const width = 620;
+        const height = 260;
+        const padding = 28;
+        const maxValue = Math.max(...values, 1);
+        const stepX = (width - padding * 2) / Math.max(values.length - 1, 1);
+        const points = values.map((value, index) => {
+            const x = padding + stepX * index;
+            const y = height - padding - ((value / maxValue) * (height - padding * 2));
+            return { x, y, value, label: labels[index] };
+        });
+
+        const linePath = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
+        const lastPoint = points[points.length - 1];
+        const fillPath = `${linePath} L ${lastPoint.x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
+
+        target.innerHTML = `
+            <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${chartData.lineSeries.label} line chart">
+                <g class="line-chart__grid">
+                    ${[0, 1, 2, 3, 4].map((row) => {
+                        const y = padding + ((height - padding * 2) / 4) * row;
+                        return `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}"></line>`;
+                    }).join('')}
+                </g>
+                <path d="${fillPath}" fill="${color}22"></path>
+                <path class="line-chart__path" d="${linePath}" stroke="${color}"></path>
+                <g class="line-chart__points">
+                    ${points.map((point) => `
+                        <circle cx="${point.x}" cy="${point.y}" r="5.5" fill="${color}">
+                            <title>${point.label}: ${point.value}</title>
+                        </circle>
+                    `).join('')}
+                </g>
+                <g fill="currentColor" opacity="0.72" font-size="12">
+                    ${points.map((point) => `
+                        <text x="${point.x}" y="${height - 8}" text-anchor="middle">${point.label}</text>
+                    `).join('')}
+                </g>
+            </svg>
+        `;
+    }
+
+    renderBarChart(
+        document.getElementById('bar-chart'),
+        chartData.labels,
+        chartData.barSeries.values,
+        chartData.barSeries.color
+    );
+
+    renderLineChart(
+        document.getElementById('line-chart'),
+        chartData.labels,
+        chartData.lineSeries.values,
+        chartData.lineSeries.color
+    );
 </script>
 {% endblock scripts %}
