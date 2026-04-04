@@ -25,7 +25,7 @@ class User(UserMixin, db.Model):
     login_count = db.Column(db.Integer, default=0)
     fail_login_count = db.Column(db.Integer, default=0)
     is_admin = db.Column(db.Boolean, default=False)
-        
+
 
     def __repr__(self) -> str:
         return f'<Username : {self.username}>'
@@ -68,10 +68,10 @@ class User(UserMixin, db.Model):
         try:
             id = jwt.decode(token, app.config["SECRET_KEY"], algorithms="HS256")[
                 "reset_password"]
-        except:           
+        except:
             return None
         return User.query.get(id)
-    
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -96,7 +96,7 @@ class Post(db.Model):
 
     def __repr__(self) -> str:
         return f'<Post title : {self.title}>'
-    
+
 
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -107,7 +107,10 @@ class Payment(db.Model):
     amount = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
-        return f"<Payment(id={self.id}, donor_id='{self.donor_id}, pay_method='{self.pay_method}, amount_hkd='{self.amount_hkd}')>"
+        return (
+            f"<Payment(id={self.id}, donor_id='{self.donor_id}', "
+            f"pay_method='{self.pay_method}', amount='{self.amount}')>"
+        )
 
 class Donor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -127,10 +130,10 @@ class Author(db.Model):
     birth_date = db.Column(db.Date)
     nationality = db.Column(db.String(50))
     books = db.relationship('Editor', backref='author', lazy=True)
- 
-    def _repr_(self):
+
+    def __repr__(self):
         return f"Author(id={self.id}, name='{self.name}')"
-    
+
 class Editor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -141,9 +144,9 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-    def _repr_(self):
+    def __repr__(self):
         return f"Category(id={self.id}, name='{self.name}')"
-    
+
 
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -151,7 +154,7 @@ class Vote(db.Model):
     article_id = db.Column(db.Integer, nullable=False)
     value = db.Column(db.Integer, nullable=False)
 
-    def _repr_(self):
+    def __repr__(self):
         return f"Vote(id={self.id}, value={self.value})"
 
 class History(db.Model):
@@ -160,7 +163,7 @@ class History(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     action = db.Column(db.String(20), nullable=False)
 
-    def _repr_(self):
+    def __repr__(self):
         return f"History(id={self.id}, action='{self.action}')"
 
 class Tag(db.Model):
@@ -191,7 +194,7 @@ class Image(db.Model):
 
     def __repr__(self):
         return f"<Image(id={self.id}, post_id={self.post_id}, filename='{self.filename}')>"
-    
+
 
 class IP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -199,17 +202,17 @@ class IP(db.Model):
     ip_addr = db.Column(db.String(50), index=True, unique=True, nullable=False)
 
     def __repr__(self):
-        return f"<IP(id={self.id}, post_id={self.post_id}, ip='{self.ip}')>"
-    
+        return f"<IP(id={self.id}, post_id={self.post_id}, ip='{self.ip_addr}')>"
 
-    
+
+
 class Leave_message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     message = db.Column(db.String(200), nullable=False)
 
     def __repr__(self):
-        return f"<Leave_message(id={self.id}, name='{self.name}, message='{self.message}')>"
+        return f"<Leave_message(id={self.id}, name='{self.name}', message='{self.message}')>"
 
 
 
@@ -249,7 +252,7 @@ class Link(db.Model):
     link = db.Column(db.String(200), index=True, unique=True, nullable=False)
 
     def __repr__(self):
-        return f"<Link(id={self.id}, name='{self.name}'), link='{self.link}'>"
+        return f"<Link(id={self.id}, name='{self.name}', link='{self.link}')>"
 
 class ChatSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
