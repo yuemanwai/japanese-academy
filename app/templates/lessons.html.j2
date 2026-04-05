@@ -14,7 +14,7 @@
     overflow: hidden;
     border-radius: 15px;
   }
-  
+
 .lesson-card {
   background: var(--bg-secondary);
   border-radius: 15px;
@@ -43,7 +43,7 @@
   padding: 1rem;
   border-radius: 8px;
   margin: 1rem 0;
-  background-color: transparent; 
+  background-color: transparent;
 }
 
 .objective {
@@ -170,6 +170,129 @@
 
 #responseBlock {
   text-align: left;
+  margin-top: 1rem;
+}
+
+.result-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(245, 252, 255, 0.92));
+  border: 1px solid rgba(41, 171, 226, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #153a52;
+}
+
+.result-sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: #4d6577;
+}
+
+.score-chip {
+  min-width: 88px;
+  text-align: center;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.score-chip.high {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.score-chip.mid {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.score-chip.low {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.score-chip.na {
+  background: linear-gradient(135deg, #64748b, #475569);
+}
+
+.meter-wrap {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.meter-label {
+  font-size: 0.85rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+.meter-track {
+  height: 10px;
+  border-radius: 999px;
+  background: #e7edf3;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+  background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
+}
+
+.feedback-box {
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  padding: 0.8rem;
+}
+
+.feedback-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  color: #1e3a8a;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.feedback-text {
+  margin: 0;
+  color: #1f2937;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.result-state {
+  border-radius: 10px;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.result-state.loading {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+}
+
+.result-state.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
 }
 
 .glass-button {
@@ -214,17 +337,17 @@
   .lesson-title {
     font-size: 1.3rem;
   }
-  
+
   #targetWord {
     font-size: 5rem;
     padding: 1.5rem !important;
     height: 250px !important; /* 中等螢幕調整高度 */
   }
-  
+
   .canvas-container {
     height: 250px !important;
   }
-  
+
   .glass-panel h3 {
     font-size: 1.2rem;
   }
@@ -234,25 +357,40 @@
   .lesson-title {
     font-size: 1.2rem;
   }
-  
+
   #targetWord {
     font-size: 4rem;
     padding: 1rem !important;
     height: 200px !important; /* 小螢幕調整高度 */
   }
-  
+
   .canvas-container {
     height: 200px !important;
   }
-  
+
   .glass-panel h3 {
     font-size: 1.1rem;
   }
-  
+
   .glass-panel p {
     font-size: 0.9rem;
   }
-  
+
+  .result-card {
+    padding: 0.85rem;
+  }
+
+  .result-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .score-chip {
+    min-width: 74px;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.6rem;
+  }
+
   .kana-grid .btn {
     font-size: 1rem;
     padding: 0.8rem;
@@ -266,7 +404,7 @@
     cursor: pointer !important;
     font-weight: 600 !important;
   }
-  
+
   .kana-grid .btn:hover {
     background: var(--accent-blue) !important;
     color: #ffffff !important;
@@ -302,7 +440,7 @@
         </svg>
         Lesson 1: Mastering Hiragana and Katakana
       </h2>
-      
+
       <div class="feature-box">
         <h3>50 Sounds Practice</h3>
         <div class="kana-grid" id="hiraganaGrid">
@@ -360,7 +498,7 @@
     </svg>
     Lesson 3: Grammar Essentials
   </h2>
-  
+
   <div class="feature-box">
     <h3>Basic Grammar Structure</h3>
     <p>Topic は Subject が Verb です</p>
@@ -445,14 +583,14 @@ let lastY = 0;
 function setupCanvas() {
   const rect = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
-  
+
   // Set the internal size (resolution)
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
-  
+
   // Scale the context for high DPI displays
   ctx.scale(dpr, dpr);
-  
+
   // Set CSS size (display size)
   canvas.style.width = rect.width + 'px';
   canvas.style.height = rect.height + 'px';
@@ -502,7 +640,7 @@ function handleTouchMove(e) {
   const rect = canvas.getBoundingClientRect();
   const x = touch.clientX - rect.left;
   const y = touch.clientY - rect.top;
-  
+
   ctx.beginPath();
   ctx.moveTo(lastX, lastY);
   ctx.lineTo(x, y);
@@ -528,7 +666,7 @@ function draw(e) {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
-  
+
   ctx.beginPath();
   ctx.moveTo(lastX, lastY);
   ctx.lineTo(x, y);
@@ -569,7 +707,7 @@ async function recognizeCharacter() {
 
   if (isEmpty) {
     const responseBlock = document.getElementById('responseBlock');
-    responseBlock.innerHTML = '<p>Please draw something on the canvas before checking!</p>';
+    responseBlock.innerHTML = '<div class="result-state error">Please draw something on the canvas before checking.</div>';
     return;
   }
 
@@ -582,6 +720,9 @@ async function recognizeCharacter() {
 
   // Send the data to the server
   try {
+    const responseBlock = document.getElementById('responseBlock');
+    responseBlock.innerHTML = '<div class="result-state loading">Analyzing your handwriting...</div>';
+
     const response = await fetch('/check_character', {
       method: 'POST',
       headers: {
@@ -594,19 +735,48 @@ async function recognizeCharacter() {
     });
 
     const result = await response.json();
-    const responseBlock = document.getElementById('responseBlock');
     if (response.ok) {
+      const scoreValue = Number(result.similarity_score);
+      const isValidScore = Number.isFinite(scoreValue) && scoreValue >= 1 && scoreValue <= 10;
+      const scorePercent = isValidScore ? Math.max(0, Math.min(100, scoreValue * 10)) : 0;
+
+      let scoreLevel = 'na';
+      if (isValidScore && scoreValue >= 8) scoreLevel = 'high';
+      else if (isValidScore && scoreValue >= 5) scoreLevel = 'mid';
+      else if (isValidScore) scoreLevel = 'low';
+
+      const scoreLabel = isValidScore ? `${scoreValue}/10` : 'N/A';
+      const feedbackText = result.feedback || 'No feedback available yet.';
+      const targetChar = lastCharacter || '?';
+
       responseBlock.innerHTML = `
-        <p><strong>Similarity Score:</strong> ${result.similarity_score}</p>
-        <p><strong>Feedback:</strong> ${result.feedback}</p>
+        <div class="result-card">
+          <div class="result-header">
+            <div>
+              <p class="result-title">Handwriting Analysis</p>
+              <p class="result-sub">Target character: 「${targetChar}」</p>
+            </div>
+            <div class="score-chip ${scoreLevel}">${scoreLabel}</div>
+          </div>
+          <div class="meter-wrap">
+            <div class="meter-label">Similarity</div>
+            <div class="meter-track">
+              <div class="meter-fill" style="width: ${scorePercent}%;"></div>
+            </div>
+          </div>
+          <div class="feedback-box">
+            <p class="feedback-title">Feedback</p>
+            <p class="feedback-text">${feedbackText}</p>
+          </div>
+        </div>
       `;
     } else {
-      responseBlock.innerHTML = `<p>Error: ${result.error}</p>`;
+      responseBlock.innerHTML = `<div class="result-state error">Error: ${result.error || 'Unable to analyze handwriting right now.'}</div>`;
     }
   } catch (error) {
     console.error('Error sending data to the server:', error);
     const responseBlock = document.getElementById('responseBlock');
-    responseBlock.innerHTML = '<p>An error occurred while checking your handwriting. Please try again.</p>';
+    responseBlock.innerHTML = '<div class="result-state error">An error occurred while checking your handwriting. Please try again.</div>';
   }
 }
 
