@@ -92,6 +92,8 @@ google-auth==2.45.0
     # via google-genai
 google-genai==1.56.0
     # via -r requirements.in
+greenlet==3.3.2
+    # via sqlalchemy
 gunicorn==23.0.0
     # via -r requirements.in
 h11==0.16.0
