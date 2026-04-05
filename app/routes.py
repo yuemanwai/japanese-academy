@@ -545,7 +545,7 @@ def check_character():
             similarity_score = response_data.get("similarity_score", {}).get("score", "N/A")
             feedback = response_data.get("feedback", "No feedback provided.")
         else:
-            current_app.logger.error('No valid JSON found in the response')
+            current_app.logger.warning('No valid JSON found in the response')
             return jsonify({'error': 'No valid JSON found in the response'}), 500
 
         # Clean up the temporary file

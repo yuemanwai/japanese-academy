@@ -244,15 +244,97 @@ class GeminiClient:
         Parse the JSON part from the Gemini response text.
         """
         try:
-            json_match = re.search(r'```json(.*?)```', response, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group(1).strip())
-            else:
-                self.logger.error('No valid JSON found in the response')
-                return None
+            parsed = self._extract_json_payload(response)
+            if parsed is not None:
+                return parsed
+
+            self.logger.warning('No valid JSON found in Gemini response payload')
+            return None
         except Exception as e:
             self.logger.error(f'Error parsing handwriting response: {e}')
             return None
+
+    def _extract_json_payload(self, response_text):
+        """
+        Try common Gemini output styles in order:
+        1) raw JSON string
+        2) ```json fenced block
+        3) generic ``` fenced block
+        4) first balanced JSON object in plain text
+        """
+        if not response_text:
+            return None
+
+        stripped = response_text.strip()
+
+        # 1) raw JSON
+        try:
+            return json.loads(stripped)
+        except Exception:
+            pass
+
+        # 2) ```json ... ```
+        json_fenced_match = re.search(r"```json\s*(.*?)\s*```", stripped, re.DOTALL | re.IGNORECASE)
+        if json_fenced_match:
+            try:
+                return json.loads(json_fenced_match.group(1).strip())
+            except Exception:
+                pass
+
+        # 3) ``` ... ```
+        generic_fenced_match = re.search(r"```\s*(.*?)\s*```", stripped, re.DOTALL)
+        if generic_fenced_match:
+            fenced_content = generic_fenced_match.group(1).strip()
+            # remove an optional language tag on the first line, e.g. "json"
+            fenced_lines = fenced_content.splitlines()
+            if fenced_lines and fenced_lines[0].strip().lower() in {"json", "javascript", "js"}:
+                fenced_content = "\n".join(fenced_lines[1:]).strip()
+            try:
+                return json.loads(fenced_content)
+            except Exception:
+                pass
+
+        # 4) balanced JSON object in plain text
+        return self._parse_first_json_object(stripped)
+
+    def _parse_first_json_object(self, text):
+        """
+        Scan text and parse the first balanced JSON object.
+        """
+        start = text.find('{')
+        while start != -1:
+            depth = 0
+            in_string = False
+            escaped = False
+
+            for idx in range(start, len(text)):
+                ch = text[idx]
+
+                if in_string:
+                    if escaped:
+                        escaped = False
+                    elif ch == '\\':
+                        escaped = True
+                    elif ch == '"':
+                        in_string = False
+                    continue
+
+                if ch == '"':
+                    in_string = True
+                elif ch == '{':
+                    depth += 1
+                elif ch == '}':
+                    depth -= 1
+                    if depth == 0:
+                        candidate = text[start:idx + 1]
+                        try:
+                            return json.loads(candidate)
+                        except Exception:
+                            break
+
+            start = text.find('{', start + 1)
+
+        return None
 
     def _delete_file(self):
         """
