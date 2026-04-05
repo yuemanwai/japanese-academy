@@ -2,7 +2,8 @@ name: Security Gate Pipeline
 
 on:
   workflow_dispatch:
-  push: {}
+  push:
+    branches: ["main"]
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]

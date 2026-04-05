@@ -2,7 +2,8 @@ name: Security Report - Container Image
 
 on:
   workflow_dispatch:
-  push: {}
+  push:
+    branches: ["main"]
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]
