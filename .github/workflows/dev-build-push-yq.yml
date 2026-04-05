@@ -16,7 +16,7 @@ jobs:
 
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME || secrets.DOCKERHUB_USERNAME }}
-      IMAGE_REPO: fyp-jp-dev
+      IMAGE_REPO: fyp-jp
       MANIFEST_REPO: ${{ vars.DEV_MANIFEST_REPO || 'yuemanwai/argocd-local' }}
       MANIFEST_BRANCH: ${{ vars.DEV_MANIFEST_BRANCH || 'main' }}
       MANIFEST_FILE: ${{ vars.DEV_MANIFEST_FILE || 'gitops/apps/jp/values.yaml' }}
