@@ -5,6 +5,16 @@ import os
 import json
 import re
 import logging
+from pydantic import BaseModel, Field
+
+
+class SimilarityScore(BaseModel):
+    score: int = Field(ge=1, le=10)
+
+
+class HandwritingComparisonResult(BaseModel):
+    similarity_score: SimilarityScore
+    feedback: str
 
 
 class GeminiClient:
@@ -220,12 +230,20 @@ class GeminiClient:
         :return: 生成的描述文本（已解析為 JSON 格式）
         """
         image_file = self._upload_file(image_name)
+        json_config = types.GenerateContentConfig(
+            system_instruction=self.sys_instruct,
+            max_output_tokens=512,
+            temperature=0.1,
+            response_mime_type="application/json",
+            response_schema=HandwritingComparisonResult,
+        )
         response = self._generate_content_with_fallback(
             contents=[
                 image_file,
                 f"""
                 Compare the handwriting in this image with the Japanese character '{word}'.
                 Respond ONLY in JSON format, starting with '{{' and ending with '}}'.
+                If you are uncertain, still return valid JSON in the required format.
                 Provide the following structure:
                 {{
                     "similarity_score": {{
@@ -234,10 +252,37 @@ class GeminiClient:
                     "feedback": "Constructive feedback on how to improve the handwriting."
                 }}
                 """
-            ]
+            ],
+            config=json_config,
         )
         self._delete_file()  # Delete all uploaded files before returning
-        return self._parse_handwriting_response(response.text)
+
+        parsed_payload = self._extract_structured_response(response)
+        if parsed_payload is not None:
+            return parsed_payload
+
+        # One repair retry: feed back previous output and force strict JSON format.
+        first_text = self._extract_response_text(response)
+        repair_response = self._generate_content_with_fallback(
+            contents=[
+                f"Previous response was not valid JSON: {first_text}",
+                "Return ONLY valid JSON with keys: similarity_score.score (1-10) and feedback.",
+            ],
+            config=json_config,
+        )
+        repaired_payload = self._extract_structured_response(repair_response)
+        if repaired_payload is not None:
+            return repaired_payload
+
+        repaired_text_payload = self._parse_handwriting_response(self._extract_response_text(repair_response))
+        if repaired_text_payload is not None:
+            return repaired_text_payload
+
+        # Final fallback to avoid route-level 500 when model output is empty/blocked.
+        return {
+            "similarity_score": {"score": "N/A"},
+            "feedback": "Unable to parse model response. Please try again.",
+        }
 
     def _parse_handwriting_response(self, response):
         """
@@ -253,6 +298,48 @@ class GeminiClient:
         except Exception as e:
             self.logger.error(f'Error parsing handwriting response: {e}')
             return None
+
+    def _extract_response_text(self, response):
+        """
+        Safely extract text from Gemini response across SDK response shapes.
+        """
+        if response is None:
+            return ""
+
+        text = getattr(response, "text", None)
+        if text:
+            return text
+
+        # Fallback: concatenate text parts from candidates/content/parts
+        candidates = getattr(response, "candidates", None) or []
+        chunks = []
+        for candidate in candidates:
+            content = getattr(candidate, "content", None)
+            parts = getattr(content, "parts", None) if content else None
+            if not parts:
+                continue
+            for part in parts:
+                part_text = getattr(part, "text", None)
+                if part_text:
+                    chunks.append(part_text)
+
+        return "\n".join(chunks).strip()
+
+    def _extract_structured_response(self, response):
+        """
+        Extract structured payload from SDK parsed output first.
+        """
+        parsed = getattr(response, "parsed", None)
+        if parsed is None:
+            return None
+
+        if hasattr(parsed, "model_dump"):
+            return parsed.model_dump()
+
+        if isinstance(parsed, dict):
+            return parsed
+
+        return None
 
     def _extract_json_payload(self, response_text):
         """
@@ -295,7 +382,32 @@ class GeminiClient:
                 pass
 
         # 4) balanced JSON object in plain text
-        return self._parse_first_json_object(stripped)
+        parsed = self._parse_first_json_object(stripped)
+        if parsed is not None:
+            return parsed
+
+        # 5) truncated JSON repair (common when output is cut off)
+        return self._try_repair_truncated_json(stripped)
+
+    def _try_repair_truncated_json(self, text):
+        """
+        Attempt a best-effort repair for truncated JSON by appending missing braces.
+        """
+        start = text.find('{')
+        if start == -1:
+            return None
+
+        candidate = text[start:].strip()
+        open_braces = candidate.count('{')
+        close_braces = candidate.count('}')
+        if open_braces <= close_braces:
+            return None
+
+        repaired = candidate + ('}' * (open_braces - close_braces))
+        try:
+            return json.loads(repaired)
+        except Exception:
+            return None
 
     def _parse_first_json_object(self, text):
         """
