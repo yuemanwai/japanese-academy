@@ -159,7 +159,7 @@ pydantic==2.12.5
     # via google-genai
 pydantic-core==2.41.5
     # via pydantic
-pyjwt==2.10.1
+pyjwt==2.12.0
     # via -r requirements.in
 pysocks==1.7.1
     # via urllib3
