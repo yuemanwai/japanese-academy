@@ -116,7 +116,6 @@ google-genai==1.56.0
 greenlet==3.3.2
     # via sqlalchemy
 gunicorn==25.3.0
-
     # via -r requirements.in
 h11==0.16.0
     # via
@@ -218,7 +217,7 @@ pyjwt==2.12.1
     # via -r requirements.in
 pysocks==1.7.1
     # via urllib3
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   -r requirements-dev.in
     #   allure-pytest
