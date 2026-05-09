@@ -48,6 +48,7 @@ RUN chmod +x boot.sh
 
 # OpenShift: grant GID 0 write access to app writable paths only.
 RUN mkdir -p /home/jp/var/cache /home/jp/var/config /home/jp/var/data /home/jp/var/tmp && \
+    mkdir -p /home/jp/app/static/video /home/jp/app/static/image && \
     chgrp -R 0 /home/jp/var && \
     chmod -R g=u /home/jp/var && \
     chgrp -R 0 /home/jp/app/static/video /home/jp/app/static/image && \
