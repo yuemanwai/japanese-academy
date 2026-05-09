@@ -6,9 +6,9 @@ alembic==1.18.4
     # via
     #   -r requirements.in
     #   flask-migrate
-allure-pytest==2.15.2
+allure-pytest==2.15.3
     # via -r requirements-dev.in
-allure-python-commons==2.15.2
+allure-python-commons==2.15.3
     # via allure-pytest
 annotated-types==0.7.0
     # via pydantic
