@@ -159,7 +159,7 @@ pydantic==2.12.5
     # via google-genai
 pydantic-core==2.41.5
     # via pydantic
-pyjwt==2.12.0
+pyjwt==2.12.1
     # via -r requirements.in
 pysocks==1.7.1
     # via urllib3
@@ -209,6 +209,7 @@ typing-extensions==4.15.0
     #   google-genai
     #   pydantic
     #   pydantic-core
+    #   pyjwt
     #   selenium
     #   sqlalchemy
     #   typing-inspection
