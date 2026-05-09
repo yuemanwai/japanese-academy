@@ -136,7 +136,7 @@ imagesize==1.4.1
     # via sphinx
 iniconfig==2.3.0
     # via pytest
-isort==7.0.0
+isort==8.0.1
     # via -r requirements-dev.in
 itsdangerous==2.2.0
     # via
