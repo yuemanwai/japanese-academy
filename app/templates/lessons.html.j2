@@ -13,6 +13,7 @@
     position: relative;
     overflow: hidden;
     border-radius: 15px;
+    font-size: 1.08rem;
   }
 
 .lesson-card {
@@ -35,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 1.5rem; /* 調整課程標題大小 */
+  font-size: 1.72rem; /* 調整課程標題大小 */
   font-weight: 600;
 }
 
@@ -51,7 +52,7 @@
   padding-left: 1rem;
   margin: 1rem 0;
   text-align: left;
-  font-size: 1rem; /* 調整目標文字大小 */
+  font-size: 1.1rem; /* 調整目標文字大小 */
 }
 
 .practice-areas-container {
@@ -109,7 +110,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease;
-  font-size: 0.9rem; /* 調整按鈕字體大小 */
+  font-size: 1rem; /* 調整按鈕字體大小 */
   font-weight: 500;
 }
 
@@ -192,15 +193,15 @@
 
 .result-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.12rem;
   font-weight: 700;
-  color: #153a52;
+  color: #475569 !important;
 }
 
 .result-sub {
   margin: 0.2rem 0 0;
-  font-size: 0.9rem;
-  color: #4d6577;
+  font-size: 1rem;
+  color: #475569 !important;
 }
 
 .score-chip {
@@ -235,8 +236,8 @@
 }
 
 .meter-label {
-  font-size: 0.85rem;
-  color: #475569;
+  font-size: 0.95rem;
+  color: #475569 !important;
   font-weight: 600;
 }
 
@@ -263,36 +264,56 @@
 
 .feedback-title {
   margin: 0 0 0.35rem;
-  font-size: 0.88rem;
-  color: #1e3a8a;
+  font-size: 0.98rem;
+  color: #475569 !important;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
 .feedback-text {
   margin: 0;
-  color: #1f2937;
+  color: #475569 !important;
   line-height: 1.55;
-  font-size: 0.95rem;
+  font-size: 1.06rem;
+}
+
+#responseBlock .result-title {
+  font-size: 1.12rem !important;
+}
+
+#responseBlock .result-sub {
+  font-size: 1rem !important;
+}
+
+#responseBlock .meter-label {
+  font-size: 0.95rem !important;
+}
+
+#responseBlock .feedback-title {
+  font-size: 0.98rem !important;
+}
+
+#responseBlock .feedback-text {
+  font-size: 1.06rem !important;
 }
 
 .result-state {
   border-radius: 10px;
   padding: 0.8rem 0.9rem;
-  font-size: 0.95rem;
+  font-size: 1.02rem;
   line-height: 1.5;
 }
 
 .result-state.loading {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  color: #1e3a8a;
+  color: #1e3a8a !important;
 }
 
 .result-state.error {
   background: #fef2f2;
   border: 1px solid #fecaca;
-  color: #991b1b;
+  color: #991b1b !important;
 }
 
 .glass-button {
@@ -300,7 +321,7 @@
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
-  font-size: 1rem; /* 調整玻璃按鈕字體大小 */
+  font-size: 1.08rem; /* 調整玻璃按鈕字體大小 */
   background: var(--bg-secondary) !important;
   color: var(--text-primary) !important;
   border: 2px solid var(--accent-blue) !important;
@@ -319,12 +340,12 @@
 
 .glass-panel h3{
   text-align: left;
-  font-size: 1.3rem; /* 調整課程卡片標題大小 */
+  font-size: 1.45rem; /* 調整課程卡片標題大小 */
   font-weight: 600;
 }
 
-.glass-panel p {
-  font-size: 1rem; /* 調整課程卡片段落大小 */
+.glass-panel p:not(.result-title):not(.result-sub):not(.feedback-title):not(.feedback-text) {
+  font-size: 1.08rem; /* 調整課程卡片段落大小 */
   line-height: 1.6;
 }
 
@@ -335,7 +356,7 @@
 /* 響應式設計 - 課程頁面 */
 @media (max-width: 900px) {
   .lesson-title {
-    font-size: 1.3rem;
+    font-size: 1.48rem;
   }
 
   #targetWord {
@@ -349,13 +370,13 @@
   }
 
   .glass-panel h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 600px) {
   .lesson-title {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
   }
 
   #targetWord {
@@ -369,11 +390,11 @@
   }
 
   .glass-panel h3 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
-  .glass-panel p {
-    font-size: 0.9rem;
+  .glass-panel p:not(.result-title):not(.result-sub):not(.feedback-title):not(.feedback-text) {
+    font-size: 1rem;
   }
 
   .result-card {
@@ -387,8 +408,28 @@
 
   .score-chip {
     min-width: 74px;
-    font-size: 0.82rem;
+    font-size: 0.92rem;
     padding: 0.35rem 0.6rem;
+  }
+
+  #responseBlock .result-title {
+    font-size: 1.02rem !important;
+  }
+
+  #responseBlock .result-sub {
+    font-size: 0.95rem !important;
+  }
+
+  #responseBlock .meter-label {
+    font-size: 0.9rem !important;
+  }
+
+  #responseBlock .feedback-title {
+    font-size: 0.93rem !important;
+  }
+
+  #responseBlock .feedback-text {
+    font-size: 0.98rem !important;
   }
 
   .kana-grid .btn {

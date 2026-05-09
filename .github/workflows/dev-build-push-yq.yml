@@ -16,7 +16,10 @@ jobs:
 
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME || secrets.DOCKERHUB_USERNAME }}
-      IMAGE_REPO: fyp-jp-dev
+      IMAGE_REPO: fyp-jp
+      MANIFEST_REPO: ${{ vars.DEV_MANIFEST_REPO || 'yuemanwai/argocd-local' }}
+      MANIFEST_BRANCH: ${{ vars.DEV_MANIFEST_BRANCH || 'main' }}
+      MANIFEST_FILE: ${{ vars.DEV_MANIFEST_FILE || 'gitops/apps/jp/values.yaml' }}
 
     steps:
       - name: Checkout repository
@@ -31,6 +34,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -42,7 +48,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           tags: |
             docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO }}:${{ steps.vars.outputs.short_sha }}
             docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_REPO }}:dev-latest
@@ -54,17 +60,37 @@ jobs:
           wget -q https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64 -O ./yq
           chmod +x ./yq
 
-      - name: Generate and validate image metadata using yq
-        run: |
-          cat > image-metadata.yaml <<EOF
-          image:
-            repository: docker.io/${DOCKER_USERNAME}/${IMAGE_REPO}
-            tag: ${SHORT_SHA}
-          git:
-            sha: ${GITHUB_SHA}
-            ref: ${GITHUB_REF}
-          EOF
+      - name: Checkout Manifest Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MANIFEST_REPO }}
+          token: ${{ secrets.MANIFEST_REPO_PAT }}
+          ref: ${{ env.MANIFEST_BRANCH }}
+          path: manifest-repo
 
-          ./yq e '.image.repository' image-metadata.yaml
-          ./yq e '.image.tag' image-metadata.yaml
-          ./yq e '.git.sha' image-metadata.yaml
+      - name: Update image tag using yq
+        run: |
+          target_file="manifest-repo/${MANIFEST_FILE}"
+          if [ ! -f "$target_file" ]; then
+            echo "Manifest file not found: $target_file"
+            exit 1
+          fi
+
+          ./yq -i '.image.repository = "docker.io/'"${DOCKER_USERNAME}"'/'"${IMAGE_REPO}"'" | .image.tag = "'"${SHORT_SHA}"'"' "$target_file"
+          echo "Updated manifest: $target_file"
+          ./yq e '.image.repository' "$target_file"
+          ./yq e '.image.tag' "$target_file"
+
+      - name: Commit and push manifest changes
+        run: |
+          cd manifest-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "CI(dev): update image tag to ${SHORT_SHA}"
+            git push origin "${MANIFEST_BRANCH}"
+          else
+            echo "No manifest changes to commit"
+          fi

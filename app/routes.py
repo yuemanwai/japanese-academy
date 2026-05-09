@@ -572,7 +572,7 @@ def save_handwriting():
     # Decode the Base64 image
     try:
         image_data = base64.b64decode(handwriting_image.split(',')[1])
-        image_path = os.path.join('app', 'static', 'image', 'handwriting.png')
+        image_path = os.path.join(current_app.root_path, 'static', 'image', 'handwriting.png')
 
         # Save the image to the specified path
         with open(image_path, 'wb') as f:
