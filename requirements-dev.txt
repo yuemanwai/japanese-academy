@@ -16,6 +16,8 @@ anyio==4.12.0
     # via
     #   google-genai
     #   httpx
+ast-serialize==0.3.0
+    # via mypy
 attrs==25.4.0
     # via
     #   allure-python-commons
@@ -151,7 +153,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-librt==0.7.5
+librt==0.10.0
     # via mypy
 mako==1.3.12
     # via alembic
@@ -166,7 +168,7 @@ mccabe==0.7.0
     # via flake8
 msgspec==0.20.0
     # via flask-session
-mypy==1.19.1
+mypy==2.0.0
     # via -r requirements-dev.in
 mypy-extensions==1.1.0
     # via mypy
@@ -180,7 +182,7 @@ packaging==25.0
     #   gunicorn
     #   pytest
     #   sphinx
-pathspec==0.12.1
+pathspec==1.1.1
     # via mypy
 pluggy==1.6.0
     # via
