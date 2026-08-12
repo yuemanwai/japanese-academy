@@ -1,7 +1,3 @@
-# How to Use This Repository
-
-If you are using Codespaces, simply clone this repository and wait for the page on port 5000 to appear. Everything will be set up automatically.
-
 # Commands that might help
 
 ## For Database
