@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.13"
 
       - name: Install uv
         run: |
@@ -31,8 +31,8 @@ jobs:
 
       - name: Recompile lockfiles from .in
         run: |
-          uv pip compile --python 3.10 requirements.in -o requirements.txt
-          uv pip compile --python 3.10 requirements-dev.in -o requirements-dev.txt
+          uv pip compile --python 3.13 requirements.in -o requirements.txt
+          uv pip compile --python 3.13 requirements-dev.in -o requirements-dev.txt
 
       - name: Commit and push changes
         run: |
