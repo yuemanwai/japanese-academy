@@ -3,7 +3,7 @@ Flask>=3.1.3
 Flask-SQLAlchemy
 Flask-Login
 Flask-WTF>=1.2.2
-werkzeug>=3.1.6
+werkzeug>=3.1.9
 Flask-Mail
 Flask-Migrate
 Flask-Babel
@@ -17,18 +17,20 @@ prometheus-flask-exporter
 # ===== DATABASE =====
 alembic
 psycopg2-binary
+# Stay on 2.0.x until URI uses postgresql+psycopg2:// or psycopg v3 is adopted.
+sqlalchemy>=2.0.45,<2.1
 
 # ===== AUTHENTICATION & VALIDATION =====
 email-validator
 dnspython
 pyasn1>=0.6.3
 
-# Keep PyJWT as-is for demo.
-# python3 -m pip index versions pyJWT
-PyJWT==2.12.1
+# >=2.14.0 addresses recent HS256 / JWK auth-bypass advisories (Trivy/Dependabot).
+PyJWT>=2.14.0
 
 # ===== AI & GOOGLE SERVICES =====
-google-genai
+google-genai>=2.33.0
+pydantic>=2.12.5
 
 # ===== WEB AUTOMATION =====
 selenium
