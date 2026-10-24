@@ -25,9 +25,12 @@ RUN apk update && \
 COPY requirements.txt .
 RUN --mount=type=cache,target=/var/cache/uv \
     apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
-    python -m pip install --upgrade pip wheel && \
+    PIP_NO_CACHE_DIR=1 python -m pip install --upgrade pip wheel && \
     uv pip install -r requirements.txt && \
+    PIP_NO_CACHE_DIR=1 python -m pip install --upgrade 'setuptools>=83.0.0' && \
     python -m pip uninstall -y setuptools 2>/dev/null || true && \
+    python -m pip uninstall -y pip 2>/dev/null || true && \
+    rm -rf /home/jp/var/cache/pip /home/jp/var/cache/uv /root/.cache/uv 2>/dev/null || true && \
     apk del .build-deps
 
 # 4) Non-root user entry for libs expecting /etc/passwd.

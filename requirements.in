@@ -41,3 +41,7 @@ gunicorn
 
 # ===== AWS INTEGRATION =====
 boto3
+
+# ===== TRANSITIVE SECURITY FLOORS (Trivy / GHSA) =====
+urllib3>=2.8.0
+msgpack>=1.2.1

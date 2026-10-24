@@ -160,6 +160,8 @@ markupsafe==3.0.4
     #   wtforms
 mccabe==0.7.0
     # via flake8
+msgpack==1.2.3
+    # via -r requirements.in
 msgspec==0.22.0
     # via flask-session
 mypy==2.4.0
@@ -213,7 +215,7 @@ pygments==2.21.0
     #   -r requirements-dev.in
     #   pytest
     #   sphinx
-pyjwt==2.12.1
+pyjwt==2.15.1
     # via -r requirements.in
 pysocks==1.7.1
     # via urllib3
@@ -303,6 +305,7 @@ typing-inspection==0.4.4
     # via pydantic
 urllib3==2.8.0
     # via
+    #   -r requirements.in
     #   botocore
     #   requests
     #   selenium

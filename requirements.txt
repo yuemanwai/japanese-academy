@@ -127,6 +127,8 @@ markupsafe==3.0.4
     #   mako
     #   werkzeug
     #   wtforms
+msgpack==1.2.3
+    # via -r requirements.in
 msgspec==0.22.0
     # via flask-session
 outcome==1.3.0.post0
@@ -208,6 +210,7 @@ typing-inspection==0.4.4
     # via pydantic
 urllib3==2.8.0
     # via
+    #   -r requirements.in
     #   botocore
     #   requests
     #   selenium
