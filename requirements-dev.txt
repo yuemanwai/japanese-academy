@@ -41,6 +41,7 @@ cachelib==0.17.0
     # via flask-session
 certifi==2026.10.23
     # via
+    #   -r requirements.in
     #   httpcore
     #   httpx
     #   requests
@@ -54,7 +55,9 @@ click==8.5.0
 coverage==7.17.0
     # via pytest-cov
 cryptography==50.0.2
-    # via google-auth
+    # via
+    #   -r requirements.in
+    #   google-auth
 distro==1.9.0
     # via google-genai
 dnspython==2.9.0
@@ -140,6 +143,7 @@ itsdangerous==2.2.0
     #   flask-wtf
 jinja2==3.1.6
     # via
+    #   -r requirements.in
     #   flask
     #   flask-babel
     #   sphinx
@@ -237,6 +241,7 @@ pyvirtualdisplay==3.0
     # via -r requirements.in
 requests==2.34.2
     # via
+    #   -r requirements.in
     #   google-auth
     #   google-genai
     #   sphinx
