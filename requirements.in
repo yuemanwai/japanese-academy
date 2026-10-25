@@ -18,7 +18,7 @@ prometheus-flask-exporter
 alembic
 psycopg2-binary
 # Stay on 2.0.x until URI uses postgresql+psycopg2:// or psycopg v3 is adopted.
-sqlalchemy>=2.0.45,<2.1
+sqlalchemy>=2.1.6,<2.2
 
 # ===== AUTHENTICATION & VALIDATION =====
 email-validator
