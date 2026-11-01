@@ -88,10 +88,12 @@ flask-sqlalchemy==3.1.1
     #   flask-migrate
 flask-wtf==1.3.0
     # via -r requirements.in
-google-auth==2.62.0
+google-auth[requests]==2.62.0
     # via google-genai
 google-genai==2.33.0
     # via -r requirements.in
+greenlet==3.5.6
+    # via sqlalchemy
 gunicorn==26.2.0
     # via -r requirements.in
 h11==0.16.0
@@ -178,7 +180,7 @@ requests==2.34.2
     #   google-genai
 s3transfer==0.19.3
     # via boto3
-selenium==4.51.0
+selenium==4.52.0
     # via -r requirements.in
 six==1.17.0
     # via python-dateutil
@@ -213,7 +215,7 @@ typing-extensions==4.16.0
     #   typing-inspection
 typing-inspection==0.4.4
     # via pydantic
-urllib3==2.8.0
+urllib3[socks]==2.8.0
     # via
     #   -r requirements.in
     #   botocore
