@@ -8,7 +8,7 @@ isort
 flake8
 
 # Type checking (2.x; avoid unreviewed major jumps from Dependabot)
-mypy>=2.0,<3
+mypy>=2.4.1,<3
 
 # Development server (if not using gunicorn)
 flask-debugtoolbar
